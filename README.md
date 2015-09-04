@@ -340,7 +340,7 @@ private function _datatable()
                     ->setRenderers(
                             array(
                                 2 => array(
-                                    'view' => 'DatatableBundle:Renderers:_actions.html.twig',
+                                    'view' => 'WaldoDatatableBundle:Renderers:_actions.html.twig',
                                     'params' => array(
                                             'edit_route'    => 'route_edit',
                                             'delete_route'  => 'route_delete',

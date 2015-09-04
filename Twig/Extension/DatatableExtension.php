@@ -59,7 +59,7 @@ class DatatableExtension extends \Twig_Extension
         $options['multiple']      = $dt->getMultiple();
         $options['sort']          = is_null($dt->getOrderField()) ? NULL : array(array_search(
                     $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
-        $main_template            = 'DatatableBundle:Main:index.html.twig';
+        $main_template            = 'WaldoDatatableBundle:Main:index.html.twig';
         if (isset($options['main_template']))
         {
             $main_template = $options['main_template'];
@@ -100,7 +100,7 @@ class DatatableExtension extends \Twig_Extension
         $options['multiple']                = $dt->getMultiple();
         $options['sort']                    = is_null($dt->getOrderField()) ? NULL : array(array_search(
                     $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
-        $main_template            = 'DatatableBundle:Main:datatableJs.html.twig';
+        $main_template            = 'WaldoDatatableBundle:Main:datatableJs.html.twig';
         if (isset($options['js_template']))
         {
             $main_template = $options['js_template'];
@@ -137,7 +137,7 @@ class DatatableExtension extends \Twig_Extension
         $options['multiple']      = $dt->getMultiple();
 //        $options['sort']          = is_null($dt->getOrderField()) ? NULL : [array_search(
 //                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType()];
-        $main_template            = 'DatatableBundle:Main:datatableHtml.html.twig';
+        $main_template            = 'WaldoDatatableBundle:Main:datatableHtml.html.twig';
         if (isset($options['html_template']))
         {
             $main_template = $options['html_template'];

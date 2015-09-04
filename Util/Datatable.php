@@ -457,7 +457,7 @@ class Datatable
      *      ->setRenderers(
      *          array(
      *             2 => array(
-     *               'view' => 'DatatableBundle:Renderers:_actions.html.twig',
+     *               'view' => 'WaldoDatatableBundle:Renderers:_actions.html.twig',
      *               'params' => array(
      *                  'edit_route'    => 'matche_edit',
      *                  'delete_route'  => 'matche_delete',
