@@ -9,15 +9,15 @@ class PrototypeBuilder
 
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
     protected $container;
-    
+
     /** @var string */
     protected $_prototype;
 
     /**
      * class constructor
-     * 
+     *
      * @param ContainerInterface $container
-     * @param string             $type 
+     * @param string             $type
      */
     public function __construct(ContainerInterface $container, $type)
     {
@@ -33,10 +33,10 @@ class PrototypeBuilder
             throw new \Exception(sprintf('prototype "%s" not found', $type));
         }
     }
-    
+
     /**
      * to string class converter
-     * 
+     *
      * @return string
      */
     public function __toString()
@@ -46,7 +46,7 @@ class PrototypeBuilder
 
     /**
      * simple form delete prototype
-     * 
+     *
      * @return string
      */
     protected function _delete_form()
