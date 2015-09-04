@@ -9,6 +9,15 @@
         {
             "name": "Ali hichem",
             "email": "ali.hichem@mail.com",
+            "role": "Original Developer"
+        },
+        {
+            "name": "Sébastien Convers",
+            "role": "Developer"
+        },
+        {
+            "name": "Valérian Girard",
+            "email": "valerian.girard@gmail.com",
             "role": "Developer"
         }
     ],
@@ -16,6 +25,13 @@
         "php": ">=5.3.0",
 	"twig/twig": "~1.8",
         "doctrine/common": "~2.1"
+    },
+    "require-dev": {
+        "symfony/symfony": "2.7.*",
+        "doctrine/doctrine-bundle": "~1.4",
+        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/dbal": "<2.5",
+        "phpunit/phpunit": "~4.8"
     },
     "target-dir": "Ali/DatatableBundle",
     "autoload": {
