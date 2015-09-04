@@ -1,8 +1,8 @@
 <?php
 
-namespace DatatableBundle\Tests\DatatableBundle;
+namespace Waldo\DatatableBundle\Tests\DatatableBundle;
 
-use DatatableBundle\Tests\AppKernel;
+use Waldo\DatatableBundle\Tests\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -81,8 +81,8 @@ class BaseTestCase extends WebTestCase
     {
         $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($this->_em);
         $classes    = array(
-            $this->_em->getClassMetadata("\DatatableBundle\Tests\DatatableBundle\Entity\Product"),
-            $this->_em->getClassMetadata("\DatatableBundle\Tests\DatatableBundle\Entity\Feature"),
+            $this->_em->getClassMetadata("\Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product"),
+            $this->_em->getClassMetadata("\Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Feature"),
         );
         $schemaTool->dropSchema($classes);
         $schemaTool->createSchema($classes);

@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\Util\Factory\Prototype;
+namespace Waldo\DatatableBundle\Util\Factory\Prototype;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

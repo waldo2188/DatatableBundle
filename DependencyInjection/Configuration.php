@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\DependencyInjection;
+namespace Waldo\DatatableBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('datatable');
+        $rootNode = $treeBuilder->root('waldo_datatable');
 
         $rootNode
             ->children()

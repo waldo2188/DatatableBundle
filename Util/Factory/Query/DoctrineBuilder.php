@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\Util\Factory\Query;
+namespace Waldo\DatatableBundle\Util\Factory\Query;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;

@@ -1,8 +1,8 @@
 <?php
 
-namespace DatatableBundle\Listener;
+namespace Waldo\DatatableBundle\Listener;
 
-use DatatableBundle\Util\Datatable;
+use Waldo\DatatableBundle\Util\Datatable;
 
 /**
  * @author valérian Girard <valerian.girard@educagri.fr>

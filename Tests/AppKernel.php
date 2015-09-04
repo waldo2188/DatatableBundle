@@ -1,13 +1,14 @@
 <?php
 
-namespace DatatableBundle\Tests;
+namespace Waldo\DatatableBundle\Tests;
 
-use Symfony\Component\HttpKernel\Kernel,
-    Symfony\Component\Config\Loader\LoaderInterface,
-    Symfony\Bundle\FrameworkBundle\FrameworkBundle,
-    Symfony\Bundle\TwigBundle\TwigBundle,
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle,
-    DatatableBundle\DatatableBundle;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Waldo\DatatableBundle\DatatableBundle;
+use Waldo\DatatableBundle\WaldoDatatableBundle;
 
 class AppKernel extends Kernel
 {
@@ -20,8 +21,8 @@ class AppKernel extends Kernel
         $bundles = array(
             new FrameworkBundle(),
             new TwigBundle(),
-            new DoctrineBundle,
-            new DatatableBundle(),
+            new DoctrineBundle(),
+            new WaldoDatatableBundle(),
         );
 
         return $bundles;

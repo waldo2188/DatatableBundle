@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\Tests\DatatableBundle\Controller;
+namespace Waldo\DatatableBundle\Tests\DatatableBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

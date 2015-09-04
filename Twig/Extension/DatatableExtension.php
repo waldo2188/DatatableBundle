@@ -1,9 +1,9 @@
 <?php
 
-namespace DatatableBundle\Twig\Extension;
+namespace Waldo\DatatableBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use DatatableBundle\Util\Datatable;
+use Waldo\DatatableBundle\Util\Datatable;
 
 class DatatableExtension extends \Twig_Extension
 {

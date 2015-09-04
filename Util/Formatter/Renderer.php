@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\Util\Formatter;
+namespace Waldo\DatatableBundle\Util\Formatter;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -21,10 +21,10 @@ class Renderer
 
     /**
      * class constructor
-     * 
+     *
      * @param ContainerInterface $container
-     * @param array $renderers 
-     * @param array $fields 
+     * @param array $renderers
+     * @param array $fields
      */
     public function __construct(ContainerInterface $container, array $renderers, array $fields)
     {
@@ -36,10 +36,10 @@ class Renderer
 
     /**
      * return the rendered view using the given content
-     * 
+     *
      * @param string    $view_path
      * @param array     $params
-     * 
+     *
      * @return string
      */
     public function applyView($view_path, array $params)
@@ -53,7 +53,7 @@ class Renderer
     /**
      * prepare the renderer :
      *  - guess the identifier index
-     * 
+     *
      * @return void
      */
     protected function _prepare()
@@ -63,10 +63,10 @@ class Renderer
 
     /**
      * apply foreach given cell content the given (if exists) view
-     * 
-     * @param array $data 
+     *
+     * @param array $data
      * @param array $objects
-     * 
+     *
      * @return void
      */
     public function applyTo(array &$data, array $objects)
@@ -84,7 +84,7 @@ class Renderer
                 }
                 else
                 {
-                    $view = 'DatatableBundle:Renderers:_default.html.twig';
+                    $view = 'WaldoDatatableBundle:Renderers:_default.html.twig';
                 }
                 $params                          = array_merge($params, array(
                     'dt_obj'  => $objects[$row_index],

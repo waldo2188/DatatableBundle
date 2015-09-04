@@ -1,15 +1,15 @@
 <?php
 
-namespace DatatableBundle\Util;
+namespace Waldo\DatatableBundle\Util;
 
-use Symfony\Component\DependencyInjection\ContainerInterface,
-    Symfony\Component\HttpFoundation\JsonResponse;
-use Doctrine\ORM\Query,
-    Doctrine\ORM\Query\Expr\Join;
-use DatatableBundle\Util\Factory\Query\QueryInterface,
-    DatatableBundle\Util\Factory\Query\DoctrineBuilder,
-    DatatableBundle\Util\Formatter\Renderer,
-    DatatableBundle\Util\Factory\Prototype\PrototypeBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
+use Waldo\DatatableBundle\Util\Factory\Query\QueryInterface;
+use Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder;
+use Waldo\DatatableBundle\Util\Formatter\Renderer;
+use Waldo\DatatableBundle\Util\Factory\Prototype\PrototypeBuilder;
 
 class Datatable
 {
@@ -35,7 +35,7 @@ class Datatable
     /** @var array */
     protected $_multiple;
 
-    /** @var \DatatableBundle\Util\Factory\Query\QueryInterface */
+    /** @var \Waldo\DatatableBundle\Util\Factory\Query\QueryInterface */
     protected $_queryBuilder;
 
     /** @var \Symfony\Component\HttpFoundation\Request */
@@ -581,7 +581,7 @@ class Datatable
      *
      * @param array $multiple
      *
-     * @return \DatatableBundle\Util\Datatable
+     * @return \Waldo\DatatableBundle\Util\Datatable
      */
     public function setMultiple(array $multiple)
     {
@@ -618,7 +618,7 @@ class Datatable
      *
      * @param array $search_fields
      *
-     * @return \DatatableBundle\Util\Datatable
+     * @return \Waldo\DatatableBundle\Util\Datatable
      */
     public function setSearchFields(array $search_fields)
     {
@@ -635,7 +635,7 @@ class Datatable
      *
      * @param array $not_filterable_fields
      *
-     * @return \DatatableBundle\Util\Datatable
+     * @return \Waldo\DatatableBundle\Util\Datatable
      */
     public function setNotFilterableFields(array $not_filterable_fields)
     {
@@ -662,7 +662,7 @@ class Datatable
      *
      * @param array $not_sortable_fields
      *
-     * @return \DatatableBundle\Util\Datatable
+     * @return \Waldo\DatatableBundle\Util\Datatable
      */
     public function setNotSortableFields(array $not_sortable_fields)
     {
@@ -689,7 +689,7 @@ class Datatable
      *
      * @param array $hidden_fields
      *
-     * @return \DatatableBundle\Util\Datatable
+     * @return \Waldo\DatatableBundle\Util\Datatable
      */
     public function setHiddenFields(array $hidden_fields)
     {
@@ -720,7 +720,7 @@ class Datatable
      *
      * @param array $filtering_type
      *
-     * @return \DatatableBundle\Util\Datatable
+     * @return \Waldo\DatatableBundle\Util\Datatable
      */
     public function setFilteringType(array $filtering_type)
     {

@@ -34,6 +34,6 @@
         "phpunit/phpunit": "~4.8"
     },
     "autoload": {
-        "psr-4": { "Waldo\\DatatableBundle\\": "waldo/DatatableBundle/"}
+        "psr-4": { "Waldo\\DatatableBundle\\": ""}
     }
 }

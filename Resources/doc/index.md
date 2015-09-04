@@ -141,7 +141,7 @@ Assuming for example that you need a grid in your "index" action, create in your
 /**
  * set datatable configs
  * 
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -218,7 +218,7 @@ Assuming the example above, you can add your joins and where statements
 /**
  * set datatable configs
  * 
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -275,7 +275,7 @@ Let say you want search to be active only for "field1" and "field3", you just ne
 /**
  * set datatable configs
  * 
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -304,7 +304,7 @@ Well this is very easy to add to your datatable: all what you need is to declare
 /**
  * set datatable configs
  * 
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -346,7 +346,7 @@ To set your own column structure, you can use a custom twig renderer as below: I
 /**
  * set datatable configs
  * 
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -382,7 +382,7 @@ Assuming the example above, you can set your custom fields renderer using [PHP C
 /**
  * set datatable configs
  * 
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {

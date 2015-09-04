@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\DatatableBundle\Util;
+namespace Waldo\DatatableBundle\Tests\DatatableBundle\Util;
 
-use DatatableBundle\Tests\DatatableBundle\BaseTestCase;
+use Waldo\DatatableBundle\Tests\DatatableBundle\BaseTestCase;
 
 /**
  * @group Datatable
@@ -10,7 +10,7 @@ use DatatableBundle\Tests\DatatableBundle\BaseTestCase;
 class DatatableTest extends BaseTestCase
 {
 
-    /** @var \DatatableBundle\Util\Datatable */
+    /** @var \Waldo\DatatableBundle\Util\Datatable */
     protected $_datatable;
 
     /**
@@ -37,12 +37,12 @@ class DatatableTest extends BaseTestCase
 
     public function test_chainingClassBehavior()
     {
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $this->_datatable->setEntity('$entity_name', '$entity_alias'));
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $this->_datatable->setFields(array()));
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $this->_datatable->setFixedData('$data'));
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $this->_datatable->setHasAction(TRUE));
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $this->_datatable->setOrder('$order_field', '$order_type'));
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $this->_datatable->setRenderer(function($value, $key) {
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->_datatable->setEntity('$entity_name', '$entity_alias'));
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->_datatable->setFields(array()));
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->_datatable->setFixedData('$data'));
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->_datatable->setHasAction(TRUE));
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->_datatable->setOrder('$order_field', '$order_type'));
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->_datatable->setRenderer(function($value, $key) {
                             return true;
                         }));
     }
@@ -50,7 +50,7 @@ class DatatableTest extends BaseTestCase
     public function test_addJoin()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->addJoin('p.features', 'f');
 
         /* @var $qb \Doctrine\ORM\QueryBuilder */
@@ -63,7 +63,7 @@ class DatatableTest extends BaseTestCase
     public function test_execute()
     {
         $r = $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -77,33 +77,33 @@ class DatatableTest extends BaseTestCase
     {
         $this->_datatable
                 ->setDatatableId('test')
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
                             "_identifier_" => 'p.id')
         );
         $i = $this->_datatable->getInstance('test');
-        $this->assertInstanceOf('\DatatableBundle\Util\Datatable', $i);
+        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $i);
         $this->assertEquals('p', $i->getEntityAlias());
     }
 
     public function test_getEntityName()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
                             "_identifier_" => 'p.id')
         );
-        $this->assertEquals('DatatableBundle\Tests\DatatableBundle\Entity\Product', $this->_datatable->getEntityName());
+        $this->assertEquals('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', $this->_datatable->getEntityName());
     }
 
     public function test_getEntityAlias()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -115,7 +115,7 @@ class DatatableTest extends BaseTestCase
     public function test_getFields()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -127,7 +127,7 @@ class DatatableTest extends BaseTestCase
     public function test_getHasAction()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -140,7 +140,7 @@ class DatatableTest extends BaseTestCase
     public function test_getHasRendererAction()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -152,7 +152,7 @@ class DatatableTest extends BaseTestCase
     public function test_getOrderField()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -168,11 +168,11 @@ class DatatableTest extends BaseTestCase
 
 
         $data = $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => "(SELECT Product.name
-                                              FROM DatatableBundle\Tests\DatatableBundle\Entity\Product as Product
+                                              FROM Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product as Product
                                               WHERE Product.id = 1) as someAliasName",
                             "_identifier_" => 'p.id'))
                 ->getQueryBuilder()->getData(null);
@@ -183,7 +183,7 @@ class DatatableTest extends BaseTestCase
     public function test_getOrderType()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -196,33 +196,33 @@ class DatatableTest extends BaseTestCase
     public function test_getPrototype()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
                             "_identifier_" => 'p.id'))
                 ->setOrder('p.id', 'asc')
         ;
-        $this->assertInstanceOf('DatatableBundle\Util\Factory\Prototype\PrototypeBuilder', $this->_datatable->getPrototype('delete_form'));
+        $this->assertInstanceOf('Waldo\DatatableBundle\Util\Factory\Prototype\PrototypeBuilder', $this->_datatable->getPrototype('delete_form'));
     }
 
     public function test_getQueryBuilder()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
                             "_identifier_" => 'p.id'))
                 ->setOrder('p.id', 'asc')
         ;
-        $this->assertInstanceOf('DatatableBundle\Util\Factory\Query\DoctrineBuilder', $this->_datatable->getQueryBuilder());
+        $this->assertInstanceOf('Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder', $this->_datatable->getQueryBuilder());
     }
 
     public function test_alias()
     {
         $r = $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name as someAliasName',
@@ -236,11 +236,11 @@ class DatatableTest extends BaseTestCase
     public function test_multipleAlias()
     {
         $r = $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => "(SELECT Product.name
-                                              FROM DatatableBundle\Tests\DatatableBundle\Entity\Product as Product
+                                              FROM Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product as Product
                                               WHERE Product.id = 1) as someAliasName",
                             "_identifier_" => 'p.id')
                 )->getQueryBuilder()->getData(null);
@@ -252,7 +252,7 @@ class DatatableTest extends BaseTestCase
     public function test_SQLCommandInFields()
     {
         $datatable = $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "total"        => 'COUNT(p.id) as total',
@@ -273,7 +273,7 @@ class DatatableTest extends BaseTestCase
     public function test_getSearch()
     {
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => 'p.name',
@@ -294,11 +294,11 @@ class DatatableTest extends BaseTestCase
 
 
         $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product', 'p')
                 ->setFields(
                         array(
                             "title"        => "(SELECT Product.name
-                                              FROM DatatableBundle\Tests\DatatableBundle\Entity\Product as Product
+                                              FROM Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Product as Product
                                               WHERE Product.id = 1) as someAliasName",
                             "id"            => 'p.id',
                             "_identifier_" => 'p.id')
@@ -314,7 +314,7 @@ class DatatableTest extends BaseTestCase
     public function test_setRenderders()
     {
         $out  = $this->_datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Feature', 'f')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Feature', 'f')
                 ->setFields(
                         array(
                             "title"        => 'f.name',
@@ -323,7 +323,7 @@ class DatatableTest extends BaseTestCase
                 ->setRenderers(
                         array(
                             1 => array(
-                                'view'   => 'DatatableBundle:Renderers:_actions.html.twig',
+                                'view'   => 'WaldoDatatableBundle:Renderers:_actions.html.twig',
                                 'params' => array(
                                     'edit_route'            => '_edit',
                                     'delete_route'          => '_delete',
@@ -343,7 +343,7 @@ class DatatableTest extends BaseTestCase
         $datatable  = $this->_datatable;
         $templating = $this->_container->get('templating');
         $out        = $datatable
-                ->setEntity('DatatableBundle\Tests\DatatableBundle\Entity\Feature', 'f')
+                ->setEntity('Waldo\DatatableBundle\Tests\DatatableBundle\Entity\Feature', 'f')
                 ->setFields(
                         array(
                             "title"        => 'f.name',
@@ -357,7 +357,7 @@ class DatatableTest extends BaseTestCase
                                 {
                                     $data[$key] = $templating
                                             ->render(
-                                            'DatatableBundle:Renderers:_actions.html.twig', array(
+                                            'WaldoDatatableBundle:Renderers:_actions.html.twig', array(
                                         'edit_route'            => '_edit',
                                         'delete_route'          => '_delete',
                                         'delete_form_prototype' => $datatable->getPrototype('delete_form')

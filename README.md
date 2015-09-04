@@ -4,7 +4,9 @@ DatatableBundle
 Fork of [AliHichem/DatatableBundle](https://github.com/AliHichem/DatatableBundle), this bundle will add some great features
 and evolve in a different way than source.
 
-[![Build Status](https://secure.travis-ci.org/AliHichem/DatatableBundle.png?branch=master)](http://travis-ci.org/AliHichem/DatatableBundle)
+[![Build Status](https://travis-ci.org/waldo2188/DatatableBundle.svg?branch=master)](https://travis-ci.org/waldo2188/DatatableBundle)
+
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/bb7b64f6-4203-45ca-b99a-2d15c4d272ec/small.png)](https://insight.sensiolabs.com/projects/bb7b64f6-4203-45ca-b99a-2d15c4d272ec)
 
 The Datatable bundle for symfony2 allow for easily integration of the [jQuery Datatable plugin](http://datatables.net/) with the doctrine2 entities.
 This bundle provides a way to make a projection of a doctrine2 entity to a powerful jquery datagrid. It mainly includes:
@@ -19,7 +21,7 @@ This bundle provides a way to make a projection of a doctrine2 entity to a power
  * support of custom twig/phpClosure renderers.
  * support of custom grouped actions.
 
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/AliHichem/DatatableBundle/raw/master/Resources/public/images/sample_01.png"></div>
+<div style="text-align:center"><img alt="Screenshot" src="/raw/master/Resources/doc/images/sample_01.png"></div>
 
 -------------------------------------
 ##### [Installation](#installation-1)
@@ -61,59 +63,20 @@ Add datatable bundle in your composer.json as below:
 ```js
 "require": {
     ...
-    "ali/datatable": "dev-master"
+    "waldo/datatable": "dev-master"
 }
 ```
 
 Update/install with this command:
 
 ```
-php composer.phar update ali/datatable
-```
-
-###### Using native symfony2 installer (Symfony < 2.1) : support of SF2 v < 2.1 will be removed soon.
-
-Include the source to your deps files
-
-```
-[DatatableBundle]
-    git=git://github.com/AliHichem/DatatableBundle
-    target=bundles/Ali/DatatableBundle
-```
-
-install the bundle
-
-```
-$ bin/vendor install
-```
-
-##### Step 2:  Enable the bundle
-
-register the bundle
-
-```php
-public function registerBundles()
-{
-    $bundles = array(
-        ...
-        new DatatableBundle\DatatableBundle(),
-);
-```
-
-(only for symfony < 2.1 )
-add the namespace to the autoloader
-
-```php
-$loader->registerNamespaces(array(
-    ...
-    'Ali'              => __DIR__.'/../vendor/bundles',
-));
+composer require waldo/datatable-bundle
 ```
 
 generate the assets symlinks
 
-```
-$ app/console assets:install --symlink web
+```bash
+app/console assets:install --symlink web
 ```
 
 ##### Step 3:  Activate the main configs
@@ -124,7 +87,7 @@ in this section you can put the global config that you want to set for all the i
 
 ```
 # app/config/config.yml
-ali_datatable:
+datatable:
     all:    ~
     js:     ~
 ```
@@ -135,7 +98,7 @@ Note: all you js config have to string typed, make sure to use (") as delimiters
 ###### Config sample
 
 ```
-ali_datatable:
+datatable:
     all:
         action:           true
         search:           false
@@ -157,7 +120,7 @@ Assuming for example that you need a grid in your "index" action, create in your
 /**
  * set datatable configs
  *
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -234,7 +197,7 @@ Assuming the example above, you can add your joins and where statements
 /**
  * set datatable configs
  *
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -291,7 +254,7 @@ Let say you want search to be active only for "field1" and "field3", you just ne
 /**
  * set datatable configs
  *
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -320,7 +283,7 @@ Well this is very easy to add to your datatable: all what you need is to declare
 /**
  * set datatable configs
  *
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -362,7 +325,7 @@ To set your own column structure, you can use a custom twig renderer as below: I
 /**
  * set datatable configs
  *
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -408,7 +371,7 @@ Assuming the example above, you can set your custom fields renderer using [PHP C
 /**
  * set datatable configs
  *
- * @return \DatatableBundle\Util\Datatable
+ * @return \Waldo\DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {

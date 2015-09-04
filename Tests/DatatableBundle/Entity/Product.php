@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\Tests\DatatableBundle\Entity;
+namespace Waldo\DatatableBundle\Tests\DatatableBundle\Entity;
 
 use Doctrine\ORM\Mappin as ORM;
 

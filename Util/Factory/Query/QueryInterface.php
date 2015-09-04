@@ -1,6 +1,6 @@
 <?php
 
-namespace DatatableBundle\Util\Factory\Query;
+namespace Waldo\DatatableBundle\Util\Factory\Query;
 
 interface QueryInterface
 {
