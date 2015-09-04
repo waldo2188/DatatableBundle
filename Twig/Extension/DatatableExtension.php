@@ -98,8 +98,8 @@ class DatatableExtension extends \Twig_Extension
         $options['not_sortable_fields']     = $dt->getNotSortableFields();
         $options['hidden_fields']           = $dt->getHiddenFields();
         $options['multiple']                = $dt->getMultiple();
-        $options['sort']                    = is_null($dt->getOrderField()) ? NULL : [array_search(
-                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType()];
+        $options['sort']                    = is_null($dt->getOrderField()) ? NULL : array(array_search(
+                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
         $main_template            = 'DatatableBundle:Main:datatableJs.html.twig';
         if (isset($options['js_template']))
         {
