@@ -1,10 +1,10 @@
 {
-    "name": "datatableBundle",
+    "name": "waldo/datatable-bundle",
     "description": "Symfony2 Ajax Datagrid Bundle for doctrine2 entities",
     "keywords": ["symfony2","jquery","datatable"],
     "homepage": "https://github.com/waldo2188/DatatableBundle",
     "license": "MIT",
-    "type": "library",
+    "type": "symfony-bundle",
     "authors": [
         {
             "name": "Ali hichem",
@@ -33,11 +33,7 @@
         "doctrine/dbal": "<2.5",
         "phpunit/phpunit": "~4.8"
     },
-    "target-dir": "DatatableBundle",
     "autoload": {
-        "psr-0": {
-            "DatatableBundle": ""
-        }
+        "psr-4": { "Waldo\\DatatableBundle": ""}
     }
 }
-
