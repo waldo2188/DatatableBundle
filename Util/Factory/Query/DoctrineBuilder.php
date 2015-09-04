@@ -75,7 +75,7 @@ class DoctrineBuilder implements QueryInterface
      * 
      * @return string
      */
-    protected function _addSearch(\Doctrine\ORM\QueryBuilder $queryBuilder)
+    protected function addSearch(\Doctrine\ORM\QueryBuilder $queryBuilder)
     {
 
         if ($this->search !== true) {
@@ -198,7 +198,7 @@ class DoctrineBuilder implements QueryInterface
     public function getTotalRecords()
     {
         $qb = clone $this->queryBuilder;
-//        $this->_addSearch($qb);
+//        $this->addSearch($qb);
         $qb->resetDQLPart('orderBy');
 
         $gb = $qb->getDQLPart('groupBy');
@@ -223,7 +223,7 @@ class DoctrineBuilder implements QueryInterface
     public function getTotalDisplayRecords()
     {
         $qb = clone $this->queryBuilder;
-        $this->_addSearch($qb);
+        $this->addSearch($qb);
         
         $qb->resetDQLPart('orderBy');
 
@@ -292,7 +292,7 @@ class DoctrineBuilder implements QueryInterface
         $qb->select(implode(',', $select));
 
         // add search
-        $this->_addSearch($qb);
+        $this->addSearch($qb);
         
         // get results and process data formatting
         $query          = $qb->getQuery();
