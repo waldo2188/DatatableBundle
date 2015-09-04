@@ -14,4 +14,4 @@ if (!$loader = includeIfExists($vendor.'/autoload.php')) {
         'php composer.phar install'.PHP_EOL);
 }
 
-$loader->add('Ali', __DIR__);
+//$loader->add('DatatableBundle', __DIR__);

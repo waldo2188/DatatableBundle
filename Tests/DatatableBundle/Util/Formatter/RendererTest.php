@@ -1,13 +1,14 @@
 <?php
 
-namespace Ali\DatatableBundle\Util\Formatter;
+namespace DatatableBundle\Tests\DatatableBundle\Util\Formatter;
 
-use Ali\DatatableBundle\BaseTestCase;
+use DatatableBundle\Tests\DatatableBundle\BaseTestCase;
+use DatatableBundle\Util\Formatter\Renderer;
 
 class RendererTest extends BaseTestCase
 {
 
-    /** @var \Ali\DatatableBundle\Util\Datatable */
+    /** @var \DatatableBundle\Util\Datatable */
     protected $_datatable;
 
     /**
@@ -29,7 +30,7 @@ class RendererTest extends BaseTestCase
             "_identifier_" => 'p.id')
         ;
         $r      = new Renderer($this->_container, array(), $fields);
-        $out    = $r->applyView('AliDatatableBundle:Renderers:_default.html.twig', $fields);
+        $out    = $r->applyView('DatatableBundle:Renderers:_default.html.twig', $fields);
         $this->assertInternalType('string', $out);
     }
 
@@ -41,7 +42,7 @@ class RendererTest extends BaseTestCase
         ;
         $r      = new Renderer($this->_container, array(
             1 => array(
-                'view'   => 'AliDatatableBundle:Renderers:_actions.html.twig',
+                'view'   => 'DatatableBundle:Renderers:_actions.html.twig',
                 'params' => array(
                     'edit_route'            => '_edit',
                     'delete_route'          => '_delete',
@@ -51,7 +52,7 @@ class RendererTest extends BaseTestCase
                 ), $fields);
         $data   = array(array('something', 'eee'));
         $objects = $data;
-        
+
         $r->applyTo($data, $objects);
         $this->assertContains('form', $data[0][1]);
     }

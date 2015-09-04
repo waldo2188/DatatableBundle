@@ -1,13 +1,13 @@
 <?php
 
-namespace Ali\DatatableBundle\Tests;
+namespace DatatableBundle\Tests;
 
 use Symfony\Component\HttpKernel\Kernel,
     Symfony\Component\Config\Loader\LoaderInterface,
     Symfony\Bundle\FrameworkBundle\FrameworkBundle,
     Symfony\Bundle\TwigBundle\TwigBundle,
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle,
-    Ali\DatatableBundle\AliDatatableBundle;
+    DatatableBundle\DatatableBundle;
 
 class AppKernel extends Kernel
 {
@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new FrameworkBundle(),
             new TwigBundle(),
             new DoctrineBundle,
-            new AliDatatableBundle(),
+            new DatatableBundle(),
         );
 
         return $bundles;

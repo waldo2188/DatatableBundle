@@ -1,6 +1,6 @@
 <?php
 
-namespace Ali\DatatableBundle\Entity;
+namespace DatatableBundle\Tests\DatatableBundle\Entity;
 
 use Doctrine\ORM\Mappin as ORM;
 

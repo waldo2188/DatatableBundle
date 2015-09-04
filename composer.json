@@ -1,8 +1,8 @@
 {
-    "name": "ali/datatable",
+    "name": "datatableBundle",
     "description": "Symfony2 Ajax Datagrid Bundle for doctrine2 entities",
     "keywords": ["symfony2","jquery","datatable"],
-    "homepage": "https://github.com/AliHichem/AliDatatableBundle",
+    "homepage": "https://github.com/waldo2188/DatatableBundle",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -33,10 +33,10 @@
         "doctrine/dbal": "<2.5",
         "phpunit/phpunit": "~4.8"
     },
-    "target-dir": "Ali/DatatableBundle",
+    "target-dir": "DatatableBundle",
     "autoload": {
         "psr-0": {
-            "Ali\\DatatableBundle": ""
+            "DatatableBundle": ""
         }
     }
 }

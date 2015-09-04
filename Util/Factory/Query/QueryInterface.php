@@ -1,6 +1,6 @@
 <?php
 
-namespace Ali\DatatableBundle\Util\Factory\Query;
+namespace DatatableBundle\Util\Factory\Query;
 
 interface QueryInterface
 {

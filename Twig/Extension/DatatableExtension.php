@@ -1,21 +1,20 @@
 <?php
 
-namespace Ali\DatatableBundle\Twig\Extension;
+namespace DatatableBundle\Twig\Extension;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Ali\DatatableBundle\Util\Datatable;
+use DatatableBundle\Util\Datatable;
 
-class AliDatatableExtension extends \Twig_Extension
+class DatatableExtension extends \Twig_Extension
 {
 
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
     protected $_container;
 
     /**
-     * class constructor 
-     * 
-     * @param ContainerInterface $container 
+     * class constructor
+     *
+     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -36,9 +35,9 @@ class AliDatatableExtension extends \Twig_Extension
 
     /**
      * Converts a string to time
-     * 
+     *
      * @param string $string
-     * @return int 
+     * @return int
      */
     public function datatable($options)
     {
@@ -60,7 +59,7 @@ class AliDatatableExtension extends \Twig_Extension
         $options['multiple']      = $dt->getMultiple();
         $options['sort']          = is_null($dt->getOrderField()) ? NULL : array(array_search(
                     $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
-        $main_template            = 'AliDatatableBundle:Main:index.html.twig';
+        $main_template            = 'DatatableBundle:Main:index.html.twig';
         if (isset($options['main_template']))
         {
             $main_template = $options['main_template'];
@@ -71,12 +70,12 @@ class AliDatatableExtension extends \Twig_Extension
                         ->render(
                                 $main_template, $options);
     }
-    
+
     /**
      * Converts a string to time
-     * 
+     *
      * @param string $string
-     * @return int 
+     * @return int
      */
     public function datatableJs($options)
     {
@@ -101,7 +100,7 @@ class AliDatatableExtension extends \Twig_Extension
         $options['multiple']                = $dt->getMultiple();
         $options['sort']                    = is_null($dt->getOrderField()) ? NULL : [array_search(
                     $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType()];
-        $main_template            = 'AliDatatableBundle:Main:datatableJs.html.twig';
+        $main_template            = 'DatatableBundle:Main:datatableJs.html.twig';
         if (isset($options['js_template']))
         {
             $main_template = $options['js_template'];
@@ -112,12 +111,12 @@ class AliDatatableExtension extends \Twig_Extension
                         ->render(
                                 $main_template, $options);
     }
-    
+
     /**
      * Converts a string to time
-     * 
+     *
      * @param string $string
-     * @return int 
+     * @return int
      */
     public function datatableHtml($options)
     {
@@ -138,7 +137,7 @@ class AliDatatableExtension extends \Twig_Extension
         $options['multiple']      = $dt->getMultiple();
 //        $options['sort']          = is_null($dt->getOrderField()) ? NULL : [array_search(
 //                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType()];
-        $main_template            = 'AliDatatableBundle:Main:datatableHtml.html.twig';
+        $main_template            = 'DatatableBundle:Main:datatableHtml.html.twig';
         if (isset($options['html_template']))
         {
             $main_template = $options['html_template'];
@@ -152,9 +151,9 @@ class AliDatatableExtension extends \Twig_Extension
 
     /**
      * create delete form
-     * 
+     *
      * @param type $id
-     * @return type 
+     * @return type
      */
     private function createDeleteForm($id)
     {
@@ -165,10 +164,10 @@ class AliDatatableExtension extends \Twig_Extension
 
     /**
      * create form builder
-     * 
+     *
      * @param type $data
      * @param array $options
-     * @return type 
+     * @return type
      */
     public function createFormBuilder($data = null, array $options = array())
     {

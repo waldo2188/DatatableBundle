@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the AliDatatableBundle from the FOSUserBundle package.
+ * This file is part of the DatatableBundle from the FOSUserBundle package.
  *
  * @see FriendsOfSymfony <http://friendsofsymfony.github.com/>
  */

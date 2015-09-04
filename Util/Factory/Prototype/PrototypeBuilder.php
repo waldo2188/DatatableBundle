@@ -1,6 +1,6 @@
 <?php
 
-namespace Ali\DatatableBundle\Util\Factory\Prototype;
+namespace DatatableBundle\Util\Factory\Prototype;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

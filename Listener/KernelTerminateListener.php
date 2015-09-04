@@ -1,8 +1,8 @@
 <?php
 
-namespace Ali\DatatableBundle\Listener;
+namespace DatatableBundle\Listener;
 
-use Ali\DatatableBundle\Util\Datatable;
+use DatatableBundle\Util\Datatable;
 
 /**
  * @author valérian Girard <valerian.girard@educagri.fr>

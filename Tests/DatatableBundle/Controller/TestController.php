@@ -1,6 +1,6 @@
 <?php
 
-namespace Ali\DatatableBundle\Controller;
+namespace DatatableBundle\Tests\DatatableBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,5 +22,4 @@ class TestController extends Controller
     {
         return new Response('test');
     }
-
 }

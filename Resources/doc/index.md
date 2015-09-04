@@ -1,4 +1,4 @@
-AliDatatableBundle
+DatatableBundle
 ==================
 
 The Datatable bundle for symfony2 allow for easily integration of the [jQuery Datatable plugin](http://datatables.net/) with the doctrine2 entities.
@@ -6,11 +6,11 @@ This bundle provides a way to make a projection of a doctrine2 entity to a power
 
 ##### [Installation](#installation-1) 
 
-1. [Download AliDatatableBundle using composer](#step-1-download-alidatatablebundle)
+1. [Download DatatableBundle using composer](#step-1-download-alidatatablebundle)
 2. [Enable the Bundle](#step-2--enable-the-bundle)
 3. [Configure your application's config.yml](#step-3--activate-the-main-configs)
 
-##### [How to use AliDatatableBundle ?](#-how-to-use-alidatatablebundle-)
+##### [How to use DatatableBundle ?](#-how-to-use-alidatatablebundle-)
 ##### [Rendering inside Twig](#-rendering-inside-twig)
 
 ###### (Advanced use of datatable)
@@ -32,11 +32,11 @@ This bundle provides a way to make a projection of a doctrine2 entity to a power
 
 Installation is a quick (I promise!) 7 step process:
 
-1. [Download AliDatatableBundle using composer](#step-1-download-alidatatablebundle)
+1. [Download DatatableBundle using composer](#step-1-download-alidatatablebundle)
 2. [Enable the Bundle](#step-2--enable-the-bundle)
 3. [Configure your application's config.yml](#step-3--activate-the-main-configs)
 
-##### Step 1: Download AliDatatableBundle 
+##### Step 1: Download DatatableBundle 
 
 ###### Using composer (Symfony > 2.0)
 
@@ -60,8 +60,8 @@ php composer.phar update ali/datatable
 Include the source to your deps files
 
 ```
-[AliDatatableBundle]
-    git=git://github.com/AliHichem/AliDatatableBundle
+[DatatableBundle]
+    git=git://github.com/AliHichem/DatatableBundle
     target=bundles/Ali/DatatableBundle
 ```
 
@@ -80,7 +80,7 @@ public function registerBundles()
 {
     $bundles = array(
         ...
-        new Ali\DatatableBundle\AliDatatableBundle(),
+        new DatatableBundle\DatatableBundle(),
 );
 ```
 
@@ -133,7 +133,7 @@ ali_datatable:
             }
 ```
 
-### # How to use AliDatatableBundle ?
+### # How to use DatatableBundle ?
 
 Assuming for example that you need a grid in your "index" action, create in your controller method as below:
 
@@ -141,7 +141,7 @@ Assuming for example that you need a grid in your "index" action, create in your
 /**
  * set datatable configs
  * 
- * @return \Ali\DatatableBundle\Util\Datatable
+ * @return \DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -218,7 +218,7 @@ Assuming the example above, you can add your joins and where statements
 /**
  * set datatable configs
  * 
- * @return \Ali\DatatableBundle\Util\Datatable
+ * @return \DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -275,7 +275,7 @@ Let say you want search to be active only for "field1" and "field3", you just ne
 /**
  * set datatable configs
  * 
- * @return \Ali\DatatableBundle\Util\Datatable
+ * @return \DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -304,7 +304,7 @@ Well this is very easy to add to your datatable: all what you need is to declare
 /**
  * set datatable configs
  * 
- * @return \Ali\DatatableBundle\Util\Datatable
+ * @return \DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -346,7 +346,7 @@ To set your own column structure, you can use a custom twig renderer as below: I
 /**
  * set datatable configs
  * 
- * @return \Ali\DatatableBundle\Util\Datatable
+ * @return \DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -361,7 +361,7 @@ private function _datatable()
                     ->setRenderers(
                             array(
                                 2 => array(
-                                    'view' => 'AliDatatableBundle:Renderers:_actions.html.twig',
+                                    'view' => 'DatatableBundle:Renderers:_actions.html.twig',
                                     'params' => array(
                                             'edit_route'    => 'route_edit',
                                             'delete_route'  => 'route_delete',
@@ -382,7 +382,7 @@ Assuming the example above, you can set your custom fields renderer using [PHP C
 /**
  * set datatable configs
  * 
- * @return \Ali\DatatableBundle\Util\Datatable
+ * @return \DatatableBundle\Util\Datatable
  */
 private function _datatable()
 {
@@ -417,7 +417,7 @@ private function _datatable()
 }
 ```
 
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/AliHichem/AliDatatableBundle/raw/master/Resources/public/images/sample_02.png"></div>
+<div style="text-align:center"><img alt="Screenshot" src="https://github.com/AliHichem/DatatableBundle/raw/master/Resources/public/images/sample_02.png"></div>
 
 ### # Translation
 
@@ -453,7 +453,7 @@ To get more translated entries, you can follow the [official datatable translati
 
 ### # Doctrine query builder
 
-To use your own query object to supply to the datatable object, you can perform this action using your proper "doctrine query object": AliDatatableBundle allow (since tag 1.2.0) to manipulate the query object provider which is now a doctrine query builder object, you can use it to update the query in all its components except of course in the selected field part. 
+To use your own query object to supply to the datatable object, you can perform this action using your proper "doctrine query object": DatatableBundle allow (since tag 1.2.0) to manipulate the query object provider which is now a doctrine query builder object, you can use it to update the query in all its components except of course in the selected field part. 
 
 This is a classic config before using the doctrine query builder:
 

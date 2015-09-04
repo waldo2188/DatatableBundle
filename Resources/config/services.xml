@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="datatable" class="DatatableBundle\Util\Datatable">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="datatable.twig.extension" class="DatatableBundle\Twig\Extension\DatatableExtension">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="datatable.kernel.listener.terminate" class="DatatableBundle\Listener\KernelTerminateListener">
+            <argument type="service" id="service_container" />
+            <tag name="kernel.event_listener" event="kernel.terminate" method="onKernelTerminate" />
+        </service>
+
+    </services>
+
+</container>
