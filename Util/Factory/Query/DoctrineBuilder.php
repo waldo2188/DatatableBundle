@@ -198,7 +198,6 @@ class DoctrineBuilder implements QueryInterface
     public function getTotalRecords()
     {
         $qb = clone $this->queryBuilder;
-//        $this->addSearch($qb);
         $qb->resetDQLPart('orderBy');
 
         $gb = $qb->getDQLPart('groupBy');
