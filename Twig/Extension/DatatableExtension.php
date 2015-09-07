@@ -41,34 +41,8 @@ class DatatableExtension extends \Twig_Extension
      */
     public function datatable($options)
     {
-        if (!isset($options['id']))
-        {
-            $options['id'] = 'ali-dta_' . md5(rand(1, 100));
-        }
-        $dt                       = Datatable::getInstance($options['id']);
-        $config                   = $dt->getConfiguration();
-        $options['js_conf']       = json_encode($config['js']);
-        $options['js']            = json_encode($options['js']);
-        $options['action']        = $dt->getHasAction();
-        $options['action_twig']   = $dt->getHasRendererAction();
-        $options['fields']        = $dt->getFields();
-        $options['delete_form']   = $this->createDeleteForm('_id_')->createView();
-        $options['search']        = $dt->getSearch();
-        $options['global_search'] = $dt->getGlobalSearch();
-        $options['search_fields'] = $dt->getSearchFields();
-        $options['multiple']      = $dt->getMultiple();
-        $options['sort']          = is_null($dt->getOrderField()) ? NULL : array(array_search(
-                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
-        $main_template            = 'WaldoDatatableBundle:Main:index.html.twig';
-        if (isset($options['main_template']))
-        {
-            $main_template = $options['main_template'];
-        }
-
-        return $this->_container
-                        ->get('templating')
-                        ->render(
-                                $main_template, $options);
+        return $this->buildDatatableTemplate(
+                        $options, 'WaldoDatatableBundle:Main:index.html.twig', 'main_template');
     }
 
     /**
@@ -79,37 +53,8 @@ class DatatableExtension extends \Twig_Extension
      */
     public function datatableJs($options)
     {
-        if (!isset($options['id']))
-        {
-            $options['id'] = 'ali-dta_' . md5(rand(1, 100));
-        }
-        $dt                                 = Datatable::getInstance($options['id']);
-        $config                             = $dt->getConfiguration();
-        $options['js_conf']                 = json_encode($config['js']);
-        $options['js']                      = json_encode($options['js']);
-        $options['action']                  = $dt->getHasAction();
-        $options['action_twig']             = $dt->getHasRendererAction();
-        $options['fields']                  = $dt->getFields();
-        $options['delete_form']             = $this->createDeleteForm('_id_')->createView();
-        $options['search']                  = $dt->getSearch();
-        $options['global_search']           = $dt->getGlobalSearch();
-        $options['search_fields']           = $dt->getSearchFields();
-        $options['not_filterable_fields']   = $dt->getNotFilterableFields();
-        $options['not_sortable_fields']     = $dt->getNotSortableFields();
-        $options['hidden_fields']           = $dt->getHiddenFields();
-        $options['multiple']                = $dt->getMultiple();
-        $options['sort']                    = is_null($dt->getOrderField()) ? NULL : array(array_search(
-                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
-        $main_template            = 'WaldoDatatableBundle:Main:datatableJs.html.twig';
-        if (isset($options['js_template']))
-        {
-            $main_template = $options['js_template'];
-        }
-
-        return $this->_container
-                        ->get('templating')
-                        ->render(
-                                $main_template, $options);
+        return $this->buildDatatableTemplate(
+                        $options, 'WaldoDatatableBundle:Main:datatableJs.html.twig', 'js_template');
     }
 
     /**
@@ -120,33 +65,57 @@ class DatatableExtension extends \Twig_Extension
      */
     public function datatableHtml($options)
     {
-        if (!isset($options['id']))
-        {
+        if (!isset($options['id'])) {
             $options['id'] = 'ali-dta_' . md5(rand(1, 100));
         }
-        $dt                       = Datatable::getInstance($options['id']);
-        $config                   = $dt->getConfiguration();
-//        $options['js_conf']       = json_encode($config['js']);
-//        $options['js']            = json_encode($options['js']);
-        $options['action']        = $dt->getHasAction();
-        $options['action_twig']   = $dt->getHasRendererAction();
-        $options['fields']        = $dt->getFields();
-//        $options['delete_form']   = $this->createDeleteForm('_id_')->createView();
-        $options['search']        = $dt->getSearch();
+        $dt = Datatable::getInstance($options['id']);
+
+        $options['action'] = $dt->getHasAction();
+        $options['action_twig'] = $dt->getHasRendererAction();
+        $options['fields'] = $dt->getFields();
+        $options['search'] = $dt->getSearch();
         $options['search_fields'] = $dt->getSearchFields();
-        $options['multiple']      = $dt->getMultiple();
-//        $options['sort']          = is_null($dt->getOrderField()) ? NULL : [array_search(
-//                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType()];
-        $main_template            = 'WaldoDatatableBundle:Main:datatableHtml.html.twig';
-        if (isset($options['html_template']))
-        {
+        $options['multiple'] = $dt->getMultiple();
+
+        $main_template = 'WaldoDatatableBundle:Main:datatableHtml.html.twig';
+
+        if (isset($options['html_template'])) {
             $main_template = $options['html_template'];
         }
 
         return $this->_container
                         ->get('templating')
-                        ->render(
-                                $main_template, $options);
+                        ->render($main_template, $options);
+    }
+
+    private function buildDatatableTemplate($options, $mainTemplate, $templateName)
+    {
+        if (!isset($options['id'])) {
+            $options['id'] = 'ali-dta_' . md5(rand(1, 100));
+        }
+
+        $dt = Datatable::getInstance($options['id']);
+        $config = $dt->getConfiguration();
+        $options['js_conf'] = json_encode($config['js']);
+        $options['js'] = json_encode($options['js']);
+        $options['action'] = $dt->getHasAction();
+        $options['action_twig'] = $dt->getHasRendererAction();
+        $options['fields'] = $dt->getFields();
+        $options['delete_form'] = $this->createDeleteForm('_id_')->createView();
+        $options['search'] = $dt->getSearch();
+        $options['global_search'] = $dt->getGlobalSearch();
+        $options['search_fields'] = $dt->getSearchFields();
+        $options['multiple'] = $dt->getMultiple();
+        $options['sort'] = is_null($dt->getOrderField()) ? NULL : array(array_search(
+                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
+
+        if (isset($options[$templateName])) {
+            $mainTemplate = $options[$templateName];
+        }
+
+        return $this->_container
+                        ->get('templating')
+                        ->render($mainTemplate, $options);
     }
 
     /**
