@@ -87,7 +87,7 @@ class Datatable
         $this->_request      = $this->_container->get('request');
         $this->_queryBuilder = new DoctrineBuilder($container);
         self::$_current_instance = $this;
-        $this->_applyDefaults();
+        $this->applyDefaults();
     }
 
     /**
@@ -95,7 +95,7 @@ class Datatable
      *
      * @return void
      */
-    protected function _applyDefaults()
+    protected function applyDefaults()
     {
         if (isset($this->_config['all']))
         {

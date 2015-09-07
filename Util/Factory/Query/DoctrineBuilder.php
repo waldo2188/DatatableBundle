@@ -22,19 +22,19 @@ class DoctrineBuilder implements QueryInterface
     protected $queryBuilder;
 
     /** @var string */
-    protected $entity_name;
+    protected $entityName;
 
     /** @var string */
-    protected $entity_alias;
+    protected $entityAlias;
 
     /** @var array */
     protected $fields;
 
     /** @var string */
-    protected $order_field = NULL;
+    protected $orderField = NULL;
 
     /** @var string */
-    protected $order_type = "asc";
+    protected $orderType = "asc";
 
     /** @var string */
     protected $where = NULL;
@@ -43,10 +43,10 @@ class DoctrineBuilder implements QueryInterface
     protected $joins = array();
 
     /** @var boolean */
-    protected $has_action = true;
+    protected $hasAction = true;
 
     /** @var array */
-    protected $fixed_data = NULL;
+    protected $fixedData = NULL;
 
     /** @var closure */
     protected $renderer = NULL;
@@ -55,7 +55,7 @@ class DoctrineBuilder implements QueryInterface
     protected $search = FALSE;
 
     /** @var array */
-    protected $filtering_type = array();
+    protected $filteringType = array();
 
     /**
      * class constructor
@@ -113,7 +113,7 @@ class DoctrineBuilder implements QueryInterface
             // Individual filtering
             $searchName = "sSearch_" . $i;
             $search_param = $request->get($searchName);
-            
+
             if ($request->get("bSearchable_{$i}") != 'false' && (!empty($search_param) || $search_param == '0')) {
                 $queryBuilder->andWhere($queryBuilder->expr()->like($search_field, ":" . $searchName));
 
@@ -148,7 +148,7 @@ class DoctrineBuilder implements QueryInterface
      * @param object $object
      * @return array
      */
-    protected function _toArray($object)
+    protected function toArray($object)
     {
         $reflectionClass = new \ReflectionClass(get_class($object));
         $array           = array();
@@ -276,7 +276,7 @@ class DoctrineBuilder implements QueryInterface
         }
 
         // extract alias selectors
-        $select = array($this->entity_alias);
+        $select = array($this->entityAlias);
         foreach ($this->joins as $join)
         {
             $select[] = $join[1];
@@ -342,7 +342,7 @@ class DoctrineBuilder implements QueryInterface
      */
     public function getEntityName()
     {
-        return $this->entity_name;
+        return $this->entityName;
     }
 
     /**
@@ -352,7 +352,7 @@ class DoctrineBuilder implements QueryInterface
      */
     public function getEntityAlias()
     {
-        return $this->entity_alias;
+        return $this->entityAlias;
     }
 
     /**
@@ -372,7 +372,7 @@ class DoctrineBuilder implements QueryInterface
      */
     public function getOrderField()
     {
-        return $this->order_field;
+        return $this->orderField;
     }
 
     /**
@@ -382,7 +382,7 @@ class DoctrineBuilder implements QueryInterface
      */
     public function getOrderType()
     {
-        return $this->order_type;
+        return $this->orderType;
     }
 
     /**
@@ -405,8 +405,8 @@ class DoctrineBuilder implements QueryInterface
      */
     public function setEntity($entity_name, $entity_alias)
     {
-        $this->entity_name  = $entity_name;
-        $this->entity_alias = $entity_alias;
+        $this->entityName  = $entity_name;
+        $this->entityAlias = $entity_alias;
         $this->queryBuilder->from($entity_name, $entity_alias);
         return $this;
     }
@@ -435,8 +435,8 @@ class DoctrineBuilder implements QueryInterface
      */
     public function setOrder($order_field, $order_type)
     {
-        $this->order_field = $order_field;
-        $this->order_type  = $order_type;
+        $this->orderField = $order_field;
+        $this->orderType  = $order_type;
         $this->queryBuilder->orderBy($order_field, $order_type);
         return $this;
     }
@@ -450,7 +450,7 @@ class DoctrineBuilder implements QueryInterface
      */
     public function setFixedData($data)
     {
-        $this->fixed_data = $data;
+        $this->fixedData = $data;
         return $this;
     }
 
@@ -525,12 +525,12 @@ class DoctrineBuilder implements QueryInterface
      */
     public function setFilteringType(array $filtering_type)
     {
-        $this->filtering_type = $filtering_type;
+        $this->filteringType = $filtering_type;
         return $this;
     }
 
     public function getFilteringType() {
-        return $this->filtering_type;
+        return $this->filteringType;
     }
 
     /**

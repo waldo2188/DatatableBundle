@@ -31,7 +31,7 @@ class Renderer
         $this->_container = $container;
         $this->_renderers = $renderers;
         $this->_fields    = $fields;
-        $this->_prepare();
+        $this->prepare();
     }
 
     /**
@@ -56,7 +56,7 @@ class Renderer
      *
      * @return void
      */
-    protected function _prepare()
+    protected function prepare()
     {
         $this->_identifier_index = array_search("_identifier_", array_keys($this->_fields));
     }

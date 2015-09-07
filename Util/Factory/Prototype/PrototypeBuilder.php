@@ -3,15 +3,18 @@
 namespace Waldo\DatatableBundle\Util\Factory\Prototype;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Waldo\DatatableBundle\Common\CamelCase;
 
 class PrototypeBuilder
 {
+
+    use CamelCase;
 
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
     protected $container;
 
     /** @var string */
-    protected $_prototype;
+    protected $prototype;
 
     /**
      * class constructor
@@ -22,14 +25,14 @@ class PrototypeBuilder
     public function __construct(ContainerInterface $container, $type)
     {
         $this->container = $container;
-        $method = "_{$type}";
+
+        $method = $this->camelCase($type);
+
         $rc = new \ReflectionClass(__CLASS__);
-        if ($rc->hasMethod($method))
-        {
-            $this->_prototype = $this->$method();
-        }
-        else
-        {
+
+        if ($rc->hasMethod($method)) {
+            $this->prototype = $this->$method();
+        } else {
             throw new \Exception(sprintf('prototype "%s" not found', $type));
         }
     }
@@ -41,7 +44,7 @@ class PrototypeBuilder
      */
     public function __toString()
     {
-        return $this->_prototype;
+        return $this->prototype;
     }
 
     /**
@@ -49,7 +52,7 @@ class PrototypeBuilder
      *
      * @return string
      */
-    protected function _delete_form()
+    protected function deleteForm()
     {
         return $this->container
                         ->get('templating.helper.form')
