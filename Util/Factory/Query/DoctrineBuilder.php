@@ -550,7 +550,7 @@ class DoctrineBuilder implements QueryInterface
             $lexer = new Query\Lexer($field);
 
             // We have to rename some identifier or the execution will crash
-            while($lexer->moveNext() == true) {
+            while($lexer->moveNext() === true) {
                 if($this->isTheIdentifierILookingFor($lexer)) {
                     $replacement = sprintf("$1%s_%d$3", $lexer->lookahead['value'], mt_rand());
                     $pattern = sprintf("/([\(\s])(%s)([\s\.])/", $lexer->lookahead['value']);
