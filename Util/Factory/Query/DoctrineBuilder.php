@@ -113,7 +113,7 @@ class DoctrineBuilder implements QueryInterface
             // Individual filtering
             $searchName = "sSearch_" . $i;
             $search_param = $request->get($searchName);
-            $bRegex = $request->get("bRegex_{$i}");
+            
             if ($request->get("bSearchable_{$i}") != 'false' && (!empty($search_param) || $search_param == '0')) {
                 $queryBuilder->andWhere($queryBuilder->expr()->like($search_field, ":" . $searchName));
 
