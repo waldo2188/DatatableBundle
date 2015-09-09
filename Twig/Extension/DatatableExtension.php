@@ -7,6 +7,7 @@ use Waldo\DatatableBundle\Util\Datatable;
 
 class DatatableExtension extends \Twig_Extension
 {
+
     /**
      * @var EngineInterface
      */
@@ -28,9 +29,12 @@ class DatatableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('datatable', array($this, 'datatable'), array("is_safe" => array("html"), 'needs_environment' => true)),
-            new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'), array("is_safe" => array("html"), 'needs_environment' => true)),
-            new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'), array("is_safe" => array("html"), 'needs_environment' => true))
+            new \Twig_SimpleFunction('datatable', array($this, 'datatable'),
+                    array("is_safe" => array("html"), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'),
+                    array("is_safe" => array("html"), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'),
+                    array("is_safe" => array("html"), 'needs_environment' => true))
         );
     }
 
@@ -44,9 +48,7 @@ class DatatableExtension extends \Twig_Extension
     {
         $options = $this->buildDatatableTemplate($options);
 
-        $mainTemplate = array_key_exists('main_template', $options)
-                ? $options['main_template']
-                : 'WaldoDatatableBundle:Main:index.html.twig';
+        $mainTemplate = array_key_exists('main_template', $options) ? $options['main_template'] : 'WaldoDatatableBundle:Main:index.html.twig';
 
         return $twig->render($mainTemplate, $options);
     }
@@ -59,11 +61,9 @@ class DatatableExtension extends \Twig_Extension
      */
     public function datatableJs(\Twig_Environment $twig, $options)
     {
-        $options = $this->buildDatatableTemplate($options);
+        $options = $this->buildDatatableTemplate($options, "js");
 
-        $mainTemplate = array_key_exists('main_template', $options)
-                ? $options['js_template']
-                : 'WaldoDatatableBundle:Main:datatableJs.html.twig';
+        $mainTemplate = array_key_exists('main_template', $options) ? $options['js_template'] : 'WaldoDatatableBundle:Main:datatableJs.html.twig';
 
         return $twig->render($mainTemplate, $options);
     }
@@ -97,7 +97,7 @@ class DatatableExtension extends \Twig_Extension
         return $twig->render($mainTemplate, $options);
     }
 
-    private function buildDatatableTemplate($options)
+    private function buildDatatableTemplate($options, $type = null)
     {
         if (!isset($options['id'])) {
             $options['id'] = 'ali-dta_' . md5(mt_rand(1, 100));
@@ -113,14 +113,17 @@ class DatatableExtension extends \Twig_Extension
         $options['delete_form'] = $this->createDeleteForm('_id_')->createView();
         $options['search'] = $dt->getSearch();
         $options['global_search'] = $dt->getGlobalSearch();
-        $options['search_fields'] = $dt->getSearchFields();
         $options['multiple'] = $dt->getMultiple();
-        $options['sort'] = $dt->getOrderField() === null
-                          ? null
-                          : array(
-                              array_search($dt->getOrderField(), array_values($dt->getFields())),
-                              $dt->getOrderType()
-                            );
+        $options['sort'] = $dt->getOrderField() === null ? null : array(
+            array_search($dt->getOrderField(), array_values($dt->getFields())),
+            $dt->getOrderType()
+        );
+
+        if ($type == "js") {
+            $options['not_filterable_fields'] = $dt->getNotFilterableFields();
+            $options['not_sortable_fields'] = $dt->getNotSortableFields();
+            $options['hidden_fields'] = $dt->getHiddenFields();
+        }
 
         return $options;
     }
