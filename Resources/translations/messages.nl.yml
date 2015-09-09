@@ -15,7 +15,7 @@ ali:
         sSearch: "Zoek:"
         sLoadingRecords: ""
         sFirst: "Eerste"
-        sPrevious: "Vorige"  
+        sPrevious: "Vorige"
         sNext: "Volgende"
         sLast: "Laatste"
         search: "Zoek"

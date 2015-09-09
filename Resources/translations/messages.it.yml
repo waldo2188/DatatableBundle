@@ -15,7 +15,7 @@ ali:
         sSearch: "Cerca:"
         sLoadingRecords: ""
         sFirst: "Inizio"
-        sPrevious: "Precedente"  
+        sPrevious: "Precedente"
         sNext: "Successivo"
         sLast: "Fine"
         search: "ricerca"

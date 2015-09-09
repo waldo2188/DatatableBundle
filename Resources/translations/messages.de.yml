@@ -15,7 +15,7 @@ ali:
         sSearch: "Suchen:"
         sLoadingRecords: "Ein Moment Geduld..."
         sFirst: "Erste"
-        sPrevious: "Vorrige"  
+        sPrevious: "Vorrige"
         sNext: "Folgende"
         sLast: "Letzte"
         search: "suchen"
