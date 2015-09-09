@@ -67,14 +67,14 @@ Add datatable bundle in your composer.json as below:
 ```js
 "require": {
     ...
-    "waldo/datatable-bundle": "~1.0"
+    "waldo/datatable-bundle": "~2.0"
 }
 ```
 
 Update/install with this command:
 
 ```
-composer require waldo/datatable-bundle ~1.0
+composer require waldo/datatable-bundle ~2.0
 ```
 
 generate the assets symlinks
