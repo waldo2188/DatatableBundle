@@ -1,0 +1,12 @@
+var multiple_rawhtml = '\
+        <label class="dataTables_multiple">\
+        <span style="margin:0 40px 0 0px;">\
+            Execute\
+            <select name="dataTables[select]">\
+                {% for key,item in multiple %}\
+                <option value="{{ path(item.route) }}">{{item.title}}</option>\
+                {% endfor %}\
+            </select>\
+            <button class="btn-datatable-multiple" >OK</button>\
+        <span>\
+        </label>';

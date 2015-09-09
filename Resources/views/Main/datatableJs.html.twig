@@ -6,25 +6,15 @@
         var s = getWrapper();
         var multiple = {% if multiple %} true {% else %} false {% endif %};
         var multiple_rawhtml = '';
+
         {% if multiple %}
-            var multiple_rawhtml = '\
-                    <label class="dataTables_multiple">\
-                    <span style="margin:0 40px 0 0px;">\
-                        Execute\
-                        <select name="dataTables[select]">\
-                            {% for key,item in multiple %}\
-                            <option value="{{ path(item.route) }}">{{item.title}}</option>\
-                            {% endfor %}\
-                        </select>\
-                        <button class="btn-datatable-multiple" >OK</button>\
-                    <span>\
-                    </label>';
+        {% include "WaldoDatatableBundle:Snippet:multipleRaw.js.twig" %}
         {% endif %}
         var $js_conf = {{ js_conf | raw }};
         var $js = {};
-        for(key in $js_conf) { 
+        for(key in $js_conf) {
             if ($js_conf.hasOwnProperty(key)) {
-                eval ( ' $js["'+key+'"] = ' + $js_conf[key]+ ' ; ' ); 
+                eval ( ' $js["'+key+'"] = ' + $js_conf[key]+ ' ; ' );
             }
         }
         var $options = {{ js | raw }};
@@ -56,7 +46,7 @@
             {% endif %}
             {% set i = i+1 %}
         {% endfor %}
-        {% if action and not action_twig %} 
+        {% if action and not action_twig %}
         $aoColumnDefs.push({
             "fnRender": function ( oObj ) {
                 var $edit_url = strtr(
@@ -86,7 +76,7 @@
             },
             "aTargets": [ multiple ? {{fields|length}} : ({{fields|length}} -1)  ]
         });
-        {% endif %} 
+        {% endif %}
         var $defaults = {
             "bJQueryUI": true,
             "sPaginationType": "full_numbers",
@@ -140,50 +130,9 @@
             $(this).parents('form:eq(0)').submit();
         });
 
-        if (multiple===true) { 
-            var chbox =  'input:checkbox[name="dataTables[actions][]"]';
-            var chbox_all = 'input:checkbox[name="datatable_action_all"]';
-            $(s).on('click','.btn-datatable-multiple:not(.search_init)',function(e){
-                if($('input:focus',$(s)).length > 0){
-                    return false;
-                }
-                e.preventDefault();
-                if($(chbox+':checked').length > 0){
-                    if (!confirm('Are you sure ?')) {
-                        return false;
-                    }
-                    var form = $(this).parents('form:eq(0)');
-                    var action = $('select[name="dataTables[select]"]',$(s)).val();
-                    $.ajax({
-                        type: "POST",
-                        url: action,
-                        data: form.serialize(),
-                        success: function(msg) {
-                            $('#'+getId()).dataTable().fnDraw();
-                            if ($.isFunction($.fn.unblockpage)){
-                                $.unblockpage();
-                            }
-                        },
-                        beforeSend: function() {
-                            if ($.isFunction($.fn.blockpage)){
-                                $.blockpage({
-                                    msg: 'saving data'
-                                });
-                            }
-                        }
-                    });
-                } else {
-                    alert('You need to select at least one element.');
-                }
-            });
-            $(s).on('click',chbox_all,function(e){
-                if($(this).is(':checked')) {
-                    $(chbox,$(s)).attr("checked",false).click();
-                } else {
-                    $(chbox,$(s)).attr("checked",true).click();
-                }
-            });
-        }
+        {% if multiple %}
+        {% include "WaldoDatatableBundle:Snippet:actionForMultiple.js.twig" %}
+        {% endif %}
 
         {% if global_search == false %}
             $(".dataTables_filter").remove();
@@ -194,12 +143,12 @@
             var index = $(this).attr('index');
             var oTable = eval('oTable_{{id}}'.split('-').join('_'));
             if (event.keyCode == '13') {
-                oTable.fnFilter( 
-                    this.value, 
-                    oTable.oApi._fnVisibleToColumnIndex( 
-                        oTable.fnSettings(), 
-                        index 
-                    ) 
+                oTable.fnFilter(
+                    this.value,
+                    oTable.oApi._fnVisibleToColumnIndex(
+                        oTable.fnSettings(),
+                        index
+                    )
                 );
             }
         }).each( function (i) {
