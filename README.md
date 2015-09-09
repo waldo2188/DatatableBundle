@@ -2,13 +2,13 @@ DatatableBundle
 ===============
 
 Fork of [AliHichem/DatatableBundle](https://github.com/AliHichem/DatatableBundle), this bundle will add some great features
-and evolve in a different way than source.
+and evolve in a different way than it source.
 
 [![Build Status](https://travis-ci.org/waldo2188/DatatableBundle.svg?branch=master)](https://travis-ci.org/waldo2188/DatatableBundle)
-
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/bb7b64f6-4203-45ca-b99a-2d15c4d272ec/small.png)](https://insight.sensiolabs.com/projects/bb7b64f6-4203-45ca-b99a-2d15c4d272ec)
 
-The Datatable bundle for symfony2 allow for easily integration of the [jQuery Datatable plugin](http://datatables.net/) with the doctrine2 entities.
+The Datatable bundle for symfony2 allow for easily integration of the [jQuery Datatable plugin](http://datatables.net/) with
+the doctrine2 entities.
 This bundle provides a way to make a projection of a doctrine2 entity to a powerful jquery datagrid. It mainly includes:
 
  * datatable service container: to manage the datatable as a service.
@@ -16,17 +16,21 @@ This bundle provides a way to make a projection of a doctrine2 entity to a power
  * dynamic pager handler : no need to set your pager.
  * default action link builder: if activated, the bundle generates default edit/delete links.
  * support doctrine2 association.
- * support of doctrine query builder.
+ * support of Doctrine Query Builder.
+ * support of doctrine subquery.
  * support of column search.
  * support of custom twig/phpClosure renderers.
  * support of custom grouped actions.
 
-<div style="text-align:center"><img alt="Screenshot" src="/raw/master/Resources/doc/images/sample_01.png"></div>
+<div style="text-align:center"><img alt="Screenshot" src="/Resources/doc/images/sample_01.png"></div>
 
 -------------------------------------
+Summary
+-------
+
 ##### [Installation](#installation-1)
 
-1. [Download DatatableBundle using composer](#step-1-download-alidatatablebundle)
+1. [Download DatatableBundle using Composer](#step-1-download-alidatatablebundle)
 2. [Enable the Bundle](#step-2--enable-the-bundle)
 3. [Configure your application's config.yml](#step-3--activate-the-main-configs)
 
@@ -56,7 +60,7 @@ Installation is a quick (I promise!) 3 step process:
 
 ##### Step 1: Download DatatableBundle
 
-###### Using composer (Symfony > 2.0)
+###### Using Composer
 
 Add datatable bundle in your composer.json as below:
 
@@ -81,24 +85,25 @@ app/console assets:install --symlink web
 
 ##### Step 3:  Activate the main configs
 
-in this section you can put the global config that you want to set for all the instance of datatable in your project.
+In this section you can put the global config that you want to set for all the instance of datatable in your project.
 
 ###### To keep it to default
 
 ```
 # app/config/config.yml
-datatable:
+waldodatatable:
     all:    ~
     js:     ~
 ```
 
-the "js" config will be applied to datatable exactly like you do with "$().datatable({ you config });" , you can even put javascript code.
-Note: all you js config have to string typed, make sure to use (") as delimiters.
+The "js" config will be applied to datatable exactly like you do with "$().datatable({ your config });".
+You can even put javascript code.
+> Note: all your js config have to be string typed, make sure to use (") as delimiters.
 
 ###### Config sample
 
 ```
-waldo_datatable:
+waldodatatable:
     all:
         action:           true
         search:           false
@@ -122,7 +127,7 @@ Assuming for example that you need a grid in your "index" action, create in your
  *
  * @return \Waldo\DatatableBundle\Util\Datatable
  */
-private function _datatable()
+private function datatable()
 {
     return $this->get('datatable')
                 ->setEntity("XXXMyBundle:Entity", "x")                          // replace "XXXMyBundle:Entity" by your entity
@@ -149,7 +154,7 @@ private function _datatable()
  */
 public function gridAction()
 {
-    return $this->_datatable()->execute();                                      // call the "execute" method in your grid action
+    return $this->datatable()->execute();                                      // call the "execute" method in your grid action
 }
 
 /**
@@ -158,7 +163,7 @@ public function gridAction()
  */
 public function indexAction()
 {
-    $this->_datatable();                                                        // call the datatable config initializer
+    $this->datatable();                                                         // call the datatable config initializer
     return $this->render('XXXMyBundle:Module:index.html.twig');                 // replace "XXXMyBundle:Module:index.html.twig" by yours
 }
 ```
@@ -169,11 +174,10 @@ public function indexAction()
 <!-- XXX\MyBundle\Resources\views\Module\index.html.twig -->
 
 <!-- include the assets -->
-<link href="{{ asset('bundles/alidatatable/css/demo_table.css') }}" type="text/css" rel="stylesheet" />
-<link href="{{ asset('bundles/alidatatable/css/smoothness/jquery-ui-1.8.4.custom.css') }}" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="{{ asset('bundles/alidatatable/js/jquery.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/alidatatable/js/jquery.datatable.inc.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/alidatatable/js/jquery.dataTables.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/dt/dt-1.10.9/datatables.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/r/dt/dt-1.10.9/datatables.min.js"></script>
+
 
 {{ datatable({
         'edit_route' : 'RouteForYourEntity_edit',
@@ -199,7 +203,7 @@ Assuming the example above, you can add your joins and where statements
  *
  * @return \Waldo\DatatableBundle\Util\Datatable
  */
-private function _datatable()
+private function datatable()
 {
     return $this->get('datatable')
                 ->setEntity("XXXMyBundle:Entity", "x")                          // replace "XXXMyBundle:Entity" by your entity
@@ -228,7 +232,7 @@ private function _datatable()
 *  [Activate search globally](#activate-search-globally)
 *  [Set search fields](#set-search-fields)
 
-###### Activate search globally
+#### # Activate search globally
 
 The filtering functionality that is very useful for quickly search through the information from the database.
 This bundle provide two way of filtering, who can be used together : Global search and individual column search.
@@ -236,19 +240,21 @@ This bundle provide two way of filtering, who can be used together : Global sear
 By default the filtering functionality is disabled, to get it working you just need to activate it from your configuration method like this :
 
 ```php
-private function _datatable()
+private function datatable()
 {
     return $this->get('datatable')
                 //...
-                ->setSearch(TRUE); // for individual column search
+                ->setSearch(true); // for individual column search
                 // or
-                ->setGlobalSearch(TRUE);
+                ->setGlobalSearch(true);
 }
 ```
-###### Set search fields
+#### # Set search fields
 
-You can set fields where you want to enable your search , by default search wont be active for actions column but you might want to disable search for other columns.
-Let say you want search to be active only for "field1" and "field3", you just need to activate search for the approriate column key and your datatable config should be :
+You can set fields where you want to enable your search. By default search wont be active for actions column but you might want
+to disable search for other columns.
+Let say you want search to be active only for "field1" and "field3", you just need to activate search for the approriate column key
+and your datatable config should be :
 
 ```php
 /**
@@ -256,7 +262,7 @@ Let say you want search to be active only for "field1" and "field3", you just ne
  *
  * @return \Waldo\DatatableBundle\Util\Datatable
  */
-private function _datatable()
+private function datatable()
 {
     $datatable = $this->get('datatable');
     return $datatable->setEntity("XXXMyBundle:Entity", "x")
@@ -285,7 +291,7 @@ Well this is very easy to add to your datatable: all what you need is to declare
  *
  * @return \Waldo\DatatableBundle\Util\Datatable
  */
-private function _datatable()
+private function datatable()
 {
     $datatable = $this->get('datatable');
     return $datatable->setEntity("XXXMyBundle:Entity", "x")
@@ -308,7 +314,7 @@ private function _datatable()
 ```
 
 Then all what you have to do is to add the necessary logic in your "multiple_delete_route" (or whatever your route is for).
-In that action , you can get the selected ids by :
+In that action, you can get the selected ids by :
 
 ```php
 $data = $this->getRequest()->get('dataTables');
@@ -317,9 +323,11 @@ $ids  = $data['actions'];
 
 ### # Custom renderer
 
-**Twig renderers**
+#### # Twig renderers
 
-To set your own column structure, you can use a custom twig renderer as below: In this example you can find how to set the use of the default twig renderer for action fields which you can override as your own needs.
+To set your own column structure, you can use a custom twig renderer as below :
+In this example you can find how to set the use of the default twig renderer for action fields which you can override as
+your own needs.
 
 ```php
 /**
@@ -327,7 +335,7 @@ To set your own column structure, you can use a custom twig renderer as below: I
  *
  * @return \Waldo\DatatableBundle\Util\Datatable
  */
-private function _datatable()
+private function datatable()
 {
     $datatable = $this->get('datatable');
     return $datatable->setEntity("XXXMyBundle:Entity", "x")
@@ -340,7 +348,7 @@ private function _datatable()
                     ->setRenderers(
                             array(
                                 2 => array(
-                                    'view' => 'WaldoDatatableBundle:Renderers:_actions.html.twig',
+                                    'view' => 'XXXMyBundle:Renderers:_actions.html.twig',
                                     'params' => array(
                                             'edit_route'    => 'route_edit',
                                             'delete_route'  => 'route_delete'
@@ -352,17 +360,18 @@ private function _datatable()
 }
 ```
 
-In a twig renderer you can have access the the field value using dt_item variable
+In a twig renderer you can have access the the field value using `dt_item`  variable
 ```
 {{ dt_item }}
 ```
-or access the entire entity object using dt_obj variable
+or access the entire entity object using `dt_obj` variable
 ```
 <a href="{{ path('route_to_user_edit',{ 'user_id' : dt_obj.id }) }}" > {{ dt_obj.username }} </a>
 ```
-NOTE: be careful of LAZY LOADING when using dt_obj !
 
-**PHP Closures**
+> NOTE: be careful of LAZY LOADING when using dt_obj !
+
+#### # PHP Closures
 
 Assuming the example above, you can set your custom fields renderer using [PHP Closures](http://php.net/manual/en/class.closure.php).
 
@@ -372,23 +381,23 @@ Assuming the example above, you can set your custom fields renderer using [PHP C
  *
  * @return \Waldo\DatatableBundle\Util\Datatable
  */
-private function _datatable()
+private function datatable()
 {
     $controller_instance = $this;
     return $this->get('datatable')
-                ->setEntity("XXXMyBundle:Entity", "x")                          // replace "XXXMyBundle:Entity" by your entity
+                ->setEntity("XXXMyBundle:Entity", "x")          // replace "XXXMyBundle:Entity" by your entity
                 ->setFields(
                         array(
-                            "Name"          => 'x.name',                        // Declaration for fields:
-                            "Address"        => 'x.address',                    //      "label" => "alias.field_attribute_for_dql"
-                            "_identifier_"  => 'x.id')                          // you have to put the identifier field without label. Do not replace the "_identifier_"
+                            "Name"          => 'x.name',        // Declaration for fields:
+                            "Address"        => 'x.address',    //      "label" => "alias.field_attribute_for_dql"
+                            "_identifier_"  => 'x.id')          // you have to put the identifier field without label. Do not replace the "_identifier_"
                         )
                 ->setRenderer(
                     function(&$data) use ($controller_instance)
                     {
                         foreach ($data as $key => $value)
                         {
-                            if ($key == 1)                                      // 1 => address field
+                            if ($key == 1)                       // 1 => address field
                             {
                                 $data[$key] = $controller_instance
                                         ->get('templating')
@@ -400,12 +409,10 @@ private function _datatable()
                         }
                     }
                 )
-                ->setOrder("x.created", "desc")                                 // it's also possible to set the default order
-                ->setHasAction(true);                                           // you can disable action column from here by setting "false".
+                ->setOrder("x.created", "desc")                 // it's also possible to set the default order
+                ->setHasAction(true);                           // you can disable action column from here by setting "false".
 }
 ```
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/AliHichem/DatatableBundle/raw/master/Resources/public/images/sample_02.png"></div>
 
 ### # Translation
 
@@ -441,12 +448,14 @@ To get more translated entries, you can follow the [official datatable translati
 
 ### # Doctrine query builder
 
-To use your own query object to supply to the datatable object, you can perform this action using your proper "doctrine query object": DatatableBundle allow (since tag 1.2.0) to manipulate the query object provider which is now a doctrine query builder object, you can use it to update the query in all its components except of course in the selected field part.
+To use your own query object to supply to the datatable object, you can perform this action using your proper
+"Doctrine Query object": DatatableBundle allow to manipulate the query object provider which is now a Doctrine Query Builder object,
+you can use it to update the query in all its components except of course in the selected field part.
 
-This is a classic config before using the doctrine query builder:
+This is a classic config before using the Doctrine Query Builder:
 
 ```php
-private function _datatable()
+private function datatable()
 {
     $datatable = $this->get('datatable')
                 ->setEntity("XXXBundle:Entity", "e")
@@ -462,17 +471,17 @@ private function _datatable()
                 ->setOrder("e.created", "desc");
 
      $qb = $datatable->getQueryBuilder()->getDoctrineQueryBuilder();
-     // This is the doctrine query builder object , you can
+     // This is the Doctrine Query Builder object, you can
      // retrieve it and include your own change
 
      return $datatable;
 }
 ```
 
-This is a config that uses a doctrine query object a query builder :
+This is a config that uses a Doctrine Query object a query builder :
 
 ```php
-private function _datatable()
+private function datatable()
 {
     $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
     $qb->from("XXXBundle:Entity", "e")
@@ -495,13 +504,13 @@ private function _datatable()
 
 ### # Multiple datatable in the same view
 
-To declare multiple datatables in the same view, you have to set the datatable identifier in you controller with "setDatatableId": Each of your databale config methods ( _datatable() , _datatable_1() .. _datatable_n() ) needs to set the same identifier used in your view:
+To declare multiple datatables in the same view, you have to set the datatable identifier in you controller with "setDatatableId" :
+Each of your databale config methods ( datatable() , datatable_1() .. datatable_n() ) needs to set the same identifier used in your view:
 
-**In the controller**
-
+#### #In the controller
 
 ```php
-protected function _datatable()
+protected function datatable()
 {
     // ...
     return $this->get('datatable')
@@ -510,7 +519,7 @@ protected function _datatable()
     // ...
 }
 
-protected function _datatableSecond()
+protected function datatableSecond()
 {
     // ...
     return $this->get('datatable')
@@ -520,7 +529,7 @@ protected function _datatableSecond()
 }
 ```
 
-**In the view**
+#### #In the view
 
 ```js
 {{
