@@ -2,91 +2,144 @@
 
 namespace Waldo\DatatableBundle\Util;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+
 use Waldo\DatatableBundle\Util\Factory\Query\QueryInterface;
 use Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder;
 use Waldo\DatatableBundle\Util\Formatter\Renderer;
-use Waldo\DatatableBundle\Util\Factory\Prototype\PrototypeBuilder;
 
 class Datatable
 {
 
-    /** @var array */
-    protected $_fixed_data = NULL;
+    /**
+     * @var Renderer
+     */
+    protected $rendererEngine;
 
-    /** @var array */
-    protected $_config;
+    /**
+     * @var array
+     */
+    protected $fixedData;
 
-    /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
-    protected $_container;
+    /**
+     * @var array
+     */
+    protected $config;
 
-    /** @var \Doctrine\ORM\EntityManager */
-    protected $_em;
+    /**
+     * @var EntityManager
+     */
+    protected $em;
 
-    /** @var boolean */
-    protected $_has_action;
+    /**
+     * @var boolean
+     */
+    protected $hasAction;
 
-    /** @var boolean */
-    protected $_has_renderer_action = false;
+    /**
+     * @var boolean
+     */
+    protected $hasRendererAction = false;
 
-    /** @var array */
-    protected $_multiple;
+    /**
+     * @var array
+     */
+    protected $multiple;
 
-    /** @var \Waldo\DatatableBundle\Util\Factory\Query\QueryInterface */
-    protected $_queryBuilder;
+    /**
+     * @var \Waldo\DatatableBundle\Util\Factory\Query\QueryInterface
+     */
+    protected $queryBuilder;
 
-    /** @var \Symfony\Component\HttpFoundation\Request */
-    protected $_request;
+    /**
+     * @var RequestStack
+     */
+    protected $request;
 
-    /** @var closure */
-    protected $_renderer = NULL;
+    /**
+     * @var closure
+     */
+    protected $renderer;
 
-    /** @var array */
-    protected $_renderers = NULL;
+    /**
+     * @var array
+     */
+    protected $renderers;
 
-    /** @var Renderer */
-    protected $_renderer_obj = null;
+    /**
+     * @var Renderer
+     */
+    protected $rendererObj;
 
-    /** @var boolean */
-    protected $_search;
+    /**
+     * @var boolean
+     */
+    protected $search;
 
-    /** @var boolean */
-    protected $_global_search = true;
+    /**
+     * @var boolean
+     */
+    protected $globalSearch;
 
-    /** @var array */
-    protected $_search_fields = array();
+    /**
+     * @var array
+     */
+    protected $searchFields = array();
 
-    /** @var array */
-    protected $_not_filterable_fields = array();
+    /**
+     * @var array
+     */
+    protected $notFilterableFields = array();
 
-    /** @var array */
-    protected $_not_sortable_fields = array();
+    /**
+     * @var array
+     */
+    protected $notSortableFields = array();
 
-    /** @var array */
-    protected $_hidden_fields = array();
+    /**
+     * @var array
+     */
+    protected $hiddenFields = array();
 
-    /** @var array */
-    protected static $_instances = array();
+    /**
+     * @var array
+     */
+    protected static $instances = array();
 
-    /** @var Datatable */
-    protected static $_current_instance = NULL;
+    /**
+     * @var Datatable
+     */
+    protected static $currentInstance;
 
     /**
      * class constructor
      *
-     * @param ContainerInterface $container
+     *
+     * @param EntityManager $entityManager
+     * @param RequestStack $request
+     * @param DoctrineBuilder $doctrineBuilder
+     * @param Renderer $renderer
+     * @param array $config
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(
+            EntityManager $entityManager,
+            RequestStack $request,
+            DoctrineBuilder $doctrineBuilder,
+            Renderer $renderer, $config)
     {
-        $this->_container    = $container;
-        $this->_config       = $this->_container->getParameter('datatable');
-        $this->_em           = $this->_container->get('doctrine.orm.entity_manager');
-        $this->_request      = $this->_container->get('request');
-        $this->_queryBuilder = new DoctrineBuilder($container);
-        self::$_current_instance = $this;
+        $this->em = $entityManager;
+        $this->request = $request;
+        $this->queryBuilder = $doctrineBuilder;
+        $this->rendererEngine = $renderer;
+        $this->config = $config;
+
+        self::$currentInstance = $this;
+
         $this->applyDefaults();
     }
 
@@ -97,10 +150,9 @@ class Datatable
      */
     protected function applyDefaults()
     {
-        if (isset($this->_config['all']))
-        {
-            $this->_has_action = $this->_config['all']['action'];
-            $this->_search     = $this->_config['all']['search'];
+        if (isset($this->config['all'])) {
+            $this->hasAction = $this->config['all']['action'];
+            $this->search = $this->config['all']['search'];
         }
     }
 
@@ -114,69 +166,72 @@ class Datatable
      *              \Doctrine\ORM\Query\Expr\Join::INNER_JOIN,
      *              'e.name like %test%')
      *
-     * @param string $join_field
+     * @param string $joinField
      * @param string $alias
      * @param string $type
      * @param string $cond
      *
      * @return Datatable
      */
-    public function addJoin($join_field, $alias, $type = Join::INNER_JOIN, $cond = '')
+    public function addJoin($joinField, $alias, $type = Join::INNER_JOIN, $cond = '')
     {
-        $this->_queryBuilder->addJoin($join_field, $alias, $type, $cond);
+        $this->queryBuilder->addJoin($joinField, $alias, $type, $cond);
         return $this;
     }
 
     /**
      * execute
      *
-     * @param int $hydration_mode
+     * @param int $hydrationMode
      *
      * @return JsonResponse
      */
-    public function execute($hydration_mode = Query::HYDRATE_ARRAY)
+    public function execute($hydrationMode = Query::HYDRATE_ARRAY)
     {
-        $request       = $this->_request;
-        $iTotalRecords = $this->_queryBuilder->getTotalRecords();
-        $iTotalDisplayRecords = $this->_queryBuilder->getTotalDisplayRecords();
-        list($data, $objects) = $this->_queryBuilder->getData($hydration_mode);
+        $request = $this->request->getCurrentRequest();
 
-        $id_index      = array_search('_identifier_', array_keys($this->getFields()));
-        $ids           = array();
+        $iTotalRecords = $this->queryBuilder->getTotalRecords();
+        $iTotalDisplayRecords = $this->queryBuilder->getTotalDisplayRecords();
+
+        list($data, $objects) = $this->queryBuilder->getData($hydrationMode);
+
+        $id_index = array_search('_identifier_', array_keys($this->getFields()));
+        $ids = array();
 
         array_walk($data, function($val, $key) use ($id_index, &$ids) {
             $ids[$key] = $val[$id_index];
         });
 
-        if (!is_null($this->_fixed_data))
-        {
-            $this->_fixed_data = array_reverse($this->_fixed_data);
-            foreach ($this->_fixed_data as $item)
-            {
+        if (!is_null($this->fixedData)) {
+            $this->fixedData = array_reverse($this->fixedData);
+            foreach ($this->fixedData as $item) {
                 array_unshift($data, $item);
             }
         }
-        if (!is_null($this->_renderer))
-        {
-            array_walk($data, $this->_renderer);
+
+        if (!is_null($this->renderer)) {
+            array_walk($data, $this->renderer);
         }
-        if (!is_null($this->_renderer_obj))
-        {
-            $this->_renderer_obj->applyTo($data,$objects);
+
+        if (!is_null($this->rendererObj)) {
+            $this->rendererObj->applyTo($data, $objects);
         }
-        if (!empty($this->_multiple))
-        {
-            array_walk($data, function($val, $key) use(&$data, $ids) {
+
+        if (!empty($this->multiple)) {
+            array_walk($data,
+                    function($val, $key) use(&$data, $ids) {
                 array_unshift($val, "<input type='checkbox' name='dataTables[actions][]' value='{$ids[$key]}' />");
                 $data[$key] = $val;
             });
         }
+
         $output = array(
-            "sEcho"                => intval($request->get('sEcho')),
-            "iTotalRecords"        => $iTotalRecords,
+            "sEcho" => intval($request->get('sEcho')),
+            "iTotalRecords" => $iTotalRecords,
             "iTotalDisplayRecords" => $iTotalDisplayRecords,
-            "aaData"               => $data
+            "aaData" => $data
         );
+
         return new JsonResponse($output);
     }
 
@@ -190,20 +245,16 @@ class Datatable
      */
     public static function getInstance($id)
     {
-        $instance = NULL;
-        if (array_key_exists($id, self::$_instances))
-        {
-            $instance = self::$_instances[$id];
-        }
-        else
-        {
-            $instance = self::$_current_instance;
+        $instance = null;
+
+        if (array_key_exists($id, self::$instances)) {
+            $instance = self::$instances[$id];
+        } else {
+            $instance = self::$currentInstance;
         }
 
-        if (is_null($instance))
-        {
-            throw new \Exception('No instance found for datatable, you should set a datatable id in your
-            action with "setDatatableId" using the id from your view ');
+        if ($instance === null) {
+            throw new \Exception('No instance found for datatable, you should set a datatable id in your action with "setDatatableId" using the id from your view');
         }
 
         return $instance;
@@ -211,9 +262,8 @@ class Datatable
 
     public static function clearInstance()
     {
-        self::$_instances = array();
+        self::$instances = array();
     }
-
 
     /**
      * get entity name
@@ -222,7 +272,7 @@ class Datatable
      */
     public function getEntityName()
     {
-        return $this->_queryBuilder->getEntityName();
+        return $this->queryBuilder->getEntityName();
     }
 
     /**
@@ -232,7 +282,7 @@ class Datatable
      */
     public function getEntityAlias()
     {
-        return $this->_queryBuilder->getEntityAlias();
+        return $this->queryBuilder->getEntityAlias();
     }
 
     /**
@@ -242,7 +292,7 @@ class Datatable
      */
     public function getFields()
     {
-        return $this->_queryBuilder->getFields();
+        return $this->queryBuilder->getFields();
     }
 
     /**
@@ -252,7 +302,7 @@ class Datatable
      */
     public function getHasAction()
     {
-        return $this->_has_action;
+        return $this->hasAction;
     }
 
     /**
@@ -262,7 +312,7 @@ class Datatable
      */
     public function getHasRendererAction()
     {
-        return $this->_has_renderer_action;
+        return $this->hasRendererAction;
     }
 
     /**
@@ -272,7 +322,7 @@ class Datatable
      */
     public function getOrderField()
     {
-        return $this->_queryBuilder->getOrderField();
+        return $this->queryBuilder->getOrderField();
     }
 
     /**
@@ -282,19 +332,7 @@ class Datatable
      */
     public function getOrderType()
     {
-        return $this->_queryBuilder->getOrderType();
-    }
-
-    /**
-     * create raw prototype
-     *
-     * @param string $type
-     *
-     * @return PrototypeBuilder
-     */
-    public function getPrototype($type)
-    {
-        return new PrototypeBuilder($this->_container, $type);
+        return $this->queryBuilder->getOrderType();
     }
 
     /**
@@ -304,7 +342,7 @@ class Datatable
      */
     public function getQueryBuilder()
     {
-        return $this->_queryBuilder;
+        return $this->queryBuilder;
     }
 
     /**
@@ -314,7 +352,7 @@ class Datatable
      */
     public function getSearch()
     {
-        return $this->_search;
+        return $this->search;
     }
 
     /**
@@ -324,20 +362,20 @@ class Datatable
      */
     public function getGlobalSearch()
     {
-        return $this->_global_search;
+        return $this->globalSearch;
     }
 
     /**
      * set entity
      *
-     * @param type $entity_name
-     * @param type $entity_alias
+     * @param type $entityName
+     * @param type $entityAlias
      *
      * @return Datatable
      */
-    public function setEntity($entity_name, $entity_alias)
+    public function setEntity($entityName, $entityAlias)
     {
-        $this->_queryBuilder->setEntity($entity_name, $entity_alias);
+        $this->queryBuilder->setEntity($entityName, $entityAlias);
         return $this;
     }
 
@@ -350,34 +388,34 @@ class Datatable
      */
     public function setFields(array $fields)
     {
-        $this->_queryBuilder->setFields($fields);
+        $this->queryBuilder->setFields($fields);
         return $this;
     }
 
     /**
      * set has action
      *
-     * @param type $has_action
+     * @param type $hasAction
      *
      * @return Datatable
      */
-    public function setHasAction($has_action)
+    public function setHasAction($hasAction)
     {
-        $this->_has_action = $has_action;
+        $this->hasAction = $hasAction;
         return $this;
     }
 
     /**
      * set order
      *
-     * @param type $order_field
-     * @param type $order_type
+     * @param type $orderField
+     * @param type $orderType
      *
      * @return Datatable
      */
-    public function setOrder($order_field, $order_type)
+    public function setOrder($orderField, $orderType)
     {
-        $this->_queryBuilder->setOrder($order_field, $order_type);
+        $this->queryBuilder->setOrder($orderField, $orderType);
         return $this;
     }
 
@@ -390,7 +428,7 @@ class Datatable
      */
     public function setFixedData($data)
     {
-        $this->_fixed_data = $data;
+        $this->fixedData = $data;
         return $this;
     }
 
@@ -401,7 +439,7 @@ class Datatable
      */
     public function setQueryBuilder(QueryInterface $queryBuilder)
     {
-        $this->_queryBuilder = $queryBuilder;
+        $this->queryBuilder = $queryBuilder;
     }
 
     /**
@@ -440,7 +478,7 @@ class Datatable
      */
     public function setRenderer(\Closure $renderer)
     {
-        $this->_renderer = $renderer;
+        $this->renderer = $renderer;
         return $this;
     }
 
@@ -475,16 +513,18 @@ class Datatable
      */
     public function setRenderers(array $renderers)
     {
-        $this->_renderers = $renderers;
-        if (!empty($this->_renderers))
-        {
-            $this->_renderer_obj = new Renderer($this->_container, $this->_renderers, $this->getFields());
+        $this->renderers = $renderers;
+
+        if (!empty($this->renderers)) {
+            $this->rendererObj = $this->rendererEngine->build($this->renderers, $this->getFields());
         }
+
         $actions_index = array_search('_identifier_', array_keys($this->getFields()));
-        if ($actions_index != FALSE && isset($renderers[$actions_index]))
-        {
-            $this->_has_renderer_action = true;
+
+        if ($actions_index != FALSE && isset($renderers[$actions_index])) {
+            $this->hasRendererAction = true;
         }
+
         return $this;
     }
 
@@ -498,20 +538,20 @@ class Datatable
      */
     public function setWhere($where, array $params = array())
     {
-        $this->_queryBuilder->setWhere($where, $params);
+        $this->queryBuilder->setWhere($where, $params);
         return $this;
     }
 
     /**
      * set query group
      *
-     * @param string $groupbywhere
+     * @param string $groupby
      *
      * @return Datatable
      */
     public function setGroupBy($groupby)
     {
-        $this->_queryBuilder->setGroupBy($groupby);
+        $this->queryBuilder->setGroupBy($groupby);
         return $this;
     }
 
@@ -524,25 +564,24 @@ class Datatable
      */
     public function setSearch($search)
     {
-        $this->_search = $search;
-        $this->_queryBuilder->setSearch($search || $this->_global_search);
+        $this->search = $search;
+        $this->queryBuilder->setSearch($search || $this->globalSearch);
         return $this;
     }
 
     /**
      * set global search
      *
-     * @param bool $global_search
+     * @param bool $globalSearch
      *
      * @return Datatable
      */
-    public function setGlobalSearch($global_search)
+    public function setGlobalSearch($globalSearch)
     {
-        $this->_global_search = $global_search;
-        $this->_queryBuilder->setSearch($global_search || $this->_search);
+        $this->globalSearch = $globalSearch;
+        $this->queryBuilder->setSearch($globalSearch || $this->search);
         return $this;
     }
-
 
     /**
      * set datatable identifier
@@ -553,15 +592,23 @@ class Datatable
      */
     public function setDatatableId($id)
     {
-        if (!array_key_exists($id, self::$_instances))
-        {
-            self::$_instances[$id] = $this;
-        }
-        else
-        {
+        if (!array_key_exists($id, self::$instances)) {
+            self::$instances[$id] = $this;
+        } else {
             throw new \Exception('Identifer already exists');
         }
+
         return $this;
+    }
+
+    /**
+     * hasInstanceId
+     *
+     * @param strin $id
+     */
+    public function hasInstanceId($id)
+    {
+        return array_key_exists($id, self::$instances);
     }
 
     /**
@@ -571,7 +618,7 @@ class Datatable
      */
     public function getMultiple()
     {
-        return $this->_multiple;
+        return $this->multiple;
     }
 
     /**
@@ -579,7 +626,7 @@ class Datatable
      *
      * @example
      *
-     *  ->setMultiple('delete' => array ('title' => "Delete", 'route' => 'route_to_delete' ));
+     *  ->setMultiple('delete' => array ('title' => "Delete", 'route' => 'route_to_delete'));
      *
      * @param array $multiple
      *
@@ -587,18 +634,18 @@ class Datatable
      */
     public function setMultiple(array $multiple)
     {
-        $this->_multiple = $multiple;
+        $this->multiple = $multiple;
         return $this;
     }
 
     /**
-     * get global configuration ( read it from config.yml under datatable)
+     * get global configuration (read it from config.yml under datatable)
      *
      * @return array
      */
     public function getConfiguration()
     {
-        return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -608,7 +655,7 @@ class Datatable
      */
     public function getSearchFields()
     {
-        return $this->_search_fields;
+        return $this->searchFields;
     }
 
     /**
@@ -618,13 +665,13 @@ class Datatable
      *
      *      ->setSearchFields(array(0,2,5))
      *
-     * @param array $search_fields
+     * @param array $searchFields
      *
      * @return \Waldo\DatatableBundle\Util\Datatable
      */
-    public function setSearchFields(array $search_fields)
+    public function setSearchFields(array $searchFields)
     {
-        $this->_search_fields = $search_fields;
+        $this->searchFields = $searchFields;
         return $this;
     }
 
@@ -635,13 +682,13 @@ class Datatable
      *
      *      ->setNotFilterableFields(array(0,2,5))
      *
-     * @param array $not_filterable_fields
+     * @param array $notFilterableFields
      *
      * @return \Waldo\DatatableBundle\Util\Datatable
      */
-    public function setNotFilterableFields(array $not_filterable_fields)
+    public function setNotFilterableFields(array $notFilterableFields)
     {
-        $this->_not_filterable_fields = $not_filterable_fields;
+        $this->notFilterableFields = $notFilterableFields;
         return $this;
     }
 
@@ -652,7 +699,7 @@ class Datatable
      */
     public function getNotFilterableFields()
     {
-        return $this->_not_filterable_fields;
+        return $this->notFilterableFields;
     }
 
     /**
@@ -662,13 +709,13 @@ class Datatable
      *
      *      ->setNotSortableFields(array(0,2,5))
      *
-     * @param array $not_sortable_fields
+     * @param array $notSortableFields
      *
      * @return \Waldo\DatatableBundle\Util\Datatable
      */
-    public function setNotSortableFields(array $not_sortable_fields)
+    public function setNotSortableFields(array $notSortableFields)
     {
-        $this->_not_sortable_fields = $not_sortable_fields;
+        $this->notSortableFields = $notSortableFields;
         return $this;
     }
 
@@ -679,7 +726,7 @@ class Datatable
      */
     public function getNotSortableFields()
     {
-        return $this->_not_sortable_fields;
+        return $this->notSortableFields;
     }
 
     /**
@@ -689,13 +736,13 @@ class Datatable
      *
      *      ->setHiddenFields(array(0,2,5))
      *
-     * @param array $hidden_fields
+     * @param array $hiddenFields
      *
      * @return \Waldo\DatatableBundle\Util\Datatable
      */
-    public function setHiddenFields(array $hidden_fields)
+    public function setHiddenFields(array $hiddenFields)
     {
-        $this->_hidden_fields = $hidden_fields;
+        $this->hiddenFields = $hiddenFields;
         return $this;
     }
 
@@ -706,7 +753,7 @@ class Datatable
      */
     public function getHiddenFields()
     {
-        return $this->_hidden_fields;
+        return $this->hiddenFields;
     }
 
     /**
@@ -720,13 +767,13 @@ class Datatable
      *
      *      ->setFilteringType(array(0 => 's',2 => 'f',5 => 'b'))
      *
-     * @param array $filtering_type
+     * @param array $filteringType
      *
      * @return \Waldo\DatatableBundle\Util\Datatable
      */
-    public function setFilteringType(array $filtering_type)
+    public function setFilteringType(array $filteringType)
     {
-        $this->_queryBuilder->setFilteringType($filtering_type);
+        $this->queryBuilder->setFilteringType($filteringType);
         return $this;
     }
 

@@ -98,7 +98,7 @@ Note: all you js config have to string typed, make sure to use (") as delimiters
 ###### Config sample
 
 ```
-datatable:
+waldo_datatable:
     all:
         action:           true
         search:           false
@@ -131,7 +131,7 @@ private function _datatable()
                             "Name"          => 'x.name',                        // Declaration for fields:
                             "Address"        => 'x.address',                    //      "label" => "alias.field_attribute_for_dql"
                             "total"         => 'COUNT(x.people) as total'       // Use SQL commands, you must always define an alias
-                            "sub"           => '(SELECT i FROM ... ) as sub'    // you can set sub DQL request, you must always define an alias
+                            "sub"           => '(SELECT i FROM ... ) as sub'    // you can set sub DQL request, you MUST ALWAYS define an alias
                             "_identifier_"  => 'x.id')                          // you have to put the identifier field without label. Do not replace the "_identifier_"
                         )
                 ->setWhere(                                                     // set your dql where statement
@@ -206,7 +206,7 @@ private function _datatable()
                 ->setFields(
                         array(
                             "Name"          => 'x.name',                        // Declaration for fields:
-                            "Address"        => 'x.address',                    //      "label" => "alias.field_attribute_for_dql"
+                            "Address"       => 'x.address',                     //      "label" => "alias.field_attribute_for_dql"
                             "Group"         => 'g.name',
                             "Team"          => 't.name',
                             "_identifier_"  => 'x.id')                          // you have to put the identifier field without label. Do not replace the "_identifier_"
@@ -343,8 +343,7 @@ private function _datatable()
                                     'view' => 'WaldoDatatableBundle:Renderers:_actions.html.twig',
                                     'params' => array(
                                             'edit_route'    => 'route_edit',
-                                            'delete_route'  => 'route_delete',
-                                            'delete_form_prototype'   => $datatable->getPrototype('delete_form')
+                                            'delete_route'  => 'route_delete'
                                         ),
                                 ),
                             )

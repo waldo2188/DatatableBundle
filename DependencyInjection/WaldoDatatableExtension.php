@@ -29,28 +29,4 @@ class WaldoDatatableExtension extends Extension
         $container->setParameter('datatable', $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getXsdValidationBasePath()
-    {
-        return __DIR__ . '/../Resources/config/schema';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getNamespace()
-    {
-        return 'http://symfony.com/schema/dic/doctrine';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfiguration(array $config, ContainerBuilder $container)
-    {
-        return new Configuration($container->getParameter('kernel.debug'));
-    }
-
 }

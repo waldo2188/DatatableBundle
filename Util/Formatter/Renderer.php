@@ -2,22 +2,29 @@
 
 namespace Waldo\DatatableBundle\Util\Formatter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class Renderer
 {
+    /**
+     * @var EngineInterface
+     */
+    protected $templating;
 
-    /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
-    protected $_container;
+    /**
+     * @var array
+     */
+    protected $renderers;
 
-    /** @var array */
-    protected $_renderers = NULL;
+    /**
+     * @var array
+     */
+    protected $fields;
 
-    /** @var array */
-    protected $_fields = NULL;
-
-    /** @var int */
-    protected $_identifier_index = NULL;
+    /**
+     *  @var int
+     */
+    protected $identifierIndex;
 
     /**
      * class constructor
@@ -26,12 +33,25 @@ class Renderer
      * @param array $renderers
      * @param array $fields
      */
-    public function __construct(ContainerInterface $container, array $renderers, array $fields)
+    public function __construct(EngineInterface $templating)
     {
-        $this->_container = $container;
-        $this->_renderers = $renderers;
-        $this->_fields    = $fields;
+        $this->templating = $templating;
+    }
+
+    /**
+     * Build the renderer
+     *
+     * @param array $renderers
+     * @param array $fields
+     * @return \Waldo\DatatableBundle\Util\Formatter\Renderer
+     */
+    public function build(array $renderers, array $fields)
+    {
+        $this->renderers = $renderers;
+        $this->fields = $fields;
         $this->prepare();
+
+        return $this;
     }
 
     /**
@@ -44,9 +64,9 @@ class Renderer
      */
     public function applyView($view_path, array $params)
     {
-        $out = $this->_container
-                ->get('templating')
+        $out = $this->templating
                 ->render($view_path, $params);
+        
         return html_entity_decode($out);
     }
 
@@ -58,7 +78,7 @@ class Renderer
      */
     protected function prepare()
     {
-        $this->_identifier_index = array_search("_identifier_", array_keys($this->_fields));
+        $this->identifierIndex = array_search("_identifier_", array_keys($this->fields));
     }
 
     /**
@@ -71,25 +91,21 @@ class Renderer
      */
     public function applyTo(array &$data, array $objects)
     {
-        foreach ($data as $row_index => $row)
-        {
-            $identifier_raw = $data[$row_index][$this->_identifier_index];
-            foreach ($row as $column_index => $column)
-            {
+        foreach ($data as $row_index => $row) {
+            $identifier_raw = $data[$row_index][$this->identifierIndex];
+            foreach ($row as $column_index => $column) {
                 $params = array();
-                if (array_key_exists($column_index, $this->_renderers))
-                {
-                    $view   = $this->_renderers[$column_index]['view'];
-                    $params = isset($this->_renderers[$column_index]['params']) ? $this->_renderers[$column_index]['params'] : array();
-                }
-                else
-                {
+                if (array_key_exists($column_index, $this->renderers)) {
+                    $view = $this->renderers[$column_index]['view'];
+                    $params = isset($this->renderers[$column_index]['params']) ? $this->renderers[$column_index]['params'] : array();
+                } else {
                     $view = 'WaldoDatatableBundle:Renderers:_default.html.twig';
                 }
-                $params                          = array_merge($params, array(
-                    'dt_obj'  => $objects[$row_index],
+                $params = array_merge($params,
+                        array(
+                    'dt_obj' => $objects[$row_index],
                     'dt_item' => $data[$row_index][$column_index],
-                    'dt_id'   => $identifier_raw,
+                    'dt_id' => $identifier_raw,
                     'dt_line' => $data[$row_index]
                         )
                 );

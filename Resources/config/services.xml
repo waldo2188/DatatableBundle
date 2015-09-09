@@ -6,12 +6,25 @@
 
     <services>
 
+        <service id="datatable.renderer" class="Waldo\DatatableBundle\Util\Formatter\Renderer">
+            <argument type="service" id="templating" />
+        </service>
+
+        <service id="datatable.doctrine_builder" class="Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="request_stack" />
+        </service>
+
         <service id="datatable" class="Waldo\DatatableBundle\Util\Datatable">
-            <argument type="service" id="service_container" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="datatable.doctrine_builder" />
+            <argument type="service" id="datatable.renderer" />
+            <argument>%datatable%</argument>
         </service>
 
         <service id="datatable.twig.extension" class="Waldo\DatatableBundle\Twig\Extension\DatatableExtension">
-            <argument type="service" id="service_container" />
+            <argument type="service" id="form.factory" />
             <tag name="twig.extension" />
         </service>
 

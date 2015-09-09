@@ -406,16 +406,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.21.1",
+            "version": "v1.21.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ca8d3aa90b6a01c82e07909fe815d6b443e75a23"
+                "reference": "ddce1136beb8db29b9cd7dffa8ab518b978c9db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ca8d3aa90b6a01c82e07909fe815d6b443e75a23",
-                "reference": "ca8d3aa90b6a01c82e07909fe815d6b443e75a23",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ddce1136beb8db29b9cd7dffa8ab518b978c9db3",
+                "reference": "ddce1136beb8db29b9cd7dffa8ab518b978c9db3",
                 "shasum": ""
             },
             "require": {
@@ -463,7 +463,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-08-26 08:58:31"
+            "time": "2015-09-09 05:28:51"
         }
     ],
     "packages-dev": [
@@ -1757,23 +1757,23 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.7.3",
+            "version": "v2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "a9af4708b4bb650c4897e9b8dfbfbdb2ea5f0486"
+                "reference": "1fdf23fe28876844b887b0e1935c9adda43ee645"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/a9af4708b4bb650c4897e9b8dfbfbdb2ea5f0486",
-                "reference": "a9af4708b4bb650c4897e9b8dfbfbdb2ea5f0486",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1fdf23fe28876844b887b0e1935c9adda43ee645",
+                "reference": "1fdf23fe28876844b887b0e1935c9adda43ee645",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.3",
                 "php": ">=5.3.9",
                 "psr/log": "~1.0",
-                "twig/twig": "~1.18"
+                "twig/twig": "~1.20|~2.0"
             },
             "replace": {
                 "symfony/asset": "self.version",
@@ -1875,7 +1875,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-07-31 13:24:45"
+            "time": "2015-09-08 14:26:39"
         }
     ],
     "aliases": [],

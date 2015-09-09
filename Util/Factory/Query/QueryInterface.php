@@ -19,11 +19,9 @@ interface QueryInterface
     /**
      * get data
      *
-     * @param int $hydration_mode
-     *
      * @return array
      */
-    function getData($hydration_mode);
+    function getData();
 
     /**
      * set entity
@@ -90,15 +88,6 @@ interface QueryInterface
     function setOrder($order_field, $order_type);
 
     /**
-     * set fixed data
-     *
-     * @param type $data
-     *
-     * @return Datatable
-     */
-    function setFixedData($data);
-
-    /**
      * set query where
      *
      * @param string $where
@@ -152,6 +141,11 @@ interface QueryInterface
      * @return Datatable
      */
     function setFilteringType(array $filtering_type);
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder;
+     */
+    function getDoctrineQueryBuilder();
 
     function getFilteringType();
 }

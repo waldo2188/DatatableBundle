@@ -2,23 +2,24 @@
 
 namespace Waldo\DatatableBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Waldo\DatatableBundle\Util\Datatable;
 
 class DatatableExtension extends \Twig_Extension
 {
-
-    /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
-    protected $_container;
+    /**
+     * @var EngineInterface
+     */
+    protected $formFactory;
 
     /**
      * class constructor
      *
-     * @param ContainerInterface $container
+     * @param FormFactoryInterface $formFactory
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(FormFactoryInterface $formFactory)
     {
-        $this->_container = $container;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -27,9 +28,9 @@ class DatatableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('datatable', array($this, 'datatable'), array("is_safe" => array("html"))),
-            new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'), array("is_safe" => array("html"))),
-            new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'), array("is_safe" => array("html")))
+            new \Twig_SimpleFunction('datatable', array($this, 'datatable'), array("is_safe" => array("html"), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'), array("is_safe" => array("html"), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'), array("is_safe" => array("html"), 'needs_environment' => true))
         );
     }
 
@@ -39,10 +40,15 @@ class DatatableExtension extends \Twig_Extension
      * @param string $string
      * @return int
      */
-    public function datatable($options)
+    public function datatable(\Twig_Environment $twig, $options)
     {
-        return $this->buildDatatableTemplate(
-                        $options, 'WaldoDatatableBundle:Main:index.html.twig', 'main_template');
+        $options = $this->buildDatatableTemplate($options);
+
+        $mainTemplate = array_key_exists('main_template', $options)
+                ? $options['main_template']
+                : 'WaldoDatatableBundle:Main:index.html.twig';
+
+        return $twig->render($mainTemplate, $options);
     }
 
     /**
@@ -51,10 +57,15 @@ class DatatableExtension extends \Twig_Extension
      * @param string $string
      * @return int
      */
-    public function datatableJs($options)
+    public function datatableJs(\Twig_Environment $twig, $options)
     {
-        return $this->buildDatatableTemplate(
-                        $options, 'WaldoDatatableBundle:Main:datatableJs.html.twig', 'js_template');
+        $options = $this->buildDatatableTemplate($options);
+
+        $mainTemplate = array_key_exists('main_template', $options)
+                ? $options['js_template']
+                : 'WaldoDatatableBundle:Main:datatableJs.html.twig';
+
+        return $twig->render($mainTemplate, $options);
     }
 
     /**
@@ -63,10 +74,10 @@ class DatatableExtension extends \Twig_Extension
      * @param string $string
      * @return int
      */
-    public function datatableHtml($options)
+    public function datatableHtml(\Twig_Environment $twig, $options)
     {
         if (!isset($options['id'])) {
-            $options['id'] = 'ali-dta_' . md5(rand(1, 100));
+            $options['id'] = 'ali-dta_' . md5(mt_rand(1, 100));
         }
         $dt = Datatable::getInstance($options['id']);
 
@@ -77,21 +88,19 @@ class DatatableExtension extends \Twig_Extension
         $options['search_fields'] = $dt->getSearchFields();
         $options['multiple'] = $dt->getMultiple();
 
-        $main_template = 'WaldoDatatableBundle:Main:datatableHtml.html.twig';
+        $mainTemplate = 'WaldoDatatableBundle:Main:datatableHtml.html.twig';
 
         if (isset($options['html_template'])) {
-            $main_template = $options['html_template'];
+            $mainTemplate = $options['html_template'];
         }
 
-        return $this->_container
-                        ->get('templating')
-                        ->render($main_template, $options);
+        return $twig->render($mainTemplate, $options);
     }
 
-    private function buildDatatableTemplate($options, $mainTemplate, $templateName)
+    private function buildDatatableTemplate($options)
     {
         if (!isset($options['id'])) {
-            $options['id'] = 'ali-dta_' . md5(rand(1, 100));
+            $options['id'] = 'ali-dta_' . md5(mt_rand(1, 100));
         }
 
         $dt = Datatable::getInstance($options['id']);
@@ -106,16 +115,14 @@ class DatatableExtension extends \Twig_Extension
         $options['global_search'] = $dt->getGlobalSearch();
         $options['search_fields'] = $dt->getSearchFields();
         $options['multiple'] = $dt->getMultiple();
-        $options['sort'] = is_null($dt->getOrderField()) ? NULL : array(array_search(
-                    $dt->getOrderField(), array_values($dt->getFields())), $dt->getOrderType());
+        $options['sort'] = $dt->getOrderField() == null
+                          ? null
+                          : array(
+                              array_search($dt->getOrderField(), array_values($dt->getFields())),
+                              $dt->getOrderType()
+                            );
 
-        if (isset($options[$templateName])) {
-            $mainTemplate = $options[$templateName];
-        }
-
-        return $this->_container
-                        ->get('templating')
-                        ->render($mainTemplate, $options);
+        return $options;
     }
 
     /**
@@ -140,7 +147,7 @@ class DatatableExtension extends \Twig_Extension
      */
     public function createFormBuilder($data = null, array $options = array())
     {
-        return $this->_container->get('form.factory')->createBuilder('form', $data, $options);
+        return $this->formFactory->createBuilder('form', $data, $options);
     }
 
     /**
