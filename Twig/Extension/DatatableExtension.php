@@ -115,7 +115,7 @@ class DatatableExtension extends \Twig_Extension
         $options['global_search'] = $dt->getGlobalSearch();
         $options['search_fields'] = $dt->getSearchFields();
         $options['multiple'] = $dt->getMultiple();
-        $options['sort'] = $dt->getOrderField() == null
+        $options['sort'] = $dt->getOrderField() === null
                           ? null
                           : array(
                               array_search($dt->getOrderField(), array_values($dt->getFields())),
