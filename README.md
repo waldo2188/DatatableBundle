@@ -77,10 +77,19 @@ Update/install with this command:
 composer require waldo/datatable-bundle ~2.0
 ```
 
-generate the assets symlinks
+Generate the assets symlinks
 
 ```bash
 app/console assets:install --symlink web
+```
+
+Add the bundle to the `AppKernel.php`
+
+```php
+$bundles = array(
+    \\...
+    new Waldo\DatatableBundle\WaldoDatatableBundle(),
+    )
 ```
 
 ##### Step 3:  Activate the main configs
