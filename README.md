@@ -100,7 +100,7 @@ In this section you can put the global config that you want to set for all the i
 
 ```
 # app/config/config.yml
-waldodatatable:
+waldo_datatable:
     all:    ~
     js:     ~
 ```
@@ -112,7 +112,7 @@ You can even put javascript code.
 ###### Config sample
 
 ```
-waldodatatable:
+waldo_datatable:
     all:
         action:           true
         search:           false
