@@ -23,10 +23,40 @@ class WaldoDatatableExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $config = $this->applyDefaultConfig($config);
+
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $container->setParameter('datatable', $config);
+    }
+
+    /**
+     * Datatable options
+     *
+     * @see https://datatables.net/reference/option/
+     * @param type $config
+     */
+    private function applyDefaultConfig($config)
+    {
+        $defaultJsConfig = array(
+            "jQueryUI" => true,
+            "pagingType" => "full_numbers",
+            "lengthMenu" => '[[10, 25, 50, -1], [10, 25, 50, "All"]]',
+            "pageLength" => 10,
+            "serverSide" => true,
+            "processing" => true,
+            "paging" => true,
+            "lengthChange" => true,
+            "ordering" => true,
+            "searching" => true,
+            "autoWidth" => false,
+        );
+
+        $config['js'] = array_merge($defaultJsConfig, $config['js']);
+
+        return $config;
     }
 
 }

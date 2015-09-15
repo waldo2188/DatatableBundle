@@ -220,16 +220,16 @@ class Datatable
         if (!empty($this->multiple)) {
             array_walk($data,
                     function($val, $key) use(&$data, $ids) {
-                array_unshift($val, "<input type='checkbox' name='dataTables[actions][]' value='{$ids[$key]}' />");
+                array_unshift($val, sprintf('<input type="checkbox" name="dataTables[actions][]" value="%s" />', $ids[$key]));
                 $data[$key] = $val;
             });
         }
 
         $output = array(
-            "sEcho" => intval($request->get('sEcho')),
-            "iTotalRecords" => $iTotalRecords,
-            "iTotalDisplayRecords" => $iTotalDisplayRecords,
-            "aaData" => $data
+            "draw" => $request->query->getInt('draw'),
+            "recordsTotal" => $iTotalRecords,
+            "recordsFiltered" => $iTotalDisplayRecords,
+            "data" => $data
         );
 
         return new JsonResponse($output);
@@ -635,6 +635,16 @@ class Datatable
     public function setMultiple(array $multiple)
     {
         $this->multiple = $multiple;
+
+        if(count($this->multiple) > 0) {
+            if(!in_array(0, $this->notFilterableFields)) {
+                $this->notFilterableFields[] = 0;
+            }
+            if(!in_array(0, $this->notSortableFields)) {
+                $this->notSortableFields[] = 0;
+            }
+        }
+
         return $this;
     }
 

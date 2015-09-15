@@ -1,12 +1,48 @@
-var multiple_rawhtml = '\
-        <label class="dataTables_multiple">\
-        <span style="margin:0 40px 0 0px;">\
-            Execute\
-            <select name="dataTables[select]">\
-                {% for key,item in multiple %}\
-                <option value="{{ path(item.route) }}">{{item.title}}</option>\
-                {% endfor %}\
-            </select>\
-            <button class="btn-datatable-multiple" >OK</button>\
-        <span>\
-        </label>';
+$('#{{ id }}').one('draw.dt', function() {
+    var multiple_rawhtml = '<label class="dataTables_multiple"><span style="margin:0 40px 0 0px;">Execute<select name="dataTables[select]">{% for key,item in multiple %}<option value="{{ path(item.route) }}">{{ item.title }}</option>{% endfor %}</select><button class="btn-datatable-multiple" >OK</button><span></label>';
+    if((el = $('#{{ id }}_wrapper div[id^="{{ id }}"]')).length > 0 ) {
+        $(el[0]).prepend(multiple_rawhtml);
+    }
+
+    {% set chbox %}input:checkbox[name="dataTables[actions][]"]{% endset %}
+    {% set chboxAll %}input:checkbox[name="datatable_action_all"]{% endset %}
+
+    $('#{{ id }}_wrapper .btn-datatable-multiple:not(.search_init)').on('click', function(e) {
+
+        if($('input:focus', $('#{{ id }}_wrapper')).length > 0){
+            return false;
+        }
+
+        e.preventDefault();
+
+        if($('{{ chbox }}:checked').length > 0){
+            if (!confirm('{% trans %}ali.common.are_you_sure{% endtrans %}')) {
+                return false;
+            }
+
+            var form = $(this).parents('form:eq(0)');
+            var action = $('select[name="dataTables[select]"]',$('#{{ id }}_wrapper')).val();
+
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: form.serialize(),
+                success: function(msg) {
+                    $('#{{ id }}').trigger('dt.draw');
+                }
+            });
+        } else {
+            alert('{% trans %}ali.common.you_need_to_select_at_least_one_element{% endtrans %}');
+        }
+    });
+
+    $('#{{ id }}_wrapper').on('click', '{{ chboxAll }}', function() {
+        if($(this).is(':checked')) {
+            $('{{ chbox }}', $('#{{ id }}_wrapper')).attr("checked",false).click();
+        } else {
+            $('{{ chbox }}', $('#{{ id }}_wrapper')).attr("checked",true).click();
+        }
+    });
+
+    $('#{{ id }}_wrapper {{ chboxAll }}').attr('checked', false);
+});

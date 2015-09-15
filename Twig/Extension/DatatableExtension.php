@@ -9,6 +9,16 @@ class DatatableExtension extends \Twig_Extension
 {
 
     /**
+     * Any value referenced here are Datatable's options giving the value is an object or an array
+     *
+     * @see https://datatables.net/reference/option/
+     * @var array
+     */
+    private $datatableObjectValuedOption = array(
+            "lengthMenu"
+        );
+
+    /**
      * @var EngineInterface
      */
     protected $formFactory;
@@ -34,7 +44,9 @@ class DatatableExtension extends \Twig_Extension
             new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'),
                     array("is_safe" => array("html"), 'needs_environment' => true)),
             new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'),
-                    array("is_safe" => array("html"), 'needs_environment' => true))
+                    array("is_safe" => array("html"), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('datatable_string_option', array($this, 'datatableStringOption'),
+                    array("is_safe" => array("html")))
         );
     }
 
@@ -104,9 +116,10 @@ class DatatableExtension extends \Twig_Extension
         }
 
         $dt = Datatable::getInstance($options['id']);
+
         $config = $dt->getConfiguration();
-        $options['js_conf'] = json_encode($config['js']);
-        $options['js'] = json_encode($options['js']);
+
+        $options['js'] = array_merge($options['js'], $config['js']);
         $options['action'] = $dt->getHasAction();
         $options['action_twig'] = $dt->getHasRendererAction();
         $options['fields'] = $dt->getFields();
@@ -119,13 +132,53 @@ class DatatableExtension extends \Twig_Extension
             $dt->getOrderType()
         );
 
+
+
         if ($type == "js") {
-            $options['not_filterable_fields'] = $dt->getNotFilterableFields();
-            $options['not_sortable_fields'] = $dt->getNotSortableFields();
-            $options['hidden_fields'] = $dt->getHiddenFields();
+            $options['fieldsOptions'] = array(
+                array(
+                    "type" => "visible",
+                    "value" => "false",
+                    "target" => $dt->getHiddenFields()
+                ),
+                array(
+                    "type" => "orderable",
+                    "value" => "false",
+                    "target" => $dt->getNotSortableFields()
+                ),
+                array(
+                    "type" => "searchable",
+                    "value" => "false",
+                    "target" => $dt->getNotFilterableFields()
+                )
+            );
         }
 
         return $options;
+    }
+
+    /**
+     * Some Datatable's option need to be surronded by an apostrophe an other need to be print as raw, like an array.
+     *
+     * @param string $optionName
+     * @param mix $value
+     * @return string
+     */
+    public function datatableStringOption($optionName, $value)
+    {
+        if(is_bool($value)) {
+            if($value === true) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        }
+
+        if(in_array($optionName, $this->datatableObjectValuedOption) || is_int($value)) {
+            return $value;
+        }
+
+        return sprintf("'%s'", $value);
     }
 
     /**

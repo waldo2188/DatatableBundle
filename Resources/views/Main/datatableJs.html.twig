@@ -1,6 +1,18 @@
 {% block main %}
+
+{{dump()}}
+{% spaceless %}
 <script type="text/javascript">
-    $(document).ready(function(){
+$(document).ready(function(){
+    $('#{{ id }}').DataTable({
+    {% for key, value in js %}{{ key }}:{{ datatable_string_option(key, value)|raw }}{% if not loop.last %},{% endif %}{% endfor %},
+    columnDefs:[{% for fieldOptions in fieldsOptions %}{% if fieldOptions.target|length > 0 %}{targets:[{{ fieldOptions.target|join(',') }}], {{ fieldOptions.type }}:{{ fieldOptions.value }}}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}]
+    });
+});
+{% if multiple %}
+{% include "WaldoDatatableBundle:Snippet:multipleRaw.js.twig" %}
+{% endif %}
+   {# $(document).ready(function(){
         function getId() { return "{{id}}"; };
         function getWrapper() { return  "#{{id}}_wrapper"; };
         var s = getWrapper();
@@ -100,21 +112,21 @@
             "bSort": true,
             "bFilter": {% if search == true or global_search == true %} true {% else %} false {% endif %},
             "oLanguage": {
-                "sProcessing":     '{{ 'ali.common.sProcessing' | trans() }}',
-                "sLengthMenu":     '{{ 'ali.common.sLengthMenu' | trans() }}',
-                "sZeroRecords":    '{{ 'ali.common.sZeroRecords' | trans() }}',
-                "sInfo":           '{{ 'ali.common.sInfo' | trans() }}',
-                "sInfoEmpty":      '{{ 'ali.common.sInfoEmpty' | trans() }}',
-                "sInfoFiltered":   '{{ 'ali.common.sInfoFiltered' | trans() }}',
-                "sInfoPostFix":    '{{ 'ali.common.sInfoPostFix' | trans() }}',
-                "sSearch":         '{{ 'ali.common.sSearch' | trans() }}',
-                "sLoadingRecords": '{{ 'ali.common.sLoadingRecords' | trans() }}',
+                "sProcessing":     '{% trans %}ali.common.sProcessing{% endtrans %}',
+                "sLengthMenu":     '{% trans %}ali.common.sLengthMenu{% endtrans %}',
+                "sZeroRecords":    '{% trans %}ali.common.sZeroRecords{% endtrans %}',
+                "sInfo":           '{% trans %}ali.common.sInfo{% endtrans %}',
+                "sInfoEmpty":      '{% trans %}ali.common.sInfoEmpty{% endtrans %}',
+                "sInfoFiltered":   '{% trans %}ali.common.sInfoFiltered{% endtrans %}',
+                "sInfoPostFix":    '{% trans %}ali.common.sInfoPostFix{% endtrans %}',
+                "sSearch":         '{% trans %}ali.common.sSearch{% endtrans %}',
+                "sLoadingRecords": '{% trans %}ali.common.sLoadingRecords{% endtrans %}',
                 "sUrl":            "",
                 "oPaginate": {
-                    "sFirst":    '{{ 'ali.common.sFirst' | trans() }}',
-                    "sPrevious": '{{ 'ali.common.sPrevious' | trans() }}',
-                    "sNext":     '{{ 'ali.common.sNext' | trans() }}',
-                    "sLast":     '{{ 'ali.common.sLast' | trans() }}'
+                    "sFirst":    '{% trans %}ali.common.sFirst{% endtrans %}',
+                    "sPrevious": '{% trans %}ali.common.sPrevious{% endtrans %}',
+                    "sNext":     '{% trans %}ali.common.sNext{% endtrans %}',
+                    "sLast":     '{% trans %}ali.common.sLast{% endtrans %}'
                 }
             },
             "bAutoWidth" : false
@@ -170,6 +182,7 @@
             oTable.fnFilter( this.value, $("tfoot input").index(this) );
         } );
         {% endif %}
-    });
+    });#}
 </script>
+{% endspaceless %}
 {% endblock  %}
