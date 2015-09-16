@@ -37,16 +37,6 @@ class Datatable
     protected $em;
 
     /**
-     * @var boolean
-     */
-    protected $hasAction;
-
-    /**
-     * @var boolean
-     */
-    protected $hasRendererAction = false;
-
-    /**
      * @var array
      */
     protected $multiple;
@@ -151,7 +141,6 @@ class Datatable
     protected function applyDefaults()
     {
         if (isset($this->config['all'])) {
-            $this->hasAction = $this->config['all']['action'];
             $this->search = $this->config['all']['search'];
         }
     }
@@ -296,26 +285,6 @@ class Datatable
     }
 
     /**
-     * get has_action
-     *
-     * @return boolean
-     */
-    public function getHasAction()
-    {
-        return $this->hasAction;
-    }
-
-    /**
-     * retrun true if the actions column is overridden by twig renderer
-     *
-     * @return boolean
-     */
-    public function getHasRendererAction()
-    {
-        return $this->hasRendererAction;
-    }
-
-    /**
      * get order field
      *
      * @return string
@@ -393,19 +362,6 @@ class Datatable
     }
 
     /**
-     * set has action
-     *
-     * @param type $hasAction
-     *
-     * @return Datatable
-     */
-    public function setHasAction($hasAction)
-    {
-        $this->hasAction = $hasAction;
-        return $this;
-    }
-
-    /**
      * set order
      *
      * @param type $orderField
@@ -470,7 +426,6 @@ class Datatable
      *                   }
      *               }
      *         )
-     *       ->setHasAction(true);
      *
      * @param \Closure $renderer
      *
@@ -517,12 +472,6 @@ class Datatable
 
         if (!empty($this->renderers)) {
             $this->rendererObj = $this->rendererEngine->build($this->renderers, $this->getFields());
-        }
-
-        $actions_index = array_search('_identifier_', array_keys($this->getFields()));
-
-        if ($actions_index != FALSE && isset($renderers[$actions_index])) {
-            $this->hasRendererAction = true;
         }
 
         return $this;

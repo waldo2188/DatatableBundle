@@ -69,7 +69,6 @@ class DatatableTest extends BaseClient
 
         $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->datatable->setFields(array()));
         $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->datatable->setFixedData('$data'));
-        $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->datatable->setHasAction(TRUE));
         $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable', $this->datatable->setOrder('$order_field', '$order_type'));
 
         $this->assertInstanceOf('\Waldo\DatatableBundle\Util\Datatable',
@@ -265,19 +264,6 @@ class DatatableTest extends BaseClient
                             "_identifier_" => 'p.id')
         );
         $this->assertInternalType('array', $this->datatable->getFields());
-    }
-
-    public function test_getHasAction()
-    {
-        $this->datatable
-                ->setEntity('Waldo\DatatableBundle\Tests\Functional\Entity\Product', 'p')
-                ->setFields(
-                        array(
-                            "title"        => 'p.name',
-                            "_identifier_" => 'p.id')
-        );
-
-        $this->assertInternalType('boolean', $this->datatable->getHasAction());
     }
 
     public function test_getHasRendererAction()

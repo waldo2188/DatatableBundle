@@ -1,6 +1,5 @@
 ali:
     common:
-        action: Acciones
         confirm_delete: "Est seguro(a) que desea eliminar esta entrada?"
         delete: borrar
         edit: editar

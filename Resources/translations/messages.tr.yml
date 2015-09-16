@@ -1,6 +1,5 @@
 ali:
     common:
-        action: Eylemler
         confirm_delete: "Bu öğeyi silmek istediğinizden emin misiniz?"
         delete: Sil
         edit: Düzenle

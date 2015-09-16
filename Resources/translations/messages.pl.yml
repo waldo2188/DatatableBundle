@@ -1,6 +1,5 @@
 ali:
     common:
-        action: Akcje
         confirm_delete: "Czy na pewno usunąć ten wpis?"
         delete: usuń
         edit: edytuj

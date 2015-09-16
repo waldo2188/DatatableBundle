@@ -93,11 +93,9 @@ class DatatableExtension extends \Twig_Extension
         }
         $dt = Datatable::getInstance($options['id']);
 
-        $options['action'] = $dt->getHasAction();
-        $options['action_twig'] = $dt->getHasRendererAction();
         $options['fields'] = $dt->getFields();
         $options['search'] = $dt->getSearch();
-        $options['search_fields'] = $dt->getSearchFields();
+        $options['searchFields'] = $dt->getSearchFields();
         $options['multiple'] = $dt->getMultiple();
 
         $mainTemplate = 'WaldoDatatableBundle:Main:datatableHtml.html.twig';
@@ -120,13 +118,12 @@ class DatatableExtension extends \Twig_Extension
         $config = $dt->getConfiguration();
 
         $options['js'] = array_merge($options['js'], $config['js']);
-        $options['action'] = $dt->getHasAction();
-        $options['action_twig'] = $dt->getHasRendererAction();
         $options['fields'] = $dt->getFields();
         $options['delete_form'] = $this->createDeleteForm('_id_')->createView();
         $options['search'] = $dt->getSearch();
         $options['global_search'] = $dt->getGlobalSearch();
         $options['multiple'] = $dt->getMultiple();
+        $options['searchFields'] = $dt->getSearchFields();
         $options['sort'] = $dt->getOrderField() === null ? null : array(
             array_search($dt->getOrderField(), array_values($dt->getFields())),
             $dt->getOrderType()

@@ -1,6 +1,5 @@
 ali:
     common:
-        action: Actions
         are_you_sure: Are you sure ?
         you_need_to_select_at_least_one_element: You need to select at least one element.
         confirm_delete: "Are you sure to delete this item ?"

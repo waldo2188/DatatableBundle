@@ -12,6 +12,9 @@ $(document).ready(function(){
 {% if multiple %}
 {% include "WaldoDatatableBundle:Snippet:multipleRaw.js.twig" %}
 {% endif %}
+{% if search == true and searchFields is not empty %}
+{% include "WaldoDatatableBundle:Snippet:individualSearchField.js.twig" %}
+{% endif %}
    {# $(document).ready(function(){
         function getId() { return "{{id}}"; };
         function getWrapper() { return  "#{{id}}_wrapper"; };

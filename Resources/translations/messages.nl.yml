@@ -1,6 +1,5 @@
 ali:
     common:
-        action: Acties
         confirm_delete: "Weet u zeker dat u dit item wilt verwijderen?"
         delete: verwijderen
         edit: bewerken

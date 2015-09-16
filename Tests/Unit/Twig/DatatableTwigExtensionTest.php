@@ -98,7 +98,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
             "delete_form" => "",
             "search" => "",
             "global_search" => "",
-            "search_fields" => "",
+            "searchFields" => "",
             "multiple" => "",
             "sort" => ""
         ));
@@ -126,7 +126,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
             "delete_form" => "",
             "search" => "",
             "global_search" => "",
-            "search_fields" => "",
+            "searchFields" => "",
             "multiple" => "",
             "sort" => ""
         ));
@@ -155,7 +155,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
             "delete_form" => "",
             "search" => "",
             "global_search" => "",
-            "search_fields" => "",
+            "searchFields" => "",
             "multiple" => "",
             "sort" => ""
         ));

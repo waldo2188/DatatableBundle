@@ -1,0 +1,28 @@
+$('#{{ id }}').one('draw.dt', function() {
+
+var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+$('#{{ id }}').DataTable().columns().every(function() {
+
+    $(this.footer()).find('input[type="text"][searchable="true"]').each(function() {
+        var me = this;
+        $(this).on('keyup change', function() {
+
+            column = $('#{{ id }}').DataTable().columns(me.getAttribute('index'));
+
+            if ( column.search() !== me.value ) {
+                delay(function(){
+                    column.search( me.value ).draw();
+                    }, 400);
+            }
+        });
+    });
+});
+
+});
