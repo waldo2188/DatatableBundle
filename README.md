@@ -7,6 +7,10 @@ and evolve in a different way than it source.
 [![Build Status](https://travis-ci.org/waldo2188/DatatableBundle.svg?branch=master)](https://travis-ci.org/waldo2188/DatatableBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/bb7b64f6-4203-45ca-b99a-2d15c4d272ec/small.png)](https://insight.sensiolabs.com/projects/bb7b64f6-4203-45ca-b99a-2d15c4d272ec)
 
+> **Warning**: The [jQuery Datatable plugin](http://datatables.net/) has evolved (version 1.10) with a all new API and option.
+> You **MUST** use the version **2** of DatatableBundle with the jQuery Datatable plugin version lower 1.10.
+> You **MUST** use the version **3** of DatatableBundle with the jQuery Datatable plugin version equal or greater of 1.10.
+
 The Datatable bundle for symfony2 allow for easily integration of the [jQuery Datatable plugin](http://datatables.net/) with
 the doctrine2 entities.
 This bundle provides a way to make a projection of a doctrine2 entity to a powerful jquery datagrid. It mainly includes:
