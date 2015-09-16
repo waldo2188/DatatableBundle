@@ -28,24 +28,25 @@ This bundle provides a way to make a projection of a doctrine2 entity to a power
 Summary
 -------
 
-##### [Installation](#installation-1)
+##### [Installation](#installation)
 
-1. [Download DatatableBundle using Composer](#step-1-download-alidatatablebundle)
-2. [Enable the Bundle](#step-2--enable-the-bundle)
-3. [Configure your application's config.yml](#step-3--activate-the-main-configs)
+1. [Download DatatableBundle using Composer](#step-1-download-datatablebundle)
+2. [Enable the Bundle](#step-2-enable-the-bundle)
+3. [Configure your application's config.yml](#step-3-activate-the-main-configs)
 
-##### [How to use DatatableBundle ?](#-how-to-use-alidatatablebundle-)
-##### [Rendering inside Twig](#-rendering-inside-twig)
-##### [Advanced php config](#-advanced-php-config)
-##### [Use of search filters](#-use-of-search-filters)
+##### [How to use DatatableBundle ?](#how-to-use-datatablebundle-)
+##### [Rendering inside Twig](#rendering-inside-twig)
+##### [Advanced Use of datatable](#advanced-use-of-datatable)
+##### [Use of search filters](#use-of-search-filters)
 
 *  [Activate search globally](#activate-search-globally)
-*  [Set search fields](#set-search-fields) (new)
+*  [Set search fields](#set-search-fields)
 
-##### [Multiple actions](#-multiple-actions) (new)
-##### [Custom renderer](#-custom-renderer)
-##### [Translation](#-translation)
-##### [Multiple datatable in the same view](#-multiple-datatable-in-the-same-view)
+##### [Multiple actions](#multiple-actions)
+##### [Custom renderer](#custom-renderer)
+##### [Translation](#translation)
+##### [Doctrine Query Builder](#doctrine-query-builder)
+##### [Multiple datatable in the same view](#multiple-datatable-in-the-same-view)
 ##### [Launch the test suite](/Resources/doc/test.md)
 
 ---------------------------------------
@@ -83,6 +84,8 @@ Generate the assets symlinks
 app/console assets:install --symlink web
 ```
 
+##### Step 2: Enable the Bundle
+
 Add the bundle to the `AppKernel.php`
 
 ```php
@@ -92,7 +95,7 @@ $bundles = array(
     )
 ```
 
-##### Step 3:  Activate the main configs
+##### Step 3: Activate the main configs
 
 In this section you can put the global config that you want to set for all the instance of datatable in your project.
 
@@ -105,8 +108,7 @@ waldo_datatable:
     js:     ~
 ```
 
-The "js" config will be applied to datatable exactly like you do with "$().datatable({ your config });".
-You can even put javascript code.
+The `js` config will be applied to datatable exactly like you do with `$().datatable({ your config });`
 > Note: all your js config have to be string typed, make sure to use (") as delimiters.
 
 ###### Config sample
@@ -114,19 +116,14 @@ You can even put javascript code.
 ```
 waldo_datatable:
     all:
-        action:           true
         search:           false
     js:
-        iDisplayLength: "10"
-        aLengthMenu: "[[5,10, 25, 50, -1], [5,10, 25, 50, 'All']]"
-        bJQueryUI: "false"
-        fnPreDrawCallback: |
-            function( e ) {
-                // you custom code goes here
-            }
+        pageLength: "10"
+        lengthMenu: "[[5,10, 25, 50, -1], [5,10, 25, 50, 'All']]"
+        jQueryUI: "false"
 ```
 
-### # How to use DatatableBundle ?
+### How to use DatatableBundle ?
 
 Assuming for example that you need a grid in your "index" action, create in your controller method as below:
 
@@ -144,21 +141,21 @@ private function datatable()
                         array(
                             "Name"          => 'x.name',                        // Declaration for fields:
                             "Address"        => 'x.address',                    //      "label" => "alias.field_attribute_for_dql"
-                            "total"         => 'COUNT(x.people) as total'       // Use SQL commands, you must always define an alias
-                            "sub"           => '(SELECT i FROM ... ) as sub'    // you can set sub DQL request, you MUST ALWAYS define an alias
+                            "Total"         => 'COUNT(x.people) as total',      // Use SQL commands, you must always define an alias
+                            "Sub"           => '(SELECT i FROM ... ) as sub',   // you can set sub DQL request, you MUST ALWAYS define an alias
                             "_identifier_"  => 'x.id')                          // you have to put the identifier field without label. Do not replace the "_identifier_"
                         )
                 ->setWhere(                                                     // set your dql where statement
                      'x.address = :address',
                      array('address' => 'Paris')
                 )
-                ->setOrder("x.created", "desc")                                 // it's also possible to set the default order
-                ->setHasAction(true);                                           // you can disable action column from here by setting "false".
+                ->setOrder("x.created", "desc");                                // it's also possible to set the default order
 }
 
 
 /**
  * Grid action
+ * @Route("/", name="datatable")
  * @return Response
  */
 public function gridAction()
@@ -168,6 +165,7 @@ public function gridAction()
 
 /**
  * Lists all entities.
+ * @Route("/list", name="datatable_list")
  * @return Response
  */
 public function indexAction()
@@ -177,9 +175,12 @@ public function indexAction()
 }
 ```
 
-### # Rendering inside Twig
+### Rendering inside Twig
 
-```js
+You have the choice, you can render the HTML table part and Javascript part in just one time with the Twig function `datatable`,
+like below.
+
+```twig
 <!-- XXX\MyBundle\Resources\views\Module\index.html.twig -->
 
 <!-- include the assets -->
@@ -187,24 +188,49 @@ public function indexAction()
 <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/r/dt/dt-1.10.9/datatables.min.js"></script>
 
-
 {{ datatable({
-        'edit_route' : 'RouteForYourEntity_edit',
-        'delete_route' : 'RouteForYourEntity_delete',
         'js' : {
-            'sAjaxSource' : path('RouteForYour_grid_action')
+            'ajax' : path('route_for_your_datatable_action')
         }
     })
 }}
 ```
 
+Or, render each part separatly.
+
+`datatable_html` is the Twig function for the HTML part.
+`datatable_js` is the Twig function for the Javascript part.
+
+```twig
+{% block body %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/dt/dt-1.10.9/datatables.min.css"/>
+    {{ datatable_html({
+            'id' : 'dta-offres'
+        })
+    }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
+{{ datatable_js({
+        'id' : 'dta-offres',
+        'js' : {
+            'dom': '<"clearfix"lf>rtip',
+            'ajax': path('route_for_your_datatable_action'),
+        }
+    })
+}}
+{% endblock javascripts %}
+```
 
 Advanced Use of datatable
 -------------------------
 
-### # Advanced php config
+### Advanced php config
 
-Assuming the example above, you can add your joins and where statements
+Assuming the example above, you can add your joins and where statements.
 
 ```php
 /**
@@ -215,14 +241,14 @@ Assuming the example above, you can add your joins and where statements
 private function datatable()
 {
     return $this->get('datatable')
-                ->setEntity("XXXMyBundle:Entity", "x")                          // replace "XXXMyBundle:Entity" by your entity
+                ->setEntity("XXXMyBundle:Entity", "x")      // replace "XXXMyBundle:Entity" by your entity
                 ->setFields(
                         array(
-                            "Name"          => 'x.name',                        // Declaration for fields:
-                            "Address"       => 'x.address',                     //      "label" => "alias.field_attribute_for_dql"
+                            "Name"          => 'x.name',    // Declaration for fields:
+                            "Address"       => 'x.address', //      "label" => "alias.field_attribute_for_dql"
                             "Group"         => 'g.name',
                             "Team"          => 't.name',
-                            "_identifier_"  => 'x.id')                          // you have to put the identifier field without label. Do not replace the "_identifier_"
+                            "_identifier_"  => 'x.id')      // you have to put the identifier field without label. Do not replace the "_identifier_"
                         )
                 ->addJoin('x.group', 'g', \Doctrine\ORM\Query\Expr\Join::INNER_JOIN)
                 ->addJoin('x.team', 't', \Doctrine\ORM\Query\Expr\Join::INNER_JOIN)
@@ -230,21 +256,20 @@ private function datatable()
                      'x.address = :address',
                      array('address' => 'Paris')
                 )
-                ->setOrder("x.created", "desc")                                 // it's also possible to set the default order
-                ->setHasAction(true);                                           // you can disable action column from here by setting "false".
+                ->setOrder("x.created", "desc");            // it's also possible to set the default order.
 }
 ```
 
-### # Use of search filters
+### Use of search filters
 
 
 *  [Activate search globally](#activate-search-globally)
 *  [Set search fields](#set-search-fields)
 
-#### # Activate search globally
+#### Activate search globally
 
-The filtering functionality that is very useful for quickly search through the information from the database.
-This bundle provide two way of filtering, who can be used together : Global search and individual column search.
+The searching functionality that is very useful for quickly search through the information from the database.
+This bundle provide two way of searching, who can be used together : global search and individual column search.
 
 By default the filtering functionality is disabled, to get it working you just need to activate it from your configuration method like this :
 
@@ -258,11 +283,10 @@ private function datatable()
                 ->setGlobalSearch(true);
 }
 ```
-#### # Set search fields
+#### Set search fields
 
-You can set fields where you want to enable your search. By default search wont be active for actions column but you might want
-to disable search for other columns.
-Let say you want search to be active only for "field1" and "field3", you just need to activate search for the approriate column key
+You can set fields where you want to enable your search.
+Let say you want search to be active only for "field 1" and "field3 ", you just need to activate search for the approriate column key
 and your datatable config should be :
 
 ```php
@@ -277,9 +301,9 @@ private function datatable()
     return $datatable->setEntity("XXXMyBundle:Entity", "x")
                     ->setFields(
                             array(
-                                "label of field1" => 'x.field1',   // column key 0
-                                "label of field2" => 'x.field2',   // column key 1
-                                "label of field3" => 'x.field3',   // column key 2
+                                "label of field 1" => 'x.field1',   // column key 0
+                                "label of field 2" => 'x.field2',   // column key 1
+                                "label of field 3" => 'x.field3',   // column key 2
                                 "_identifier_" => 'x.id')          // column key 3
                     )
                     ->setSearch(true)
@@ -288,11 +312,10 @@ private function datatable()
 }
 ```
 
-### # Multiple actions
+### Multiple actions
 
 Sometimes, it's good to be able to do the same action on multiple records like deleting, activating, moving ...
-Well this is very easy to add to your datatable: all what you need is to declare your multiple action as follow
-
+Well this is very easy to add to your datatable: all what you need is to declare your multiple action as follow.
 
 ```php
 /**
@@ -314,8 +337,12 @@ private function datatable()
                                 array(
                                     'delete' => array(
                                         'title' => 'Delete',
-                                        'route' => 'multiple_delete_route' // path to multiple delete route
-                                    )
+                                        'route' => 'multiple_delete_route' // path to multiple delete route action
+                                    ),
+                                    'move' => array(
+                                        'title' => 'Move',
+                                        'route' => 'multiple_move_route' // path to multiple move route action
+                                    ),
                                 )
                         )
     ;
@@ -330,9 +357,9 @@ $data = $this->getRequest()->get('dataTables');
 $ids  = $data['actions'];
 ```
 
-### # Custom renderer
+### Custom renderer
 
-#### # Twig renderers
+#### Twig renderers
 
 To set your own column structure, you can use a custom twig renderer as below :
 In this example you can find how to set the use of the default twig renderer for action fields which you can override as
@@ -364,23 +391,22 @@ private function datatable()
                                         ),
                                 ),
                             )
-                    )
-                    ->setHasAction(true);
+                    );
 }
 ```
 
-In a twig renderer you can have access the the field value using `dt_item`  variable
+In a twig renderer you can have access the the field value using `dt_item`  variable,
 ```
 {{ dt_item }}
 ```
-or access the entire entity object using `dt_obj` variable
+or access the entire entity object using `dt_obj` variable.
 ```
-<a href="{{ path('route_to_user_edit',{ 'user_id' : dt_obj.id }) }}" > {{ dt_obj.username }} </a>
+<a href="{{ path('route_to_user_edit',{ 'user_id' : dt_obj.id }) }}">{{ dt_obj.username }}</a>
 ```
 
 > NOTE: be careful of LAZY LOADING when using dt_obj !
 
-#### # PHP Closures
+#### PHP Closures
 
 Assuming the example above, you can set your custom fields renderer using [PHP Closures](http://php.net/manual/en/class.closure.php).
 
@@ -417,21 +443,20 @@ private function datatable()
                             }
                         }
                     }
-                )
-                ->setOrder("x.created", "desc")                 // it's also possible to set the default order
-                ->setHasAction(true);                           // you can disable action column from here by setting "false".
+                );
 }
 ```
 
-### # Translation
+### Translation
 
 You can set your own translated labels by adding in your translation catalog entries as below:
 
 ```
 ali:
     common:
-        action: Actions
-        confirm_delete: 'Are you sure to delete this item ?'
+        are_you_sure: Are you sure ?
+        you_need_to_select_at_least_one_element: You need to select at least one element.
+        confirm_delete: "Are you sure to delete this item ?"
         delete: delete
         edit: edit
         no_action: "(can't remove)"
@@ -451,13 +476,13 @@ ali:
         search: "Search"
 ```
 
-
 This bundle includes nine translation catalogs: Arabic, Chinese, Dutch, English, Spanish, French, Italian, Russian and Turkish
-To get more translated entries, you can follow the [official datatable translation](http://datatables.net/plug-ins/i18n#English)
+To get more translated entries, you can follow the [official datatable translation](https://datatables.net/manual/i18n)
 
-### # Doctrine query builder
 
-To use your own query object to supply to the datatable object, you can perform this action using your proper
+### Doctrine Query Builder
+
+To use your own query object to supply to the datatable object, you can perform this action using your own
 "Doctrine Query object": DatatableBundle allow to manipulate the query object provider which is now a Doctrine Query Builder object,
 you can use it to update the query in all its components except of course in the selected field part.
 
@@ -511,12 +536,12 @@ private function datatable()
 }
 ```
 
-### # Multiple datatable in the same view
+### Multiple datatable in the same view
 
 To declare multiple datatables in the same view, you have to set the datatable identifier in you controller with "setDatatableId" :
 Each of your databale config methods ( datatable() , datatable_1() .. datatable_n() ) needs to set the same identifier used in your view:
 
-#### #In the controller
+#### In the controller
 
 ```php
 protected function datatable()
@@ -538,7 +563,7 @@ protected function datatableSecond()
 }
 ```
 
-#### #In the view
+#### In the view
 
 ```js
 {{
@@ -546,7 +571,7 @@ protected function datatableSecond()
         'id' : 'dta-unique-id_1',
         ...
             'js' : {
-            'sAjaxSource' : path('RouteForYour_grid_action_1')
+            'ajax' : path('route_for_your_datatable_action_1')
             }
     })
 }}
@@ -556,7 +581,7 @@ protected function datatableSecond()
         'id' : 'dta-unique-id_2',
         ...
         'js' : {
-            'sAjaxSource' : path('RouteForYour_grid_action_2')
+            'ajax' : path('route_for_your_datatable_action_2')
         }
     })
 }}
