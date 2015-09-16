@@ -77,10 +77,19 @@ Update/install with this command:
 composer require waldo/datatable-bundle ~2.0
 ```
 
-generate the assets symlinks
+Generate the assets symlinks
 
 ```bash
 app/console assets:install --symlink web
+```
+
+Add the bundle to the `AppKernel.php`
+
+```php
+$bundles = array(
+    \\...
+    new Waldo\DatatableBundle\WaldoDatatableBundle(),
+    )
 ```
 
 ##### Step 3:  Activate the main configs
@@ -91,7 +100,7 @@ In this section you can put the global config that you want to set for all the i
 
 ```
 # app/config/config.yml
-waldodatatable:
+waldo_datatable:
     all:    ~
     js:     ~
 ```
@@ -103,7 +112,7 @@ You can even put javascript code.
 ###### Config sample
 
 ```
-waldodatatable:
+waldo_datatable:
     all:
         action:           true
         search:           false
