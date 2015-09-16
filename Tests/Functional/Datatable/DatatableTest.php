@@ -266,18 +266,6 @@ class DatatableTest extends BaseClient
         $this->assertInternalType('array', $this->datatable->getFields());
     }
 
-    public function test_getHasRendererAction()
-    {
-        $this->datatable
-                ->setEntity('Waldo\DatatableBundle\Tests\Functional\Entity\Product', 'p')
-                ->setFields(
-                        array(
-                            "title"        => 'p.name',
-                            "_identifier_" => 'p.id')
-        );
-        $this->assertInternalType('boolean', $this->datatable->getHasRendererAction());
-    }
-
     public function test_getOrderField()
     {
         $this->datatable
@@ -458,13 +446,26 @@ class DatatableTest extends BaseClient
 
     public function test_filteringType()
     {
-
         $this->initDatatable(array(
-            "sSearch" => "desktop",
-            "bSearchable_0" => "true",
-            "bSearchable_1" => "true",
-            "bSearchable_2" => "true",
-            "bSearchable_3" => "true"
+            "search" => array("regex" => "false", "value" => "desktop"),
+            "columns" => array(
+                0 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                1 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                2 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                3 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    )
+            )
         ));
 
         /* @var $res \Symfony\Component\HttpFoundation\JsonResponse */
@@ -486,9 +487,9 @@ class DatatableTest extends BaseClient
 
         $res = json_decode($res->getContent());
 
-        $this->assertEquals(1, $res->iTotalDisplayRecords);
-        $this->assertEquals(2, $res->iTotalRecords);
-        $this->assertEquals("Desktop", $res->aaData[0][0]);
+        $this->assertEquals(1, $res->recordsFiltered);
+        $this->assertEquals(2, $res->recordsTotal);
+        $this->assertEquals("Desktop", $res->data[0][0]);
     }
 
     public function test_SQLCommandInFields()
@@ -529,10 +530,26 @@ class DatatableTest extends BaseClient
     public function test_getSearchWithSubQuery()
     {
         $this->initDatatable(array(
-            "sSearch" => "Laptop",
-            "bSearchable_0" => true,
-            "bSearchable_1" => true,
-            ));
+            "search" => array("regex" => "false", "value" => "Laptop"),
+            "columns" => array(
+                0 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                1 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                2 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                3 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    )
+            )
+        ));
 
         $this->datatable
                 ->setEntity('Waldo\DatatableBundle\Tests\Functional\Entity\Product', 'p')
@@ -549,7 +566,7 @@ class DatatableTest extends BaseClient
 
         $data = $this->datatable->execute();
 
-        $this->assertEquals('{"sEcho":0,"iTotalRecords":"2","iTotalDisplayRecords":"1","aaData":[["Laptop",1,1]]}', $data->getContent());
+        $this->assertEquals('{"draw":0,"recordsTotal":"2","recordsFiltered":"1","data":[["Laptop",1,1]]}', $data->getContent());
     }
 
     public function test_setRenderders()
@@ -575,7 +592,7 @@ class DatatableTest extends BaseClient
                 ->execute()
         ;
         $json = (array) json_decode($out->getContent());
-        $this->assertContains('form', $json['aaData'][0][1]);
+        $this->assertContains('form', $json['data'][0][1]);
     }
 
     public function test_setRenderer()
@@ -610,7 +627,7 @@ class DatatableTest extends BaseClient
                 ->execute()
         ;
         $json = (array) json_decode($out->getContent());
-        $this->assertContains('form', $json['aaData'][0][1]);
+        $this->assertContains('form', $json['data'][0][1]);
     }
 
     public function test_globalSearch()

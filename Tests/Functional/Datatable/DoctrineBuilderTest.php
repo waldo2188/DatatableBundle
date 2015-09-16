@@ -79,8 +79,25 @@ class DoctrineBuilderTest extends BaseClient
     public function test_addSearch($searchType, $searchString)
     {
         $query = array(
-            "bSearchable_0" => "true",
-            "sSearch_0" => $searchString
+            "search" => array("regex" => "false", "value" => $searchString),
+            "columns" => array(
+                0 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                1 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                2 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+                3 => array(
+                    "searchable" => "true",
+                    "search" => array("regex" => "false", "value" => "")
+                    ),
+            )
         );
 
         $this->initDatatable($query);

@@ -146,7 +146,7 @@ class DoctrineBuilder implements QueryInterface
             $searchName = "sSearch_" . $i;
 
             if($columns[$i]['searchable'] === "true" && $columns[$i]['search']['value'] != "") {
-                
+
                 $queryBuilder->andWhere($queryBuilder->expr()->like($searchField, ":" . $searchName));
 
                 if (array_key_exists($i, $filteringType)) {
@@ -269,7 +269,7 @@ class DoctrineBuilder implements QueryInterface
     public function getData()
     {
         $request = $this->request->getCurrentRequest();
-        $order = $request->query->get('order');
+        $order = $request->query->get('order', array());
 
         $dqlFields = array_values($this->fields);
 

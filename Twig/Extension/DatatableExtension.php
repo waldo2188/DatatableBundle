@@ -129,8 +129,6 @@ class DatatableExtension extends \Twig_Extension
             $dt->getOrderType()
         );
 
-
-
         if ($type == "js") {
             $options['fieldsOptions'] = array(
                 array(

@@ -62,6 +62,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("datatable", $functions[0]->getName());
         $this->assertEquals("datatable_html", $functions[1]->getName());
         $this->assertEquals("datatable_js", $functions[2]->getName());
+        $this->assertEquals("datatable_string_option", $functions[3]->getName());
     }
 
     public function testDatatable()
@@ -91,7 +92,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
         $res = $this->extentsion->datatable($twig, array(
             "id" => "testDatatable",
             "js_conf" => "",
-            "js" => "",
+            "js" => array(),
             "action" => "",
             "action_twig" => "",
             "fields" => "",
@@ -119,7 +120,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $res = $this->extentsion->datatableJs($twig, array(
             "js_conf" => "",
-            "js" => "",
+            "js" => array(),
             "action" => "",
             "action_twig" => "",
             "fields" => "",
@@ -148,7 +149,7 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
         $res = $this->extentsion->datatableHtml($twig, array(
             "html_template" => "myHtmlTemplate",
             "js_conf" => "",
-            "js" => "",
+            "js" => array(),
             "action" => "",
             "action_twig" => "",
             "fields" => "",
@@ -161,6 +162,20 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals("OK", $res);
+    }
+
+    public function testDatatableStringOption()
+    {
+        $dt = $this->getDatatable();
+        $dt->setDatatableId("datatableStringOption");
+
+        $res = $this->extentsion->datatableStringOption("lengthMenu", '[[10, 25, 50, -1], [10, 25, 50, "Tout"]]');
+
+
+        $this->assertEquals("'plip'", $this->extentsion->datatableStringOption("plop", "plip"));
+        $this->assertEquals('[[10, 25, 50, -1], [10, 25, 50, "Tout"]]', $this->extentsion->datatableStringOption("lengthMenu", '[[10, 25, 50, -1], [10, 25, 50, "Tout"]]'));
+        $this->assertEquals('true', $this->extentsion->datatableStringOption("plop", true));
+        $this->assertEquals('false', $this->extentsion->datatableStringOption("plop", false));
     }
 
     private function getDatatable()
