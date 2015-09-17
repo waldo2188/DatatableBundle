@@ -44,9 +44,7 @@ class DatatableExtension extends \Twig_Extension
             new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'),
                     array("is_safe" => array("html"), 'needs_environment' => true)),
             new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'),
-                    array("is_safe" => array("html"), 'needs_environment' => true)),
-            new \Twig_SimpleFunction('datatable_string_option', array($this, 'datatableStringOption'),
-                    array("is_safe" => array("html")))
+                    array("is_safe" => array("html"), 'needs_environment' => true))
         );
     }
 
@@ -130,23 +128,24 @@ class DatatableExtension extends \Twig_Extension
         );
 
         if ($type == "js") {
-            $options['fieldsOptions'] = array(
-                array(
-                    "type" => "visible",
-                    "value" => "false",
-                    "target" => $dt->getHiddenFields()
-                ),
-                array(
-                    "type" => "orderable",
-                    "value" => "false",
-                    "target" => $dt->getNotSortableFields()
-                ),
-                array(
-                    "type" => "searchable",
-                    "value" => "false",
-                    "target" => $dt->getNotFilterableFields()
-                )
-            );
+            if (count($dt->getHiddenFields()) > 0) {
+                $options['js']['columnDefs'][] = array(
+                    "visible" => "false",
+                    "targets" => $dt->getHiddenFields()
+                );
+            }
+            if (count($dt->getNotSortableFields()) > 0) {
+                $options['js']['columnDefs'] = array(
+                            "orderable" => "false",
+                            "targets" => $dt->getNotSortableFields()
+                );
+            }
+            if (count($dt->getNotFilterableFields()) > 0) {
+                $options['js']['columnDefs'] = array(
+                            "searchable" => "false",
+                            "targets" => $dt->getNotFilterableFields()
+                );
+            }
         }
 
         return $options;
@@ -173,7 +172,18 @@ class DatatableExtension extends \Twig_Extension
             return $value;
         }
 
-        return sprintf("'%s'", $value);
+//        dump($value);
+//        dump(stripos($value, '"'));
+//        dump(stripos($value, '\"'));
+//        dump(stripos($value, '\"') === false);
+//        exit;
+//
+//        if(stripos($value, '"') && stripos($value, '\\"') === false) {
+//
+//        }
+
+        return sprintf('"%s"', $value);
+//        return sprintf("'%s'", $value);
     }
 
     /**

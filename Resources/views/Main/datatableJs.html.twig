@@ -3,10 +3,7 @@
 {% spaceless %}
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#{{ id }}').DataTable({
-    {% for key, value in js %}{{ key }}:{{ datatable_string_option(key, value)|raw }}{% if not loop.last %},{% endif %}{% endfor %},
-    columnDefs:[{% for fieldOptions in fieldsOptions %}{% if fieldOptions.target|length > 0 %}{targets:[{{ fieldOptions.target|join(',') }}], {{ fieldOptions.type }}:{{ fieldOptions.value }}}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}]
-    });
+    $('#{{ id }}').DataTable({{ js|json_encode()|raw }});
 });
 {% if multiple %}
 {% include "WaldoDatatableBundle:Snippet:multipleRaw.js.twig" %}

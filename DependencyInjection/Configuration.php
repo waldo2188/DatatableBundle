@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('js')
                     ->useAttributeAsKey('name')
-                    ->prototype('scalar')
+                    ->prototype('variable')
                     ->end()
                 ->end()
             ->end()
