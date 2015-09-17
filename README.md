@@ -454,34 +454,18 @@ private function datatable()
 
 ### Translation
 
-You can set your own translated labels by adding in your translation catalog entries as below:
+You can set your own translated labels by adding in your translation catalog entries as define in `Resources/translations/messages.en.yml`
 
-```
-ali:
-    common:
-        are_you_sure: Are you sure ?
-        you_need_to_select_at_least_one_element: You need to select at least one element.
-        confirm_delete: "Are you sure to delete this item ?"
-        delete: delete
-        edit: edit
-        no_action: "(can't remove)"
-        sProcessing: "Processing..."
-        sLengthMenu: "Show _MENU_ entries"
-        sZeroRecords: "No matching records found"
-        sInfo: "Showing _START_ to _END_ of _TOTAL_ entries"
-        sInfoEmpty: "Showing 0 to 0 of 0 entries"
-        sInfoFiltered: "(filtered from _MAX_ total entries)"
-        sInfoPostFix: ""
-        sSearch: "Search:"
-        sLoadingRecords: ""
-        sFirst: "First"
-        sPrevious: "Previous"
-        sNext: "Next"
-        sLast: "Last"
-        search: "Search"
+You can also get the translated labels from *official datatable translation* repository, by configuring the bundle like below :
+```yaml
+waldo_datatable:
+    all:    ~
+    js:
+        language:
+            url: "//cdn.datatables.net/plug-ins/1.10.9/i18n/Chinese.json"
 ```
 
-This bundle includes nine translation catalogs: Arabic, Chinese, Dutch, English, Spanish, French, Italian, Russian and Turkish
+This bundle includes nine translation catalogs: Arabic, Chinese, Dutch, English, Spanish, French, Italian, Polish, Russian and Turkish
 To get more translated entries, you can follow the [official datatable translation](https://datatables.net/manual/i18n)
 
 

@@ -1,20 +1,28 @@
-ali:
+datatable:
     common:
-        confirm_delete: "Bu öğeyi silmek istediğinizden emin misiniz?"
-        delete: Sil
-        edit: Düzenle
-        no_action: "(Silemezsiniz)"
-        sProcessing:   "İşleniyor..."
-        sLengthMenu:   "Sayfada _MENU_ Kayıt Göster"
-        sZeroRecords:  "Eşleşen Kayıt Bulunmadı"
-        sInfo:         "  _TOTAL_ Kayıttan _START_ - _END_ Arası Kayıtlar"
-        sInfoEmpty:    "Kayıt Yok"
-        sInfoFiltered: "( _MAX_ Kayıt İçerisinden Bulunan)"
-        sInfoPostFix:  ""
-        sSearch:       "Bul:"
-        sFirst:    "İlk"
-        sPrevious: "Önceki"
-        sNext:     "Sonraki"
-        sLast:     "Son"
-        search:   "Arama"
+        are_you_sure: Emin misiniz
+        you_need_to_select_at_least_one_element: En az bir eleman seçmeniz gerekir.
+        search: Bul
+        execute: "Yürütme"
+        ok: "OK"
+    datatable:
+        emptyTable:     ""
+        info:           " _TOTAL_ Kayıttan _START_ - _END_ Arası Kayıtlar"
+        infoEmpty:      "Kayıt Yok"
+        infoFiltered:   "( _MAX_ Kayıt İçerisinden Bulunan)"
+        infoPostFix:    ""
+        infoThousands:  ","
+        lengthMenu:     "Sayfada _MENU_ Kayıt Göster"
+        loadingRecords: ""
+        processing:     "İşleniyor..."
+        search:         "Bul:"
+        zeroRecords:    "Eşleşen Kayıt Bulunmadı"
+        paginate:
+            first:    "İlk"
+            last:     "Son"
+            next:     "Sonraki"
+            previous: "Önceki"
+        aria:
+            sortAscending:  ": activate to sort column ascending"
+            sortDescending: ": activate to sort column descending"
 

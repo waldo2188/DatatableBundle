@@ -1,5 +1,5 @@
 $('#{{ id }}').one('draw.dt', function() {
-    var multiple_rawhtml = '<label class="dataTables_multiple"><span style="margin:0 40px 0 0px;">Execute<select name="dataTables[select]">{% for key,item in multiple %}<option value="{{ path(item.route) }}">{{ item.title }}</option>{% endfor %}</select><button class="btn-datatable-multiple" >OK</button><span></label>';
+var multiple_rawhtml = '<label class="dataTables_multiple"><span style="margin:0 40px 0 0px;">{% trans %}datatable.common.execute{% endtrans %}<select name="dataTables[select]">{% for key,item in multiple %}<option value="{{ path(item.route) }}">{{ item.title }}</option>{% endfor %}</select><button class="btn-datatable-multiple" >{% trans %}datatable.common.ok{% endtrans %}</button><span></label>';
     if((el = $('#{{ id }}_wrapper div[id^="{{ id }}"]')).length > 0 ) {
         $(el[0]).prepend(multiple_rawhtml);
     }
@@ -16,7 +16,7 @@ $('#{{ id }}').one('draw.dt', function() {
         e.preventDefault();
 
         if($('{{ chbox }}:checked').length > 0){
-            if (!confirm('{% trans %}ali.common.are_you_sure{% endtrans %}')) {
+            if (!confirm('{% trans %}datatable.common.are_you_sure{% endtrans %}')) {
                 return false;
             }
 
@@ -32,7 +32,7 @@ $('#{{ id }}').one('draw.dt', function() {
                 }
             });
         } else {
-            alert('{% trans %}ali.common.you_need_to_select_at_least_one_element{% endtrans %}');
+            alert('{% trans %}datatable.common.you_need_to_select_at_least_one_element{% endtrans %}');
         }
     });
 

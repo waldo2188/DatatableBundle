@@ -3,37 +3,32 @@
 namespace Waldo\DatatableBundle\Twig\Extension;
 
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Waldo\DatatableBundle\Util\Datatable;
 
 class DatatableExtension extends \Twig_Extension
 {
-
     /**
-     * Any value referenced here are Datatable's options giving the value is an object or an array
-     *
-     * @see https://datatables.net/reference/option/
-     * @var array
-     */
-    private $datatableObjectValuedOption = array(
-            "lengthMenu"
-        );
-
-    /**
-     * @var EngineInterface
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
     /**
-     * class constructor
-     *
-     * @param FormFactoryInterface $formFactory
+     * @var TranslatorInterface
      */
-    public function __construct(FormFactoryInterface $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
+    protected $translator;
 
     /**
+     * @param FormFactoryInterface$formFactory
+     * @param DataCollectorTranslator $translator
+     */
+    public function __construct(FormFactoryInterface $formFactory, TranslatorInterface $translator)
+    {
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+    }
+
+        /**
      * {@inheritdoc}
      */
     public function getFunctions()
@@ -146,44 +141,41 @@ class DatatableExtension extends \Twig_Extension
                             "targets" => $dt->getNotFilterableFields()
                 );
             }
+
+            $this->buildTranslation($options);
         }
 
         return $options;
     }
 
-    /**
-     * Some Datatable's option need to be surronded by an apostrophe an other need to be print as raw, like an array.
-     *
-     * @param string $optionName
-     * @param mix $value
-     * @return string
-     */
-    public function datatableStringOption($optionName, $value)
+    private function buildTranslation(&$options)
     {
-        if(is_bool($value)) {
-            if($value === true) {
-                return 'true';
-            } else {
-                return 'false';
-            }
+        if(array_key_exists("language", $options['js'])) {
+            return ;
         }
 
-        if(in_array($optionName, $this->datatableObjectValuedOption) || is_int($value)) {
-            return $value;
-        }
-
-//        dump($value);
-//        dump(stripos($value, '"'));
-//        dump(stripos($value, '\"'));
-//        dump(stripos($value, '\"') === false);
-//        exit;
-//
-//        if(stripos($value, '"') && stripos($value, '\\"') === false) {
-//
-//        }
-
-        return sprintf('"%s"', $value);
-//        return sprintf("'%s'", $value);
+        $options['js']['language'] = array(
+                "processing" =>     $this->translator->trans("datatable.datatable.processing"),
+                "search"=>          $this->translator->trans("datatable.datatable.search"),
+                "lengthMenu"=>      $this->translator->trans("datatable.datatable.lengthMenu"),
+                "info"=>            $this->translator->trans("datatable.datatable.info"),
+                "infoEmpty"=>       $this->translator->trans("datatable.datatable.infoEmpty"),
+                "infoFiltered"=>    $this->translator->trans("datatable.datatable.infoFiltered"),
+                "infoPostFix"=>     $this->translator->trans("datatable.datatable.infoPostFix"),
+                "loadingRecords"=>  $this->translator->trans("datatable.datatable.loadingRecords"),
+                "zeroRecords"=>     $this->translator->trans("datatable.datatable.zeroRecords"),
+                "emptyTable"=>      $this->translator->trans("datatable.datatable.emptyTable"),
+                "paginate"=> array (
+                    "first"=>       $this->translator->trans("datatable.datatable.paginate.first"),
+                    "previous"=>    $this->translator->trans("datatable.datatable.paginate.previous"),
+                    "next"=>        $this->translator->trans("datatable.datatable.paginate.next"),
+                    "last"=>        $this->translator->trans("datatable.datatable.paginate.last")
+                ),
+                "aria"=> array(
+                    "sortAscending"=>  $this->translator->trans("datatable.datatable.aria.sortAscending"),
+                    "sortDescending"=> $this->translator->trans("datatable.datatable.aria.sortDescending")
+                )
+            );
     }
 
     /**

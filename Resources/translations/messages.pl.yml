@@ -1,20 +1,27 @@
-ali:
+datatable:
     common:
-        confirm_delete: "Czy na pewno usunąć ten wpis?"
-        delete: usuń
-        edit: edytuj
-        no_action: "(nie można usunąć)"
-        sProcessing: "Przetwarzanie ..."
-        sLengthMenu: "Pokaż _MENU_ wpisów"
-        sZeroRecords: "Brak pasujących rekordów"
-        sInfo: "_START_ - _END_ z _TOTAL_"
-        sInfoEmpty: "Brak wpisów"
-        sInfoFiltered: "(przefiltrowano z _MAX_ wpisów)"
-        sInfoPostFix: ""
-        sSearch: "Szukaj:"
-        sLoadingRecords: ""
-        sFirst: "Pierwszy"
-        sPrevious: "Poprzedni"
-        sNext: "Następny"
-        sLast: "Ostatni"
-        search: "Szukaj"
+        are_you_sure: Jesteś pewny ?
+        you_need_to_select_at_least_one_element: Musisz wybrać co najmniej jeden element.
+        search: Szukaj
+        execute: "Wykonać"
+        ok: "OK"
+    datatable:
+        emptyTable:     "Brak danych"
+        info:           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie"
+        infoEmpty:      "Pozycji 0 z 0 dostępnych"
+        infoFiltered:   "(filtrowanie spośród _MAX_ dostępnych pozycji)"
+        infoPostFix:    ""
+        infoThousands:  " "
+        lengthMenu:     "Pokaż _MENU_ pozycji"
+        loadingRecords: "Wczytywanie..."
+        processing:     "Przetwarzanie..."
+        search:         "Szukaj:"
+        zeroRecords:    "Nie znaleziono pasujących pozycji"
+        paginate:
+            first:    "Pierwsza"
+            last:     "Ostatnia"
+            next:     "Następna"
+            previous: "Poprzednia"
+        aria:
+            sortAscending:  ": aktywuj, by posortować kolumnę rosnąco"
+            sortDescending: ": aktywuj, by posortować kolumnę malejąco"
