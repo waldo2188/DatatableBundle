@@ -1,5 +1,4 @@
 {% block main %}
-    {{ dump(searchFields is empty) }}
 {% if multiple %}<form name="frm-{{ id }}">{% endif %}
     <table class="{{ class|default('display table table-bordered') }}" id="{{ id }}">
         <thead>
