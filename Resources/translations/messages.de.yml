@@ -6,6 +6,7 @@ datatable:
         execute: "Ausführen"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     "Geen resultaten aanwezig in de tabel"
         info:           "_START_ tot _END_ van _TOTAL_ resultaten"
         infoEmpty:      "Geen resultaten om weer te geven"

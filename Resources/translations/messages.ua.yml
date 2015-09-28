@@ -6,6 +6,7 @@ datatable:
         execute: "виконувати"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     ""
         info:           "Записи з _START_ по _END_ із _TOTAL_ записів"
         infoEmpty:      "Записи з 0 по 0 із 0 записів"

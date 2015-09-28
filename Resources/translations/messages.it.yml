@@ -6,6 +6,7 @@ datatable:
         execute: "Eseguire"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     "Nessun dato presente nella tabella"
         info:           "Vista da _START_ a _END_ di _TOTAL_ elementi"
         infoEmpty:      "Vista da 0 a 0 di 0 elementi"

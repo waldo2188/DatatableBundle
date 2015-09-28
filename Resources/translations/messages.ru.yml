@@ -6,6 +6,7 @@ datatable:
         execute: "выполнять"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     "В таблице отсутствуют данные"
         info:           "Записи с _START_ до _END_ из _TOTAL_ записей"
         infoEmpty:      "Записи с 0 до 0 из 0 записей"

@@ -96,7 +96,6 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $res = $this->extentsion->datatable($twig, array(
             "id" => "testDatatable",
-            "js_conf" => "",
             "js" => array(),
             "action" => "",
             "action_twig" => "",
@@ -124,7 +123,6 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
                 ->willReturn("OK");
 
         $res = $this->extentsion->datatableJs($twig, array(
-            "js_conf" => "",
             "js" => array(),
             "action" => "",
             "action_twig" => "",
@@ -136,6 +134,49 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
             "multiple" => "",
             "sort" => ""
         ));
+
+        $this->assertEquals("OK", $res);
+    }
+
+    public function testDatatableJsTranslation()
+    {
+        $dt = $this->getDatatable();
+        $dt->setDatatableId("testDatatableJsTranslation");
+
+        $twig = $this->getMock("\Twig_Environment");
+        $twig->expects($this->once())
+                ->method("render")
+                ->with(
+                        $this->equalTo("WaldoDatatableBundle:Main:datatableJs.html.twig"),
+                        $this->callback(function($option){
+
+                            return $option['js']['language']["searchPlaceholder"] === "find Me" &&
+                                 $option['js']['language']["paginate"]["first"] === "coucou" &&
+                                 array_key_exists("next", $option['js']['language']["paginate"])
+                                 ;
+
+                        })
+                        )
+                ->willReturn("OK");
+
+        $res = $this->extentsion->datatableJs($twig, array(
+            "js" => array("language" => array(
+                "searchPlaceholder" => "find Me",
+                "paginate" => array(
+                    "first" => "coucou"
+                )
+            )),
+            "action" => "",
+            "action_twig" => "",
+            "fields" => "",
+            "delete_form" => "",
+            "search" => "",
+            "global_search" => "",
+            "searchFields" => "",
+            "multiple" => "",
+            "sort" => ""
+        ));
+
 
         $this->assertEquals("OK", $res);
     }
@@ -153,7 +194,6 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $res = $this->extentsion->datatableHtml($twig, array(
             "html_template" => "myHtmlTemplate",
-            "js_conf" => "",
             "js" => array(),
             "action" => "",
             "action_twig" => "",

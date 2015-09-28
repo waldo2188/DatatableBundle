@@ -6,6 +6,7 @@ datatable:
         execute: تنفيذ
         ok: حسنا
     datatable:
+        searchPlaceholder: ""
         processing:   "جاري التحميل..."
         lengthMenu:   "أظهر مُدخلات _MENU_"
         zeroRecords:  "لم يُعثر على أية سجلات"

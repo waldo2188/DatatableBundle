@@ -6,6 +6,7 @@ datatable:
         execute: "Yürütme"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     ""
         info:           " _TOTAL_ Kayıttan _START_ - _END_ Arası Kayıtlar"
         infoEmpty:      "Kayıt Yok"

@@ -6,6 +6,7 @@ datatable:
         execute: Exécuter
         ok: OK
     datatable:
+        searchPlaceholder: ""
         processing:     "Traitement en cours..."
         search:         "Rechercher&nbsp;:"
         lengthMenu:     "Afficher _MENU_ &eacute;l&eacute;ments"

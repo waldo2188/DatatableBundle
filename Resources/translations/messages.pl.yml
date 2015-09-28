@@ -6,6 +6,7 @@ datatable:
         execute: "Wykonać"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     "Brak danych"
         info:           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie"
         infoEmpty:      "Pozycji 0 z 0 dostępnych"

@@ -5,9 +5,13 @@ namespace Waldo\DatatableBundle\Twig\Extension;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Waldo\DatatableBundle\Util\Datatable;
+use Waldo\DatatableBundle\Util\ArrayMerge;
 
 class DatatableExtension extends \Twig_Extension
 {
+
+    use ArrayMerge;
+
     /**
      * @var FormFactoryInterface
      */
@@ -150,11 +154,11 @@ class DatatableExtension extends \Twig_Extension
 
     private function buildTranslation(&$options)
     {
-        if(array_key_exists("language", $options['js'])) {
-            return ;
+        if(!array_key_exists("language", $options['js'])) {
+            $options['js'] = array('language' => array());
         }
 
-        $options['js']['language'] = array(
+        $baseLanguage = array(
                 "processing" =>     $this->translator->trans("datatable.datatable.processing"),
                 "search"=>          $this->translator->trans("datatable.datatable.search"),
                 "lengthMenu"=>      $this->translator->trans("datatable.datatable.lengthMenu"),
@@ -165,6 +169,7 @@ class DatatableExtension extends \Twig_Extension
                 "loadingRecords"=>  $this->translator->trans("datatable.datatable.loadingRecords"),
                 "zeroRecords"=>     $this->translator->trans("datatable.datatable.zeroRecords"),
                 "emptyTable"=>      $this->translator->trans("datatable.datatable.emptyTable"),
+                "searchPlaceholder" => $this->translator->trans("datatable.datatable.searchPlaceholder"),
                 "paginate"=> array (
                     "first"=>       $this->translator->trans("datatable.datatable.paginate.first"),
                     "previous"=>    $this->translator->trans("datatable.datatable.paginate.previous"),
@@ -174,8 +179,9 @@ class DatatableExtension extends \Twig_Extension
                 "aria"=> array(
                     "sortAscending"=>  $this->translator->trans("datatable.datatable.aria.sortAscending"),
                     "sortDescending"=> $this->translator->trans("datatable.datatable.aria.sortDescending")
-                )
-            );
+                ));
+
+        $options['js']['language'] = $this->arrayMergeRecursiveDistinct($baseLanguage, $options['js']['language']);
     }
 
     /**

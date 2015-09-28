@@ -6,6 +6,7 @@ datatable:
         execute: "执"
         ok: "OK"
     datatable:
+        searchPlaceholder: ""
         emptyTable:     "表中数据为空"
         info:           "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项"
         infoEmpty:      "显示第 0 至 0 项结果，共 0 项"
