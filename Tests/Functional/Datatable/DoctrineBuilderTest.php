@@ -93,10 +93,6 @@ class DoctrineBuilderTest extends BaseClient
                     "searchable" => "true",
                     "search" => array("regex" => "false", "value" => "")
                     ),
-                3 => array(
-                    "searchable" => "true",
-                    "search" => array("regex" => "false", "value" => "")
-                    ),
             )
         );
 

@@ -108,11 +108,14 @@ class DoctrineBuilder implements QueryInterface
 
         $request = $this->request->getCurrentRequest();
 
-        $searchFields = array_values($this->fields);
-        $globalSearch = $request->query->get('search');
         $columns = $request->query->get('columns');
 
+        $searchFields = array_intersect_key(array_values($this->fields), $columns);
+
+        $globalSearch = $request->query->get('search');
+
         $orExpr = $queryBuilder->expr()->orX();
+
         $filteringType = $this->getFilteringType();
 
         foreach ($searchFields as $i => $searchField) {
@@ -120,25 +123,22 @@ class DoctrineBuilder implements QueryInterface
             $searchField = $this->getSearchField($searchField);
 
             // Global filtering
-            if (!empty($globalSearch) || $globalSearch['value'] == '0') {
+            if ((!empty($globalSearch) || $globalSearch['value'] == '0') && $columns[$i]['searchable'] === "true") {
 
-                if($columns[$i]['searchable'] === "true") {
+                $qbParam = "sSearch_global_" . $i;
 
-                    $qbParam = "sSearch_global_" . $i;
+                if ($this->isStringDQLQuery($searchField)) {
 
-                    if ($this->isStringDQLQuery($searchField)) {
+                    $orExpr->add(
+                            $queryBuilder->expr()->eq($searchField, ':' . $qbParam)
+                    );
+                    $queryBuilder->setParameter($qbParam, $globalSearch['value']);
 
-                        $orExpr->add(
-                                $queryBuilder->expr()->eq($searchField, ':' . $qbParam)
-                        );
-                        $queryBuilder->setParameter($qbParam, $globalSearch['value']);
+                } else {
 
-                    } else {
+                    $orExpr->add($queryBuilder->expr()->like($searchField, ":" . $qbParam));
+                    $queryBuilder->setParameter($qbParam, "%" . $globalSearch['value'] . "%");
 
-                        $orExpr->add($queryBuilder->expr()->like($searchField, ":" . $qbParam));
-                        $queryBuilder->setParameter($qbParam, "%" . $globalSearch['value'] . "%");
-
-                    }
                 }
             }
 
