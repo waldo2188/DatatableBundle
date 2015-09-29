@@ -108,7 +108,7 @@ class DoctrineBuilder implements QueryInterface
 
         $request = $this->request->getCurrentRequest();
 
-        $columns = $request->query->get('columns');
+        $columns = $request->query->get('columns', array());
 
         $searchFields = array_intersect_key(array_values($this->fields), $columns);
 
@@ -170,7 +170,7 @@ class DoctrineBuilder implements QueryInterface
             }
         }
 
-        if (!empty($globalSearch) || $globalSearch == '0') {
+        if ((!empty($globalSearch) || $globalSearch == '0') && $orExpr->count() > 0) {
             $queryBuilder->andWhere($orExpr);
         }
     }
