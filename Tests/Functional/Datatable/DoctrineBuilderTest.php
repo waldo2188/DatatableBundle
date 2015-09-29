@@ -127,6 +127,45 @@ class DoctrineBuilderTest extends BaseClient
         $this->assertEquals("Laptop", $res[0][0][0]);
     }
 
+    /**
+     * @dataProvider providerAddSearch
+     */
+    public function test_addSearchWithoutColumns($searchType, $searchString)
+    {
+        $query = array(
+            "search" => array("regex" => "false", "value" => $searchString)
+            );
+
+        $this->initDatatable($query);
+
+        $requestStack = $this->getRequestStackMock();
+        $requestStack->expects($this->any())
+                ->method("getCurrentRequest")
+                ->willReturn(new Request($query));
+
+        $doctrineBuilder = new DoctrineBuilder($this->em, $requestStack);
+
+        $doctrineBuilder->setFields(array(
+                    "name" => "p.name",
+                    "description" => "p.description",
+                    "price" => "p.price",
+                    "_identifier_" => "p.id"
+                ))
+                ->setEntity("Waldo\DatatableBundle\Tests\Functional\Entity\Product", "p")
+                ->setSearch(true)
+                ;
+
+        if($searchType !== null) {
+            $doctrineBuilder->setFilteringType(array(
+                    0 => $searchType
+                ));
+        }
+
+        $res = $doctrineBuilder->getData();
+
+        $this->assertGreaterThan(1, $res[0]);
+    }
+
     public function test_setDoctrineQueryBuilder()
     {
         $this->initDatatable();
