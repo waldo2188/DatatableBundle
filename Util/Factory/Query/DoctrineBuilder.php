@@ -108,11 +108,11 @@ class DoctrineBuilder implements QueryInterface
 
         $request = $this->request->getCurrentRequest();
 
-        $columns = $request->query->get('columns', array());
+        $columns = $request->get('columns', array());
 
         $searchFields = array_intersect_key(array_values($this->fields), $columns);
 
-        $globalSearch = $request->query->get('search');
+        $globalSearch = $request->get('search');
 
         $orExpr = $queryBuilder->expr()->orX();
 

@@ -127,29 +127,41 @@ class DatatableExtension extends \Twig_Extension
         );
 
         if ($type == "js") {
-            if (count($dt->getHiddenFields()) > 0) {
-                $options['js']['columnDefs'][] = array(
-                    "visible" => "false",
-                    "targets" => $dt->getHiddenFields()
-                );
-            }
-            if (count($dt->getNotSortableFields()) > 0) {
-                $options['js']['columnDefs'] = array(
-                            "orderable" => "false",
-                            "targets" => $dt->getNotSortableFields()
-                );
-            }
-            if (count($dt->getNotFilterableFields()) > 0) {
-                $options['js']['columnDefs'] = array(
-                            "searchable" => "false",
-                            "targets" => $dt->getNotFilterableFields()
-                );
-            }
-
-            $this->buildTranslation($options);
+            $this->buildJs($options, $dt);
         }
 
         return $options;
+    }
+
+    private function buildJs(&$options, $dt)
+    {
+        if(array_key_exists("ajax", $options['js']) && !is_array($options['js']['ajax'])) {
+            $options['js']['ajax'] = array(
+                "url" => $options['js']['ajax'],
+                "type" => "POST"
+            );
+        }
+
+        if (count($dt->getHiddenFields()) > 0) {
+            $options['js']['columnDefs'][] = array(
+                "visible" => "false",
+                "targets" => $dt->getHiddenFields()
+            );
+        }
+        if (count($dt->getNotSortableFields()) > 0) {
+            $options['js']['columnDefs'] = array(
+                "orderable" => "false",
+                "targets" => $dt->getNotSortableFields()
+            );
+        }
+        if (count($dt->getNotFilterableFields()) > 0) {
+            $options['js']['columnDefs'] = array(
+                "searchable" => "false",
+                "targets" => $dt->getNotFilterableFields()
+            );
+        }
+
+        $this->buildTranslation($options);
     }
 
     private function buildTranslation(&$options)
