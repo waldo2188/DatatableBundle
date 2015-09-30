@@ -167,7 +167,7 @@ class DatatableExtension extends \Twig_Extension
     private function buildTranslation(&$options)
     {
         if(!array_key_exists("language", $options['js'])) {
-            $options['js'] = array('language' => array());
+            $options['js']['language'] = array();
         }
 
         $baseLanguage = array(
