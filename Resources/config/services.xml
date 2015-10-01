@@ -6,16 +6,16 @@
 
     <services>
 
-        <service id="datatable.renderer" class="Waldo\DatatableBundle\Util\Formatter\Renderer">
+        <service id="datatable.renderer" class="Waldo\DatatableBundle\Util\Formatter\Renderer" scope="prototype">
             <argument type="service" id="templating" />
         </service>
 
-        <service id="datatable.doctrine_builder" class="Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder">
+        <service id="datatable.doctrine_builder" class="Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder" scope="prototype">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="request_stack" />
         </service>
 
-        <service id="datatable" class="Waldo\DatatableBundle\Util\Datatable">
+        <service id="datatable" class="Waldo\DatatableBundle\Util\Datatable" scope="prototype">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="datatable.doctrine_builder" />
