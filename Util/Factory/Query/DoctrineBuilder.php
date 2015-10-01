@@ -311,9 +311,11 @@ class DoctrineBuilder implements QueryInterface
 
         // get results and process data formatting
         $query = $qb->getQuery();
-        $iDisplayLength = $request->query->getInt('length');
-        if ($iDisplayLength > 0) {
-            $query->setMaxResults($iDisplayLength)->setFirstResult($request->query->getInt('start'));
+        $length = (int) $request->get('length', 0);
+
+        if ($length > 0) {
+            $query->setMaxResults($length)
+                    ->setFirstResult((int) $request->get('start'));
         }
 
         $objects = $query->getResult(Query::HYDRATE_OBJECT);
