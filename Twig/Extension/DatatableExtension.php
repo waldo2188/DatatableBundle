@@ -144,19 +144,19 @@ class DatatableExtension extends \Twig_Extension
 
         if (count($dt->getHiddenFields()) > 0) {
             $options['js']['columnDefs'][] = array(
-                "visible" => "false",
+                "visible" => false,
                 "targets" => $dt->getHiddenFields()
             );
         }
         if (count($dt->getNotSortableFields()) > 0) {
-            $options['js']['columnDefs'] = array(
-                "orderable" => "false",
+            $options['js']['columnDefs'][] = array(
+                "orderable" => false,
                 "targets" => $dt->getNotSortableFields()
             );
         }
         if (count($dt->getNotFilterableFields()) > 0) {
-            $options['js']['columnDefs'] = array(
-                "searchable" => "false",
+            $options['js']['columnDefs'][] = array(
+                "searchable" => false,
                 "targets" => $dt->getNotFilterableFields()
             );
         }

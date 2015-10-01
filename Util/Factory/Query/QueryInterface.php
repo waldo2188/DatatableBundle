@@ -116,14 +116,15 @@ interface QueryInterface
      *              \Doctrine\ORM\Query\Expr\Join::INNER_JOIN,
      *              'e.name like %test%')
      *
-     * @param string $join_field
-     * @param string $alias
-     * @param string $type
-     * @param string $cond
+     * @param string      $join          The relationship to join.
+     * @param string      $alias         The alias of the join.
+     * @param string|Join::INNER_JOIN    $type The type of the join Join::INNER_JOIN | Join::LEFT_JOIN
+     * @param string|null $conditionType The condition type constant. Either ON or WITH.
+     * @param string|null $condition     The condition for the join.
      *
      * @return Datatable
      */
-    function addJoin($join_field, $alias, $type = Join::INNER_JOIN, $cond = '');
+    public function addJoin($join, $alias, $type = Join::INNER_JOIN, $conditionType = null, $condition = null);
 
     /**
      * set filtering type

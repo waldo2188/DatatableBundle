@@ -162,9 +162,9 @@ class Datatable
      *
      * @return Datatable
      */
-    public function addJoin($joinField, $alias, $type = Join::INNER_JOIN, $cond = '')
+    public function addJoin($join, $alias, $type = Join::INNER_JOIN, $conditionType = null, $condition = null)
     {
-        $this->queryBuilder->addJoin($joinField, $alias, $type, $cond);
+        $this->queryBuilder->addJoin($join, $alias, $type, $conditionType, $condition);
         return $this;
     }
 
@@ -735,5 +735,4 @@ class Datatable
         $this->queryBuilder->setFilteringType($filteringType);
         return $this;
     }
-
 }

@@ -185,18 +185,25 @@ class DoctrineBuilder implements QueryInterface
      *              \Doctrine\ORM\Query\Expr\Join::INNER_JOIN,
      *              'e.name like %test%')
      *
-     * @param string $join_field
-     * @param string $alias
-     * @param string $type
-     * @param string $condition
+     * @param string      $join          The relationship to join.
+     * @param string      $alias         The alias of the join.
+     * @param string|Join::INNER_JOIN    $type The type of the join Join::INNER_JOIN | Join::LEFT_JOIN
+     * @param string|null $conditionType The condition type constant. Either ON or WITH.
+     * @param string|null $condition     The condition for the join.
      *
      * @return Datatable
      */
-    public function addJoin($join_field, $alias, $conditionType = Join::INNER_JOIN, $condition = '')
+    public function addJoin($join, $alias, $type = Join::INNER_JOIN, $conditionType = null, $condition = null)
     {
-        $this->queryBuilder->join($join_field, $alias, $conditionType, $condition);
 
-        $this->joins[] = array($join_field, $alias, $conditionType, $condition);
+
+        if($type === Join::INNER_JOIN) {
+            $this->queryBuilder->innerJoin($join, $alias, $conditionType, $condition);
+        } elseif($type === Join::LEFT_JOIN) {
+            $this->queryBuilder->leftJoin($join, $alias, $conditionType, $condition);
+        }
+
+        $this->joins[] = array($join, $alias, $type, $conditionType, $condition);
 
         return $this;
     }
