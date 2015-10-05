@@ -276,7 +276,7 @@ class DoctrineBuilder implements QueryInterface
     public function getData()
     {
         $request = $this->request->getCurrentRequest();
-        $order = $request->query->get('order', array());
+        $order = $request->get('order', array());
 
         $dqlFields = array_values($this->fields);
 
