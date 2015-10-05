@@ -117,13 +117,16 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
         $dt->setDatatableId("testDatatableJs");
 
         $twig = $this->getMock("\Twig_Environment");
-        $twig->expects($this->once())
+        $twig->expects($this->any())
                 ->method("render")
                 ->with($this->equalTo("WaldoDatatableBundle:Main:datatableJs.html.twig"))
-                ->willReturn("OK");
+                ->willReturnArgument(1);
 
-        $res = $this->extentsion->datatableJs($twig, array(
-            "js" => array(),
+        $configRow = array(
+            "js" => array(
+                'dom'=> "<'row'<'span6'fr>>t<'row'<'span7'il><'span5 align-right'p>>",
+                'ajax'=> "urlDatatable"
+            ),
             "action" => "",
             "action_twig" => "",
             "fields" => "",
@@ -133,9 +136,20 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
             "searchFields" => "",
             "multiple" => "",
             "sort" => ""
-        ));
+        );
 
-        $this->assertEquals("OK", $res);
+        $res = $this->extentsion->datatableJs($twig, $configRow);
+
+
+        $this->assertEquals("<'row'<'span6'fr>>t<'row'<'span7'il><'span5 align-right'p>>", $res['js']['dom']);
+        $this->assertEquals("urlDatatable", $res['js']['ajax']['url']);
+        $this->assertTrue($res['js']['paging']);
+
+        $configRow["js"]['paging'] = false;
+
+        $res = $this->extentsion->datatableJs($twig, $configRow);
+
+        $this->assertFalse($res['js']['paging']);
     }
 
     public function testDatatableJsTranslation()
@@ -216,7 +230,9 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->getMockBuilder("Symfony\Component\HttpFoundation\RequestStack")->disableOriginalConstructor()->getMock(),
                 $this->getMockBuilder("Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder")->disableOriginalConstructor()->getMock(),
                 $this->getMockBuilder("Waldo\DatatableBundle\Util\Formatter\Renderer")->disableOriginalConstructor()->getMock(),
-                array("js" => array())
+                array("js" => array(
+                    'paging' => true
+                ))
                 );
     }
 }

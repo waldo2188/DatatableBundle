@@ -139,7 +139,7 @@ class DatatableExtension extends \Twig_Extension
 
         $config = $dt->getConfiguration();
 
-        $options['js'] = array_merge($options['js'], $config['js']);
+        $options['js'] = array_merge($config['js'], $options['js']);
         $options['fields'] = $dt->getFields();
         $options['delete_form'] = $this->createDeleteForm('_id_')->createView();
         $options['search'] = $dt->getSearch();
