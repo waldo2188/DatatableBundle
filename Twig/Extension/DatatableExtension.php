@@ -12,6 +12,23 @@ class DatatableExtension extends \Twig_Extension
 
     use ArrayMerge;
 
+    protected $callbackMethodName = array(
+        "createdRow",
+        "drawCallback",
+        "footerCallback",
+        "formatNumber",
+        "headerCallback",
+        "infoCallback",
+        "initComplete",
+        "preDrawCallback",
+        "rowCallback",
+        "stateLoadCallback",
+        "stateLoaded",
+        "stateLoadParams",
+        "stateSaveCallback",
+        "stateSaveParams"
+    );
+
     /**
      * @var FormFactoryInterface
      */
@@ -44,6 +61,14 @@ class DatatableExtension extends \Twig_Extension
                     array("is_safe" => array("html"), 'needs_environment' => true)),
             new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'),
                     array("is_safe" => array("html"), 'needs_environment' => true))
+        );
+    }
+
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('printDatatableOption', array($this, 'printDatatableOption'),
+                    array("is_safe" => array("html")))
         );
     }
 
@@ -219,6 +244,23 @@ class DatatableExtension extends \Twig_Extension
     public function createFormBuilder($data = null, array $options = array())
     {
         return $this->formFactory->createBuilder('form', $data, $options);
+    }
+
+    public function printDatatableOption($var, $elementName)
+    {
+        if(is_bool($var)) {
+            return $var === true ? 'true' : 'false';
+        }
+
+        if(is_array($var)) {
+            return json_encode($var);
+        }
+
+        if(in_array($elementName, $this->callbackMethodName)) {
+            return $var;
+        }
+
+        return json_encode($var);
     }
 
     /**

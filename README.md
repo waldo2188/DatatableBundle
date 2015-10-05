@@ -48,6 +48,7 @@ Summary
 
 ##### [Multiple actions](#multiple-actions)
 ##### [Custom renderer](#custom-renderer)
+##### [Datatable Callbacks options](#datatable-callbacks-options)
 ##### [Translation](#translation)
 ##### [Doctrine Query Builder](#doctrine-query-builder)
 ##### [Multiple datatable in the same view](#multiple-datatable-in-the-same-view)
@@ -451,6 +452,48 @@ private function datatable()
                 );
 }
 ```
+
+### Datatable Callbacks options
+If you need to put some Javascript Callbacks like [`drawCallback`](http://datatables.net/reference/option/drawCallback), you can
+do it localy with the Datatable `js` option. See the two examples below:
+
+```twig
+{{ datatable_js({
+        'id' : 'datable-id',
+        'js' : {
+            'ajax': "/some/path",
+            'createdRow': 'function(){console.log("Do something useful here");}'
+        }
+    })
+}}
+
+{# or #}
+
+{{ datatable_js({
+        'id' : 'datable-id',
+        'js' : {
+            'ajax': "/some/path",
+            'createdRow': 'myUsefullThing'
+        }
+    })
+}}
+<script type="text/javascript">
+var myUsefullThing = function() {
+    // Do something useful here
+};
+</script>
+```
+
+You can also define a Callback globally by setting it up in the `config.yml` like below :
+
+```yaml
+waldo_datatable:
+    js:
+        createdRow: |
+            function(){console.log("Do something useful here");}
+
+```
+
 
 ### Translation
 
