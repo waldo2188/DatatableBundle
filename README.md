@@ -257,12 +257,15 @@ private function datatable()
                             "_identifier_"  => 'x.id')      // you have to put the identifier field without label. Do not replace the "_identifier_"
                         )
                 ->addJoin('x.group', 'g', \Doctrine\ORM\Query\Expr\Join::INNER_JOIN)
-                ->addJoin('x.team', 't', \Doctrine\ORM\Query\Expr\Join::INNER_JOIN)
+                ->addJoin('x.team', 't', \Doctrine\ORM\Query\Expr\Join::LEFT_JOIN)
+                ->addJoin('x.something', 's', \Doctrine\ORM\Query\Expr\Join::LEFT_JOIN, \Doctrine\ORM\Query\Expr\Join::WITH, 's.id = :someId')
                 ->setWhere(                                                     // set your dql where statement
                      'x.address = :address',
                      array('address' => 'Paris')
                 )
-                ->setOrder("x.created", "desc");            // it's also possible to set the default order.
+                ->setOrder("x.created", "desc")            // it's also possible to set the default order.
+                ->setParameter('someId', 12)
+                ;
 }
 ```
 

@@ -114,11 +114,12 @@ interface QueryInterface
      *              'r.event',
      *              'e',
      *              \Doctrine\ORM\Query\Expr\Join::INNER_JOIN,
+     *              \Doctrine\ORM\Query\Expr\Join::WITH,
      *              'e.name like %test%')
      *
      * @param string      $join          The relationship to join.
      * @param string      $alias         The alias of the join.
-     * @param string|Join::INNER_JOIN    $type The type of the join Join::INNER_JOIN | Join::LEFT_JOIN
+     * @param string|Join::INNER_JOIN    $type      The type of the join Join::INNER_JOIN | Join::LEFT_JOIN
      * @param string|null $conditionType The condition type constant. Either ON or WITH.
      * @param string|null $condition     The condition for the join.
      *
