@@ -145,7 +145,7 @@ class DoctrineBuilder implements QueryInterface
             // Individual filtering
             $searchName = "sSearch_" . $i;
 
-            if($columns[$i]['searchable'] === "true" && $columns[$i]['search']['value'] != "") {
+            if(array_key_exists('searchable', $columns[$i]) && $columns[$i]['searchable'] === "true" && $columns[$i]['search']['value'] != "") {
 
                 $queryBuilder->andWhere($queryBuilder->expr()->like($searchField, ":" . $searchName));
 
