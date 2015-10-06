@@ -3,7 +3,7 @@
 {% spaceless %}
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#{{ id }}').DataTable({ {% for elementName, element in js %}{{ elementName }}: {{ element|printDatatableOption(elementName) }}{% if loop.last != true %},{%endif%}{% endfor %} });
+    $('#{{ id }}').DataTable({ {% for elementName, element in js %}{{ elementName }}:{{ element|printDatatableOption(elementName) }}{% if loop.last != true %},{%endif%}{% endfor %} });
 });
 {% if multiple %}
 {% include "WaldoDatatableBundle:Snippet:multipleRaw.js.twig" %}

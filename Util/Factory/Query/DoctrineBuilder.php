@@ -287,7 +287,7 @@ class DoctrineBuilder implements QueryInterface
             end($orderField);
 
             $qb->orderBy(current($orderField), $order[0]['dir']);
-        } else {
+        } elseif($this->orderField == null) {
             $qb->resetDQLPart('orderBy');
         }
 
@@ -345,7 +345,7 @@ class DoctrineBuilder implements QueryInterface
             }
             $data[] = $item;
         }
-        
+
         return array($data, $objects);
     }
 

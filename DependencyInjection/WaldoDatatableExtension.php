@@ -52,6 +52,7 @@ class WaldoDatatableExtension extends Extension
             "ordering" => true,
             "searching" => true,
             "autoWidth" => false,
+            "order" => array()
         );
 
         $config['js'] = array_merge($defaultJsConfig, $config['js']);
