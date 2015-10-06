@@ -177,14 +177,14 @@ class Datatable
      *
      * @return JsonResponse
      */
-    public function execute($hydrationMode = Query::HYDRATE_ARRAY)
+    public function execute()
     {
         $request = $this->request->getCurrentRequest();
 
         $iTotalRecords = $this->queryBuilder->getTotalRecords();
         $iTotalDisplayRecords = $this->queryBuilder->getTotalDisplayRecords();
 
-        list($data, $objects) = $this->queryBuilder->getData($hydrationMode);
+        list($data, $objects) = $this->queryBuilder->getData();
 
         $id_index = array_search('_identifier_', array_keys($this->getFields()));
         $ids = array();
