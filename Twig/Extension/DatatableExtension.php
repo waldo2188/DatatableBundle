@@ -2,10 +2,12 @@
 
 namespace Waldo\DatatableBundle\Twig\Extension;
 
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Waldo\DatatableBundle\Util\Datatable;
 use Waldo\DatatableBundle\Util\ArrayMerge;
+use Twig_SimpleFunction;
 
 class DatatableExtension extends \Twig_Extension
 {
@@ -30,22 +32,15 @@ class DatatableExtension extends \Twig_Extension
     );
 
     /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
 
     /**
-     * @param FormFactoryInterface$formFactory
      * @param DataCollectorTranslator $translator
      */
-    public function __construct(FormFactoryInterface $formFactory, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->formFactory = $formFactory;
         $this->translator = $translator;
     }
 
@@ -55,11 +50,11 @@ class DatatableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('datatable', array($this, 'datatable'),
+            new Twig_SimpleFunction('datatable', array($this, 'datatable'),
                     array("is_safe" => array("html"), 'needs_environment' => true)),
-            new \Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'),
+            new Twig_SimpleFunction('datatable_html', array($this, 'datatableHtml'),
                     array("is_safe" => array("html"), 'needs_environment' => true)),
-            new \Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'),
+            new Twig_SimpleFunction('datatable_js', array($this, 'datatableJs'),
                     array("is_safe" => array("html"), 'needs_environment' => true))
         );
     }
@@ -141,7 +136,6 @@ class DatatableExtension extends \Twig_Extension
 
         $options['js'] = array_merge($config['js'], $options['js']);
         $options['fields'] = $dt->getFields();
-        $options['delete_form'] = $this->createDeleteForm('_id_')->createView();
         $options['search'] = $dt->getSearch();
         $options['global_search'] = $dt->getGlobalSearch();
         $options['multiple'] = $dt->getMultiple();
@@ -219,31 +213,6 @@ class DatatableExtension extends \Twig_Extension
                 ));
 
         $options['js']['language'] = $this->arrayMergeRecursiveDistinct($baseLanguage, $options['js']['language']);
-    }
-
-    /**
-     * create delete form
-     *
-     * @param type $id
-     * @return type
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-                        ->add('id', 'hidden')
-                        ->getForm();
-    }
-
-    /**
-     * create form builder
-     *
-     * @param type $data
-     * @param array $options
-     * @return type
-     */
-    public function createFormBuilder($data = null, array $options = array())
-    {
-        return $this->formFactory->createBuilder('form', $data, $options);
     }
 
     public function printDatatableOption($var, $elementName)

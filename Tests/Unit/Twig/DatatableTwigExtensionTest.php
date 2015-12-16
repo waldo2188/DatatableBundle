@@ -25,29 +25,9 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $this->formFactoryMock = $this->getMockBuilder("Symfony\Component\Form\FormFactory")
-                ->disableOriginalConstructor()
-                ->setMethods(array("createBuilder", "add", "getForm", "createView"))
-                ->getMock();
-
-        $this->formFactoryMock->expects($this->any())
-                ->method("createBuilder")
-                ->willReturnSelf();
-
-        $this->formFactoryMock->expects($this->any())
-                ->method("add")
-                ->willReturnSelf();
-
-        $this->formFactoryMock->expects($this->any())
-                ->method("getForm")
-                ->willReturnSelf();
-
-        $this->formFactoryMock->expects($this->any())
-                ->method("createView")
-                ->willReturnSelf();
 
 
-        $this->extentsion = new DatatableExtension($this->formFactoryMock, $this->translator);
+        $this->extentsion = new DatatableExtension($this->translator);
     }
 
     public function testGetName()
@@ -55,10 +35,6 @@ class DatatableTwigExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("DatatableBundle", $this->extentsion->getName());
     }
 
-    public function testCreateFormBuilder()
-    {
-        $this->assertEquals($this->formFactoryMock, $this->extentsion->createFormBuilder());
-    }
 
     public function testGetFunctions()
     {

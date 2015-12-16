@@ -2,6 +2,7 @@
 
 namespace Waldo\DatatableBundle\Tests\src\DatatableTest;
 
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Waldo\DatatableBundle\Tests\BaseClient;
 use Waldo\DatatableBundle\Util\Datatable;
@@ -44,7 +45,7 @@ class DatatableTest extends BaseClient
         $this->buildDatabase($this->client);
 
         // Inject a fake request
-        $requestStack = $this->getMock("Symfony\Component\HttpFoundation\RequestStack");
+        $requestStack = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
 
         $requestStack
         ->expects($this->any())
@@ -571,6 +572,8 @@ class DatatableTest extends BaseClient
 
     public function test_setRenderders()
     {
+        $tpl = new \SplFileInfo(__DIR__ . '/../../app/Resources/views/Renderers/_actions.html.twig');
+
         $out  = $this->datatable
                 ->setEntity('\Waldo\DatatableBundle\Tests\Functional\Entity\Feature', 'f')
                 ->setFields(
@@ -581,7 +584,7 @@ class DatatableTest extends BaseClient
                 ->setRenderers(
                         array(
                             1 => array(
-                                'view'   => 'WaldoDatatableBundle:Renderers:_actions.html.twig',
+                                'view'   => $tpl->getRealPath(),
                                 'params' => array(
                                     'edit_route'            => '_edit',
                                     'delete_route'          => '_delete'
@@ -609,13 +612,15 @@ class DatatableTest extends BaseClient
                 )
                 ->setRenderer(
                         function(&$data) use ($templating, $datatable) {
+
+                            $tpl = new \SplFileInfo(__DIR__ . '/../../app/Resources/views/Renderers/_actions.html.twig');
+
                             foreach ($data as $key => $value)
                             {
                                 if ($key == 1)                                      // 1 => adress field
                                 {
                                     $data[$key] = $templating
-                                            ->render(
-                                            'WaldoDatatableBundle:Renderers:_actions.html.twig', array(
+                                            ->render($tpl->getRealPath(), array(
                                         'edit_route'            => '_edit',
                                         'delete_route'          => '_delete'
                                             )
