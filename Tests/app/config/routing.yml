@@ -1,7 +1,6 @@
 _homepage:
-    pattern:  /
+    path:  /
 _delete:
-    pattern:  /
+    path:  /
 _edit:
-    pattern:  /
-    
+    path:  /
