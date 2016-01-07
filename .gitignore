@@ -1,3 +1,4 @@
 /vendor/
 !/vendor/vendors.php
 /nbproject/
+composer.lock

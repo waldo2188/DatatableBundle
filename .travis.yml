@@ -12,5 +12,5 @@ env:
   - SYMFONY_VERSION=v2.8
   - SYMFONY_VERSION=v3.0
  
-install:  composer install
+install: composer --prefer-source install
 
