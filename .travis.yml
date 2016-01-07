@@ -4,16 +4,7 @@ php:
   - 5.4
   - 5.5  
   - 5.6
-
-matrix:
-  allow_failures:
-    - php: 5.5
-
-env:
-  - SYMFONY_VERSION=v2.0.15
-  - SYMFONY_VERSION=v2.1.9
-  - SYMFONY_VERSION=v2.2.1
-  - SYMFONY_VERSION=origin/master
-  
-install:  composer install --dev
+  - 7
+ 
+install:  composer install
 
