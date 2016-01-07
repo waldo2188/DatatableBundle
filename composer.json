@@ -22,15 +22,15 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
 	"twig/twig": "~1.8",
         "doctrine/common": "~2.1"
     },
     "require-dev": {
-        "symfony/symfony": ">=2.7.0,~3.0",
+        "symfony/symfony": ">=2.6.0,<=4.0",
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "^2.4.8",
-        "phpunit/phpunit": "~5.1"
+        "phpunit/phpunit": "~4.8"
     },
     "autoload": {
         "psr-4": { "Waldo\\DatatableBundle\\": ""}
