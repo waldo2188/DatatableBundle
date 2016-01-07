@@ -27,11 +27,10 @@
         "doctrine/common": "~2.1"
     },
     "require-dev": {
-        "symfony/symfony": "2.7.*",
+        "symfony/symfony": ">=2.7.0,~3.0",
         "doctrine/doctrine-bundle": "~1.4",
-        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
-        "doctrine/dbal": "<2.5",
-        "phpunit/phpunit": "~4.8"
+        "doctrine/orm": "^2.4.8",
+        "phpunit/phpunit": "~5.1"
     },
     "autoload": {
         "psr-4": { "Waldo\\DatatableBundle\\": ""}

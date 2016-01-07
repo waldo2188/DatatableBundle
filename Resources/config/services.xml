@@ -1,21 +1,21 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
 
-        <service id="datatable.renderer" class="Waldo\DatatableBundle\Util\Formatter\Renderer" scope="prototype">
+        <service id="datatable.renderer" class="Waldo\DatatableBundle\Util\Formatter\Renderer" shared="false" >
             <argument type="service" id="templating" />
         </service>
 
-        <service id="datatable.doctrine_builder" class="Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder" scope="prototype">
+        <service id="datatable.doctrine_builder" class="Waldo\DatatableBundle\Util\Factory\Query\DoctrineBuilder" shared="false">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="request_stack" />
         </service>
 
-        <service id="datatable" class="Waldo\DatatableBundle\Util\Datatable" scope="prototype">
+        <service id="datatable" class="Waldo\DatatableBundle\Util\Datatable" shared="false">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="datatable.doctrine_builder" />
