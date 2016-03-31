@@ -43,7 +43,7 @@ class WaldoDatatableExtension extends Extension
         $defaultJsConfig = array(
             "jQueryUI" => true,
             "pagingType" => "full_numbers",
-            "lengthMenu" => '[[10, 25, 50, -1], [10, 25, 50, "All"]]',
+            "lengthMenu" => [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "pageLength" => 10,
             "serverSide" => true,
             "processing" => true,
