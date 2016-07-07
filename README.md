@@ -60,14 +60,7 @@ Installation is a quick (I promise!) 3 step process:
 
 #### Using Composer
 
-Add DatatableBundle in your composer.json as below, and update with Composer :
-```js
-"require": {
-    ...
-    "waldo/datatable-bundle": "~3.0"
-}
-```
-Or, update/install with this command : `composer require waldo/datatable-bundle ~3.0`
+Install with this command : `composer require waldo/datatable-bundle`
 
 Generate the assets symlinks : 
 ```bash
