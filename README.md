@@ -109,6 +109,9 @@ waldo_datatable:
 ## How to use DatatableBundle ?
 
 Assuming for example that you need a grid in your "index" action, create in your controller method as below :
+ 
+ **Warning alias `as` is case-sensitive, always write it in lower case**
+ 
 ```php
 /**
  * set datatable configs
@@ -120,7 +123,7 @@ private function datatable() {
                 ->setFields(
                         array(
                             "Name"          => 'x.name',                        // Declaration for fields:
-                            "Address"       => 'x.address',                    //      "label" => "alias.field_attribute_for_dql"
+                            "Address"       => 'x.address',                     // "label" => "alias.field_attribute_for_dql"
                             "Total"         => 'COUNT(x.people) as total',      // Use SQL commands, you must always define an alias
                             "Sub"           => '(SELECT i FROM ... ) as sub',   // you can set sub DQL request, you MUST ALWAYS define an alias
                             "_identifier_"  => 'x.id')                          // you have to put the identifier field without label. Do not replace the "_identifier_"
