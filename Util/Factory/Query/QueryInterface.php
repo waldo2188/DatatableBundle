@@ -21,7 +21,7 @@ interface QueryInterface
      *
      * @return array
      */
-    function getData();
+    function getData($multiple);
 
     /**
      * set entity

@@ -184,7 +184,7 @@ class Datatable
         $iTotalRecords = $this->queryBuilder->getTotalRecords();
         $iTotalDisplayRecords = $this->queryBuilder->getTotalDisplayRecords();
 
-        list($data, $objects) = $this->queryBuilder->getData();
+        list($data, $objects) = $this->queryBuilder->getData($this->multiple);
 
         $id_index = array_search('_identifier_', array_keys($this->getFields()));
         $ids = array();
