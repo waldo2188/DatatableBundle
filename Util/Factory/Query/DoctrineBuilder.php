@@ -281,10 +281,9 @@ class DoctrineBuilder implements QueryInterface
 
         $qb = clone $this->queryBuilder;
 
-	if ($multiple) $orderColumn = $order[0]['column']-1; else $order[0]['column'];
-
         // add sorting
         if (array_key_exists(0, $order)) {
+	    if ($multiple) $orderColumn = $order[0]['column']-1; else $orderColumn = $order[0]['column'];
             $orderField = explode(' as ', $dqlFields[$orderColumn]);
             end($orderField);
 
